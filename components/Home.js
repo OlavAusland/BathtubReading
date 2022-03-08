@@ -3,7 +3,7 @@ import { View, Image, Text, Button, StyleSheet, ScrollView} from 'react-native';
 import { Card } from 'react-native-paper'
 import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 import { navigation, usenavigationParam} from '@react-navigation/native';
 
@@ -16,6 +16,7 @@ export default function HomePage({ navigation })
     const [avatar, setAvatar] = useState("");
     const [library, setLibrary] = useState([]);
     const [logout, setLogout] = useState(false);
+    const [image, setImage] = useState("");
 
     useEffect(async () => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
@@ -23,8 +24,18 @@ export default function HomePage({ navigation })
         const getLibrary = async() => {
             const data = await getDocs(collection(db, "Books"));
             setLibrary(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
+            console.log(library);
         };
+
+        const getBook = async() => {
+            const result = await fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:0735619670');
+            const json = await result.json()
+            const link = json.items[0].volumeInfo.imageLinks.thumbnail
+            setImage(link);
+            console.log(link)
+        }
         getLibrary();
+        getBook();
     }, [user]);
 
 
@@ -49,6 +60,11 @@ export default function HomePage({ navigation })
                     //'../assets/Images/Profile/Hoodie_V6.png'
                     source={{uri: avatar}}
                 />
+                {image !== "" && 
+                    <Image style={{width:'250px', height: '250px'}}
+                        source={{uri: image}}
+                    />
+                }
                 <Button title="Sign Out" onPress={() => setLogout(true)}/>
             </ScrollView>
         );
