@@ -36,11 +36,11 @@ export default function HomePage({ navigation })
 
     let img = require('../assets/Images/Profile/Default.png')
     
-    try{img = require('/home/olav/Documents/Programming/IKT205/midterm-project/assets/Images/Profile/' + user.photoURL);}
-    catch(error){console.log(error);}
+    //try{img = require('/home/olav/Documents/Programming/IKT205/midterm-project/assets/Images/Profile/' + user.photoURL);}
+    //catch(error){console.log(error);}
     
     return (
-        <ScrollView contentContainerStyle={stylaes.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <Image
                 style={styles.avatar}
                 //'../assets/Images/Profile/Hoodie_V6.png'

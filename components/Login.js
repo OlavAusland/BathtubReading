@@ -10,27 +10,8 @@ export default function LoginPage({ navigation })
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [login, setLogin] = useState(false);
-    const [register, setRegister] = useState(false);
     
     const [user, setUser] = useState({});
-
-    useEffect(() => {
-        if(register){
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Signed in 
-                    const user = userCredential.user;
-                    setUser(user);
-                    // ...
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    // ..
-                });
-            setRegister(false);
-        }
-    }, [register])
 
     useEffect(() => {
         if(login)
@@ -54,7 +35,7 @@ export default function LoginPage({ navigation })
     }, [login])
 
     return (
-        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:0.75}}>
+        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1}}>
             <TextInput
                 style={styles.input}
                 placeHolder="Email"
@@ -71,7 +52,7 @@ export default function LoginPage({ navigation })
                     onPress={() => setLogin(true)}/>
                 <Button
                     title="Register"
-                    onPress={() => setRegister(true)}/>
+                    onPress={() => navigation.navigate("Register")}/>
             </View>
         </View>
     );
