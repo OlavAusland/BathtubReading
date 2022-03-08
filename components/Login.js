@@ -10,24 +10,19 @@ export default function LoginPage({ navigation })
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [login, setLogin] = useState(false);
-    
-    const [user, setUser] = useState({});
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if(login)
         {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    // Signed in 
-                    setUser(userCredential.user.metadata)
-                    console.log(user)
-                    console.log(user)
                     navigation.navigate('Home')
-                    // ...
                 })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
+                    setError(errorMessage);
                 });
 
             setLogin(false);
@@ -47,6 +42,7 @@ export default function LoginPage({ navigation })
                 onChangeText={updated => setPassword(updated)}/>
             
             <View style={{width: '80%'}}>
+                {error && <Text style={{color:'rgb(255, 0, 0)', fontSize:18, alignSelf:'center'}}>{error}</Text>}
                 <Button
                     title="Login"
                     onPress={() => setLogin(true)}/>

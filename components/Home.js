@@ -1,25 +1,32 @@
 import { useEffect, useState} from 'react';
 import { View, Image, Text, Button, StyleSheet, ScrollView} from 'react-native';
 import { Card } from 'react-native-paper'
-import { db } from "../firebase-config.js";
+import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import { collection, doc, getDocs } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 import { navigation, usenavigationParam} from '@react-navigation/native';
 
 export default function HomePage({ navigation })
 {
+    
     const auth = getAuth();
-    const user = auth.currentUser;
+    
+    const [user, setUser] = useState(auth.currentUser);
+    const [avatar, setAvatar] = useState("");
     const [library, setLibrary] = useState([]);
     const [logout, setLogout] = useState(false);
 
-    useEffect(() => {
+    useEffect(async () => {
+        await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
+        console.log(user.photoURL)
         const getLibrary = async() => {
             const data = await getDocs(collection(db, "Books"));
             setLibrary(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
         };
         getLibrary();
-    }, []);
+    }, [user]);
+
 
     useEffect(() => {
         if(logout)
@@ -32,32 +39,34 @@ export default function HomePage({ navigation })
             })
             setLogout(false);
         }
-    }, [logout])
+    }, [logout]);
 
-    let img = require('../assets/Images/Profile/Default.png')
-    
-    //try{img = require('/home/olav/Documents/Programming/IKT205/midterm-project/assets/Images/Profile/' + user.photoURL);}
-    //catch(error){console.log(error);}
-    
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Image
-                style={styles.avatar}
-                //'../assets/Images/Profile/Hoodie_V6.png'
-                source={img}
-            />
-            <Button title="Sign Out" onPress={() => setLogout(true)}/>
-        </ScrollView>
-    );
+    if(user != null)
+    {
+        return (
+            <ScrollView contentContainerStyle={styles.container}>
+                <Image style={{borderRadius:250, width:250, height:250}}
+                    //'../assets/Images/Profile/Hoodie_V6.png'
+                    source={{uri: avatar}}
+                />
+                <Button title="Sign Out" onPress={() => setLogout(true)}/>
+            </ScrollView>
+        );
+    }
+    else{
+        return (
+            <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1}}>
+                <Text style={{fontSize:64}}>Loading...</Text>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
     container:{
         width:'100%',
         height:'100%',
-        justifyContent: 'center',
         alignItems: 'center',
-        marginTop:64
     },
     card:{
         width:'75%',
