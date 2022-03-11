@@ -17,7 +17,7 @@ export default function LoginPage({ navigation })
         {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    navigation.navigate('Home')
+                    navigation.navigate('Profile')
                 })
                 .catch((error) => {
                     const errorCode = error.code;

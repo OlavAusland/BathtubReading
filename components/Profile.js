@@ -64,6 +64,8 @@ export default function ProfilePage({ navigation })
     if(user != null)
     {
         return (
+
+            /*
             <View style={{justifyContent:'center', alignItems:'center', width:'50%'}}>
                 <Image style={{borderRadius:250, width:250, height:250}}
                     //'../assets/Images/Profile/Hoodie_V6.png'
@@ -92,6 +94,40 @@ export default function ProfilePage({ navigation })
                 </ScrollView>
                 <Button title="Sign Out" onPress={() => setLogout(true)}/>
             </View>
+            */
+            <View style={[styles.container, {flexDirection:'column'}]}>
+                <View style={{ flex: 1, flexDirection:'row', justifyContent:'center'}}>
+                    <View style={{justifyContent:'center'}}>
+                        <Image style={styles.avatar}
+                                source={{uri: avatar}}
+                        />
+                    </View>
+                    <View style={{flexDirection:'column', justifyContent:'center'}}>
+                        <Text style={{fontWeight:'bold'}}>Olav Ausland Onstad</Text>
+                        <Text>olavausland@hotmail.com</Text>
+                    </View>
+                </View>
+                <View style={{flex: 2, alignItems:'center'}}>
+                    <Text style={{fontWeight:'bold'}}>Favorites</Text>
+                    <ScrollView style={styles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
+                        <Image style={{width:150, height:150}}
+                            source={{uri:image}}
+                        />
+                        <Image style={{width:150, height:150}}
+                            source={{uri:image}}
+                        />
+                        <Image style={{width:150, height:150}}
+                            source={{uri:image}}
+                        />
+                        <Image style={{width:150, height:150}}
+                            source={{uri:image}}
+                        />
+                    </ScrollView>
+                </View>
+                <View style={{flex: 1}}>
+                    <Button title="Sign Out" onPress={() => setLogout(true)}/>
+                </View>
+            </View> 
         );
     }
     else{
@@ -108,7 +144,6 @@ const styles = StyleSheet.create({
         width:'100%',
         height:'100%',
         alignItems: 'center',
-        backgroundColor: 'linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1)  %)'
     },
     card:{
         width:'75%',
@@ -118,11 +153,11 @@ const styles = StyleSheet.create({
     },
     avatar:{
         width:150,
-        height:150
+        height:150,
+        borderRadius:150,
+        overlayColor:'rgba(0, 0, 0, 0)'
     },
     scroller:{
-        width:'80%', 
-        height:'250px',
         shadowColor: 'rgba(0, 0, 0, 0.3)',
         shadowRadius: 6,
         shadowOffset: {width:0, height:6}

@@ -27,7 +27,7 @@ export default function RegisterPage({ navigation })
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
+            aspect: [1, 1],
             quality: 1,
         });
 
@@ -65,7 +65,7 @@ export default function RegisterPage({ navigation })
 
     return (
         <View style={styles.container}>
-            {error && <Text style={{color:'#FF0000'}}>{error}</Text>}
+            {<Text style={{color:'#FF0000'}}>{error}</Text>}
             {loading && 
                 <Image
                     style={{height: 150, width: 150}}
