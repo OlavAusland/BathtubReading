@@ -7,6 +7,7 @@ import LoginPage from './components/Login.js'
 import ProfilePage from './components/Profile.js'
 import RegisterPage from './components/Register.js';
 import HomePage from './components/Home.js';
+import BookPage from './components/Book.js';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Screen name="Register" component={RegisterPage}/>
         <Stack.Screen name="Profile" component={ProfilePage}/>
         <Stack.Screen name="Home" component={HomePage}/>
+        <Stack.Screen name="Book" component={BookPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -22,3 +22,16 @@ export const setBook = async(isbn) => {
         imageURI: data.items[0].volumeInfo.imageLinks.thumbnail
     });
 }
+
+export const getFirebaseBooks = async () => {
+    const books = await getDocs(db, 'Books');
+    const json = await books.json();
+    return json
+  }
+
+export const getFirebaseBookId = async (id) => {
+    const bookId = await getDocs(db, 'Books', id);
+    const json = await bookId.json();
+    return json
+  }
+
