@@ -8,9 +8,11 @@ import { ref, uploadBytes } from 'firebase/storage';
 export default function RegisterPage({ navigation })
 {
     const auth = getAuth();
+    const [error, setError] = useState("");
     const [email, setEmail] = useState("");
     const [image, setImage] = useState();
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     const [register, setRegister] = useState(false);
 
     
@@ -43,6 +45,7 @@ export default function RegisterPage({ navigation })
     
     useEffect(async() => {
         if(register){
+            console.log(loading)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
@@ -53,15 +56,22 @@ export default function RegisterPage({ navigation })
                 .catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
-                    console.log(errorMessage);
+                    setError(errorMessage);
+                    setLoading(false);
                 });
             setRegister(false);
         }
     }, [register])
 
     return (
-
         <View style={styles.container}>
+            {error && <Text style={{color:'#FF0000'}}>{error}</Text>}
+            {loading && 
+                <Image
+                    style={{height: 150, width: 150}}
+                    source={require('../assets/Images/Loading.gif')}
+                />
+            }
             <TextInput
                 style={styles.input}
                 placeHolder="Email"
@@ -73,7 +83,7 @@ export default function RegisterPage({ navigation })
                 onChangeText={updated => setPassword(updated)}/>
             <View style={{width:'80%'}}>
                 <Button title="Upload Image" onPress={pickImage}/>
-                <Button style={styles.button} title="Register" onPress={() => setRegister(true)}/>
+                <Button style={styles.button} title="Register" onPress={() => {setLoading(true); setRegister(true)}}/>
                 <Button style={styles.button} title="Back" onPress={() => navigation.navigate("Login")}/>
             </View>
         </View>

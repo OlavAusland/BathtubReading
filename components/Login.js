@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, Text, TextInput } from 'react-native';
+import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
 import { db } from '../firebase-config.js'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 
@@ -42,7 +42,7 @@ export default function LoginPage({ navigation })
                 onChangeText={updated => setPassword(updated)}/>
             
             <View style={{width: '80%'}}>
-                {error && <Text style={{color:'rgb(255, 0, 0)', fontSize:18, alignSelf:'center'}}>{error}</Text>}
+                {error && <Text style={{color:'rgb(255, 0, 0)', fontSize:18 , alignSelf:'center'}}>{error}</Text>}
                 <Button
                     title="Login"
                     onPress={() => setLogin(true)}/>
