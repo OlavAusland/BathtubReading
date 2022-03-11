@@ -20,33 +20,14 @@ export default function ProfilePage({ navigation })
 
     useEffect(async () => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
-        console.log(user.photoURL)
+        
         const getLibrary = async() => {
             const result = await getDocs(collection(db, "Books"));
             const data = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
             setLibrary(data.json)
         };
-
-        const getBook = async(isbn) => {
-            const result = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`);
-            const json = await result.json()
-            const link = json.items[0].volumeInfo.imageLinks.thumbnail
-            setImage(link);
-            console.log(link)
-        };
-
-        const setBook = async(isbn) => {
-            await setDoc(doc(db, 'Books', isbn), {
-                title: 'Python, Hero To Zero B-)'
-            });
-        }
-
         getLibrary();
-        getBook('0735619670');
-        setBook('123');
-        console.log(library)
     }, [user]);
-
 
     useEffect(() => {
         if(logout)
@@ -64,37 +45,6 @@ export default function ProfilePage({ navigation })
     if(user != null)
     {
         return (
-
-            /*
-            <View style={{justifyContent:'center', alignItems:'center', width:'50%'}}>
-                <Image style={{borderRadius:250, width:250, height:250}}
-                    //'../assets/Images/Profile/Hoodie_V6.png'
-                    source={{uri: avatar}}
-                />
-                <Text style={{fontSize:42, fontWeight:'bold'}}>Favorites</Text>
-                <ScrollView horizontal={true} style={styles.scroller} showsVerticalScrollIndicator={false}>
-                    <Image style={{width:'250px', height: '250px'}}
-                        source={{uri: image}}
-                    />
-                    <Image style={{width:'250px', height: '250px'}}
-                        source={{uri: image}}
-                    />
-                    <Image style={{width:'250px', height: '250px'}}
-                        source={{uri: image}}
-                    />
-                    <Image style={{width:'250px', height: '250px'}}
-                        source={{uri: image}}
-                    />
-                    <Image style={{width:'250px', height: '250px'}}
-                        source={{uri: image}}
-                    />
-                    <Image style={{width:'250px', height: '250px'}}
-                        source={{uri: image}}
-                    />
-                </ScrollView>
-                <Button title="Sign Out" onPress={() => setLogout(true)}/>
-            </View>
-            */
             <View style={[styles.container, {flexDirection:'column'}]}>
                 <View style={{ flex: 1, flexDirection:'row', justifyContent:'center'}}>
                     <View style={{justifyContent:'center'}}>
@@ -134,6 +84,9 @@ export default function ProfilePage({ navigation })
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1}}>
                 <Text style={{fontSize:64}}>Loading...</Text>
+                <Image
+                    source={require('../assets/Images/Loading.gif')}
+                />
             </View>
         );
     }

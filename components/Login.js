@@ -3,6 +3,7 @@ import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
 import { db } from '../firebase-config.js'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 
+import { setBook } from '../API/GoogleAPI.js';
 
 export default function LoginPage({ navigation })
 {
