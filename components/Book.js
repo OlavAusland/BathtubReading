@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
-import { db } from '../firebase-config.js'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-
+import { View, StyleSheet, Text,  Image} from 'react-native';
 import { getBook } from '../API/GoogleAPI.js';
+import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js';
 
 const BookPage = props => {
     
 const [mybook, setMybook] = useState('');
 
+
 useEffect(() => {
     const getMybook = async (isbn) => {
-        const data = await getBook('9780132856201').catch;
+        const data = await getBook('9780132856201');
+        const firebaseData = await getFirebaseBook('9780132856201');
+        const firebaseDatas = await getFirebaseBooks();
         setMybook({
             title: data.items[0].volumeInfo.title,
             author: data.items[0].volumeInfo.authors,
@@ -22,7 +23,8 @@ useEffect(() => {
             publisher: data.items[0].volumeInfo.publisher,
             language: data.items[0].volumeInfo.language,
             pages: data.items[0].volumeInfo.pageCount,
-            printtype: data.items[0].volumeInfo.printType
+            printtype: data.items[0].volumeInfo.printType,
+            rating: firebaseData.rating
         });
             
       }
@@ -46,7 +48,7 @@ useEffect(() => {
             <Text>Description: {mybook.description} </Text>
             <Text>Genre: {mybook.genres}</Text>
             <Text>Printtype: {mybook.printtype}</Text>
-            <Text>rating</Text>
+            <Text>rating: {mybook.rating}</Text>
 
 
         </View>
