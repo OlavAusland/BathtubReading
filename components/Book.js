@@ -3,56 +3,65 @@ import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
 import { db } from '../firebase-config.js'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 
-import { setBook } from '../API/GoogleAPI.js';
+import { getBook } from '../API/GoogleAPI.js';
 
 const BookPage = props => {
+    
+const [mybook, setMybook] = useState('');
 
+useEffect(() => {
+    const getMybook = async (isbn) => {
+        const data = await getBook('9780132856201').catch;
+        setMybook({
+            title: data.items[0].volumeInfo.title,
+            author: data.items[0].volumeInfo.authors,
+            genres: data.items[0].volumeInfo.categories,
+            date: data.items[0].volumeInfo.publishedDate,
+            imageURI: data.items[0].volumeInfo.imageLinks.thumbnail,
+            description: data.items[0].volumeInfo.description,
+            publisher: data.items[0].volumeInfo.publisher,
+            language: data.items[0].volumeInfo.language,
+            pages: data.items[0].volumeInfo.pageCount,
+            printtype: data.items[0].volumeInfo.printType
+        });
+            
+      }
+      console.log(mybook)
+      getMybook();
+}, []); 
 
-    const auth = getAuth();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [login, setLogin] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        if(login)
-        {
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    navigation.navigate('Profile')
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    setError(errorMessage);
-                });
-
-            setLogin(false);
-        }
-    }, [login])
 
     return (
-        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1}}>
-            <TextInput
-                style={styles.input}
-                placeHolder="Email"
-                onChangeText={updated => setEmail(updated)}/>
-            <TextInput 
-                style={styles.input}
-                secureTextEntry={true} 
-                placeHolder="Password"
-                onChangeText={updated => setPassword(updated)}/>
-            
-            <View style={{width: '80%'}}>
-                {error && <Text style={{color:'rgb(255, 0, 0)', fontSize:18 , alignSelf:'center'}}>{error}</Text>}
-                <Button
-                    title="Login"
-                    onPress={() => setLogin(true)}/>
-                <Button
-                    title="Register"
-                    onPress={() => navigation.navigate("Register")}/>
-            </View>
+        <View style={styles.Bookcontainer}>
+             <Image
+                source={{ uri: mybook.imageURI }}
+                style={{ width: 160, height: 170 }}
+                />
+            <Text style={styles.booktitle}>{mybook.title}</Text>
+            <Text>Author(s): {mybook.author} </Text>
+            <Text>Publisher: {mybook.publisher} </Text>
+            <Text>Published: {mybook.date}</Text>
+            <Text>Language: {mybook.language}</Text>
+            <Text>Pages: {mybook.pages}</Text>
+            <Text>Description: {mybook.description} </Text>
+            <Text>Genre: {mybook.genres}</Text>
+            <Text>Printtype: {mybook.printtype}</Text>
+            <Text>rating</Text>
+
+
         </View>
     );
-};
+}
+const styles = StyleSheet.create({
+    Bookcontainer: {
+        marginTop: 50,
+        marginLeft: 50,
+    },
+    booktitle:{
+        fontSize: 70,
+        fontWeight: 'bold',
+        fontfamily: 'lucida grande',
+        color:'grey'
+    }
+  });
 export default BookPage
