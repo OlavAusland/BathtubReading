@@ -6,7 +6,8 @@ import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import { collection, doc, getDocs, setDoc, query, where } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes} from 'firebase/storage';
 import { navigation, usenavigationParam} from '@react-navigation/native';
-
+import { getBook } from '../API/GoogleAPI'
+import { getFirebaseBooks } from '../API/FirebaseAPI'
 export default function ProfilePage({ navigation })
 {
     
@@ -14,21 +15,35 @@ export default function ProfilePage({ navigation })
     
     const [user, setUser] = useState(auth.currentUser);
     const [avatar, setAvatar] = useState("");
-    const [library, setLibrary] = useState();
+    const [library, setLibrary] = useState([]);
     const [logout, setLogout] = useState(false);
     const [image, setImage] = useState("");
+    const [book, setBook] = useState();
 
     useEffect(async () => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
-        
+    }, [user]);
+
+    useEffect(async() => {
+        const getMybooks = async () => {
+            const firebaseData = await getFirebaseBooks();
+            return firebaseData;
+          }
+          const books = await getMybooks();
+          setLibrary(books);
+    }, []); 
+
+    useEffect(async() => {
         const getLibrary = async() => {
             const result = await getDocs(collection(db, "Books"));
             const data = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
-            setLibrary(data.json)
+            setLibrary(data)
         };
         getLibrary();
-    }, [user]);
-
+        const book = await getBook("9780132856201");
+        setBook(book)
+    }, [])
+    
     useEffect(() => {
         if(logout)
         {
@@ -46,8 +61,8 @@ export default function ProfilePage({ navigation })
     {
         return (
             <View style={[styles.container, {flexDirection:'column'}]}>
-                <View style={{ flex: 1, flexDirection:'row', justifyContent:'center'}}>
-                    <View style={{justifyContent:'center'}}>
+                <View style={{ flex: 1, flexDirection:'row', justifyContent:'center', paddingTop:25}}>
+                    <View style={{justifyContent:'center', paddingRight:25}}>
                         <Image style={styles.avatar}
                                 source={{uri: avatar}}
                         />
@@ -58,23 +73,22 @@ export default function ProfilePage({ navigation })
                     </View>
                 </View>
                 <View style={{flex: 2, alignItems:'center'}}>
-                    <Text style={{fontWeight:'bold'}}>Favorites</Text>
-                    <ScrollView style={styles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                    </ScrollView>
-                </View>
-                <View style={{flex: 1}}>
+                    <View style={{flex:1}}> 
+                        <Text style={{fontWeight:'bold', fontSize:30}}>Favorites</Text>
+                        <ScrollView style={styles.list} horizontal={true} showsHorizontalScrollIndicator={false}>
+                            {library.length > 0 &&
+                            library.map((book) => {
+                                return (
+                                    <View>
+                                        <Image style={{width:150, height:150}} source={{uri: book.imageURI}}/>
+                                    </View>
+                                );
+                            })}
+                        </ScrollView>
+                    </View>
+                    <View style={{flex:1}}>
+
+                    </View>
                     <Button title="Sign Out" onPress={() => setLogout(true)}/>
                 </View>
             </View> 
@@ -114,5 +128,15 @@ const styles = StyleSheet.create({
         shadowColor: 'rgba(0, 0, 0, 0.3)',
         shadowRadius: 6,
         shadowOffset: {width:0, height:6}
+    },
+    list:{
+        width:'80%',
+        maxHeight:170,
+        padding:5,
+        shadowColor:'rgba(0, 0, 0, 0.5)',
+        shadowOffset: {height:10, width:10},
+        shadowRadius:10,
+        borderWidth:2,
+        borderRadius:15
     }
 })
