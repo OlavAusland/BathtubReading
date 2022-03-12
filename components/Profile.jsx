@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { View, Image, Text, Button, StyleSheet, ScrollView} from 'react-native';
 import { Card } from 'react-native-paper'
 import { db, storage } from "../firebase-config.js";
