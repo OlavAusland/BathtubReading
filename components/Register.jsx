@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Button, Image} from 'react-native'
+import React, { View, Text, TextInput, StyleSheet, Button, Image} from 'react-native'
 import { getAuth, createUserWithEmailAndPassword, updateProfile, } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
