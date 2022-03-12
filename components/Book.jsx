@@ -101,9 +101,8 @@ const styles = StyleSheet.create({
         marginLeft: 50,
     },
     booktitle:{
-        fontSize: 70,
+        fontSize: 60,
         fontWeight: 'bold',
-        fontfamily: 'lucida grande',
         color:'grey'
     }});
 
