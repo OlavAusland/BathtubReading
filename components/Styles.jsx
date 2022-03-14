@@ -109,7 +109,18 @@ export const profileStyle = StyleSheet.create({
 })
 
 export const loginStyle = StyleSheet.create({
-    header:{
-        
+    input: {
+        width: '80%',
+        color: "#FFFFFF",
+        fontSize: 18,
+        backgroundColor: "#AFAAFA",
+        borderRadius:8,
+        padding:5,
+        marginBottom:20,
+        height:40,
+        shadowColor: '#171717',
+        shadowOffset: {width:0, height:4},
+        shadowOpacity: 0.2,
+        shadowRadius: 3
     }
-})
+});

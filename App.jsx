@@ -12,20 +12,29 @@ import { TestPage } from './components/Test';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 console.ignoredYellowBox = ['Setting a timer'];
 const Stack = createNativeStackNavigator();
+const Tab = createMaterialTopTabNavigator();
+
+function Home()
+{
+  return(
+    <Tab.Navigator screenOptions={{headerShown: false}} initialRouteName='Profile'>
+      <Tab.Screen name="Book" component={BookPage}/>
+      <Tab.Screen name="Profile" component={ProfilePage}/>
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
-        <Stack.Screen name="Login" component={LoginPage}/>
-        <Stack.Screen name="Register" component={RegisterPage}/>
-        <Stack.Screen name="Profile" component={ProfilePage}/>
-        <Stack.Screen name="Home" component={HomePage}/>
-        <Stack.Screen name="Book" component={BookPage}/>
-        <Stack.Screen name="Test" component={TestPage}/>
+      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Login'>
+        <Stack.Screen name='Home' component={Home}/>
+        <Stack.Screen name='Login' component={LoginPage}/>
+        <Stack.Screen name='Register' component={RegisterPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

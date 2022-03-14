@@ -7,7 +7,7 @@ export default function HomePage()
     return (
         <View style={[styles.container, {flexDirection:'column'}]}>
             <View style={{ flex: 1.5, backgroundColor: "C2ACAC", borderBottomColor: 'black', borderBottomWidth:1}}>
-                <Image style={{height: '80pt', width:'80pt'}}
+                <Image style={{height: '80', width:'80'}}
                     source={require('../assets/favicon.png')}
                 />
             </View>
