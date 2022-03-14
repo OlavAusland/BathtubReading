@@ -9,6 +9,11 @@ export const profileStyle = StyleSheet.create({
         backgroundColor:"#A45C40",
         width:'100%',
     },
+    container:{
+        width:'100%',
+        height:'100%',
+        alignItems:'center'
+    },
     settings:{
         width:'100%',
         overflow:'hidden'

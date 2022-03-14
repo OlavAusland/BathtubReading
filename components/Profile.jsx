@@ -63,7 +63,7 @@ export default function ProfilePage({ navigation })
     if(user != null && !loading)
     {
         return (
-            <View style={[styles.container, {flexDirection:'column'}]}>
+            <View style={[profileStyle.container, {flexDirection:'column'}]}>
                 <Modal
                     animationType="slide"
                     statusBarTranslucent={true}
@@ -134,7 +134,7 @@ export default function ProfilePage({ navigation })
                 </Modal>
                 <View style={profileStyle.header}>
                     <View style={{justifyContent:'center', paddingRight:25}}>
-                        <Image style={styles.avatar}
+                        <Image style={profileStyle.avatar}
                                 source={{uri: avatar}}
                         />
                     </View>
@@ -202,39 +202,3 @@ export default function ProfilePage({ navigation })
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container:{
-        width:'100%',
-        height:'100%',
-        alignItems: 'center',
-    },
-    card:{
-        width:'75%',
-        height:'20%',
-        shadowOffset: {width:0, height:6},
-        shadowColor: '#000000'
-    },
-    avatar:{
-        width:150,
-        height:150,
-        borderRadius:150,
-        overlayColor:'rgba(0, 0, 0, 0)'
-    },
-    scroller:{
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
-        shadowRadius: 6,
-        shadowOffset: {width:0, height:6}
-    },
-    list:{
-        maxWidth:'90%',
-        maxHeight:170,
-        padding:5,
-        shadowColor:'rgba(0, 0, 0, 0.5)',
-        shadowOffset: {height:10, width:10},
-        shadowRadius:10,
-        borderWidth:2,
-        borderRadius:15,
-        overlayColor:'rgba(0, 0, 0, 0)' 
-    }
-})
