@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView,View, StyleSheet, Text,  Image, Pressable} from 'react-native';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView} from 'react-native';
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js';
 import { Button, Portal, Modal, Provider } from 'react-native-paper';
@@ -120,10 +120,10 @@ useEffect(() => {
                 <Text style={newStyles.textStyle}>Cancel</Text>
               </Pressable>
             </View>
-          </View>
-        </Modal>
+            </View>
+            </Modal>
         </View>
-        </ScrollView>  
+        </ScrollView>
     );
 }
 const styles = StyleSheet.create({

@@ -14,6 +14,7 @@ export async function getBook(isbn){
 
 export const setBook = async(isbn) => {
     const data = await getBook(isbn)
+    //console.log(data);
     await setDoc(doc(db, 'Books', isbn), {
         title: data.items[0].volumeInfo.title,
         genres: data.items[0].volumeInfo.categories,
