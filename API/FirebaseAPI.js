@@ -1,5 +1,5 @@
 import { doc,  getDoc, getDocs, collection } from 'firebase/firestore';
-import { db } from '../firebase-config.js'
+import { db, query, where } from '../firebase-config.js'
 
 export async function getFirebaseBooks(){
     const data = await getDocs(collection(db, 'Books'));
@@ -17,7 +17,9 @@ export async function getFirebaseBook(isbn){
 
 
 export async function getFirebooksGenre(genres){
-    const book = await getDoc(doc(db, 'Books', genres));
-    console.log("Document data:", book)
-    return book.data()
+    const data = await query(collection(db, 'Books'), where('genre', 'array-contains', 'Computers')).get();
+    console.log(data);
+    //const books = data.docs.map((doc) => ({...doc.data(), id:  doc.id}))
+    console.log("Document datas:", books)
+    return books
 };

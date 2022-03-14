@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Text, View, Button, Image, StyleSheet} from 'react-native'
-import { getGenreBooks } from '../API/GoogleAPI.js';
+import { ScrollView, Text, View, Button, Image, StyleSheet} from 'react-native'
+import { getGenreBooks } from '../API/FirebaseAPI.js';
 
 const GenrePage = props => {
     
@@ -9,7 +9,6 @@ const GenrePage = props => {
     useEffect(() => {
         const getMyGenreBooks = async (genre) =>{
             const firebaseData = await getGenreBooks('Computers');
-            const firebaseDatas = await getGenreBooks();
             setGenreBooks({
                 title: firebaseData.title,
                 imageURI: firebaseData.imageURI
@@ -20,14 +19,15 @@ const GenrePage = props => {
     }, []);
     
     return(
-        <View style={styles.Bookscontainer}>
-            <Image
-            source={{ uri: genreBooks.imageURI}}
-            style={{width: 160, heigh: 170}}
-            />
+        <ScrollView>
+             <View style={styles.Bookscontainer}>
+                <Image
+                    source={{ uri: genreBooks.imageURI}}
+                    style={{width: 160, height: 170}}
+                />
             <Text>{genreBooks.title}</Text>
-        </View>
-
+            </View>
+        </ScrollView>
     );
 }
 
