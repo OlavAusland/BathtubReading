@@ -83,7 +83,7 @@ export const profileStyle = StyleSheet.create({
       input: {
         flex:1,
         width: '80%',
-        color: "#FFFFFF",
+        color: "#000000",
         fontSize: 18,
         backgroundColor: "#FFFFFF",
         borderRadius:8,
@@ -94,7 +94,18 @@ export const profileStyle = StyleSheet.create({
         shadowOffset: {width:0, height:4},
         shadowOpacity: 0.2,
         elevation:2
-    }
+    },
+    checkAvailabilityButton:{
+        justifyContent:'center', 
+        alignItems:'center',
+        height:'60%', 
+        borderRadius:10, 
+        backgroundColor:'#FFFFFF',
+        shadowColor: '#171717',
+        shadowOffset: {width:0, height:4},
+        shadowOpacity: 0.2,
+        elevation:2
+    } 
 })
 
 export const loginStyle = StyleSheet.create({

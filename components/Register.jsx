@@ -10,6 +10,7 @@ export default function RegisterPage({ navigation })
 {
     const auth = getAuth();
     const [error, setError] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [image, setImage] = useState();
     const [password, setPassword] = useState("");
@@ -51,7 +52,7 @@ export default function RegisterPage({ navigation })
                 .then((userCredential) => {
                     const user = userCredential.user;
                     user.photoURL = user.uid + '_pp';
-                    user.displayName = "Olav Ausland Onstad";
+                    user.displayName = username;
                     initFirebaseUser(user.uid);
                     updateProfile(userCredential.user, {photoURL: user.photoURL, displayName: user.displayName})
                     uploadImage(user.photoURL)
@@ -77,12 +78,13 @@ export default function RegisterPage({ navigation })
             }
             <TextInput
                 style={styles.input}
-                placeHolder="Email"
+                onChangeText={updated => setUsername(updated)}/>
+            <TextInput
+                style={styles.input}
                 onChangeText={updated => setEmail(updated)}/>
             <TextInput 
                 style={styles.input}
                 secureTextEntry={true} 
-                placeHolder="Password"
                 onChangeText={updated => setPassword(updated)}/>
             <View style={{width:'80%'}}>
                 <Button title="Upload Image" onPress={pickImage}/>

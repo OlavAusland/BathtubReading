@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable } from 'react-native';
+import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, ModalDropdown } from 'react-native';
 import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updateProfile } from 'firebase/auth';
 import { collection, getDocs } from "firebase/firestore";
@@ -19,10 +19,11 @@ export default function ProfilePage({ navigation })
     const [library, setLibrary] = useState([]);
     const [logout, setLogout] = useState(false);
     const [image, setImage] = useState("");
+    const [loading, setLoading] = useState(true);
     
     useEffect(async () => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
-        const library = await getUserLibrary(user.uid);
+        const library = await getUserLibrary(user.uid).then(setLoading(false));
         console.log(library)
     }, [user]);
 
@@ -34,6 +35,7 @@ export default function ProfilePage({ navigation })
           const books = await getMybooks();
           setLibrary(books);
           setBook('9783319195957')
+
     }, []); 
 
     useEffect(async() => {
@@ -58,7 +60,7 @@ export default function ProfilePage({ navigation })
         }
     }, [logout]);
     
-    if(user != null)
+    if(user != null && !loading)
     {
         return (
             <View style={[styles.container, {flexDirection:'column'}]}>
@@ -77,12 +79,14 @@ export default function ProfilePage({ navigation })
                             <View style={{flex:6, paddingTop:10}}>
                                 <View>
                                     <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <Text style={{flex:1}}>First Name</Text>
-                                        <Text style={{flex:1}}>Last Name</Text>
+                                        <Text style={{flex:1}}>Username</Text>
+                                        <View style={{flex:1}}/>
                                     </View>
                                     <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput style={profileStyle.input}/>
-                                        <TextInput style={profileStyle.input}/>
+                                        <TextInput style={profileStyle.input}>{user.displayName}</TextInput>
+                                        <Pressable style={[profileStyle.checkAvailabilityButton, {flex:1}]}
+                                        
+                                        ><Text>Check Availabilty</Text></Pressable>
                                     </View>
                                 </View>
                                 <View>
@@ -90,7 +94,7 @@ export default function ProfilePage({ navigation })
                                         <Text style={{flex:1}}>Email:</Text>
                                     </View>
                                     <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput style={profileStyle.input}/>
+                                        <TextInput style={profileStyle.input}>{user.email}</TextInput>
                                     </View>
                                 </View>
                                 <View>
@@ -98,7 +102,7 @@ export default function ProfilePage({ navigation })
                                         <Text style={{flex:1}}>Password:</Text>
                                     </View>
                                     <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput style={profileStyle.input}/>
+                                        <TextInput secureTextEntry={true} style={profileStyle.input}/>
                                     </View>
                                 </View>
                                 <View>
@@ -106,7 +110,7 @@ export default function ProfilePage({ navigation })
                                         <Text style={{flex:1}}>Retype Password:</Text>
                                     </View>
                                     <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput style={profileStyle.input}/>
+                                        <TextInput secureTextEntry={true} style={profileStyle.input}/>
                                     </View>
                                 </View>
                             </View>
@@ -135,8 +139,8 @@ export default function ProfilePage({ navigation })
                         />
                     </View>
                     <View style={{flexDirection:'column', justifyContent:'center'}}>
-                        <Text style={{fontWeight:'bold'}}>Olav Ausland Onstad</Text>
-                        <Text>olavausland@hotmail.com</Text>
+                        <Text style={{fontWeight:'bold', fontSize:24}}>{user.displayName}</Text>
+                        <Text style={{fontSize:18}}>{user.email}</Text>
                     </View>
                 </View>
                 <View style={profileStyle.settings}>
@@ -189,10 +193,11 @@ export default function ProfilePage({ navigation })
     else{
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                <Text style={{fontSize:64}}>Loading...</Text>
                 <Image
+                    style={{height:250, width:250}}
                     source={require('../assets/Images/Loading.gif')}
                 />
+                <Text style={{fontSize:40}}>Loading...</Text>
             </View>
         );
     }
