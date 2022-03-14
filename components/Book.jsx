@@ -3,9 +3,6 @@ import { ScrollView,View, StyleSheet, Text,  Image, Pressable} from 'react-nativ
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js';
 import { Button, Portal, Modal, Provider } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
-
 
 const BookPage = props => {
     
@@ -49,7 +46,7 @@ useEffect(() => {
                     />
         </View>
              <View style={styles.Booktext}>
-                <Text style={styles.booktitle}>{mybook.title} </Text>
+                <Text style={styles.booktitle} numberOfLines={9} adjustsFontSizeToFit>{mybook.title} </Text>
                 <Text style={styles.bookAuthor}> 
                     <Text style={{fontWeight: "bold"}}>{'\n'}Author(s): </Text>
                     <Text>{mybook.author} </Text>
@@ -134,10 +131,10 @@ const styles = StyleSheet.create({
         marginTop: '9%',
         padding: '3%',
         backgroundColor: "#E4B7A0",
-        fontSize: 60
+        fontSize: 80
     },
     booktitle:{
-        fontSize: 50,
+        fontSize: 60,
         fontWeight: 'bold',
         color:'black'
     },
