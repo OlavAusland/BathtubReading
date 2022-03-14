@@ -1,9 +1,10 @@
 import React, { View, Text, TextInput, StyleSheet, Button, Image} from 'react-native'
-import { getAuth, createUserWithEmailAndPassword, updateProfile, } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile  } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { db, storage } from '../firebase-config.js';
 import { ref, uploadBytes } from 'firebase/storage';
+import { initFirebaseUser } from '../API/FirebaseAPI.js';
 
 export default function RegisterPage({ navigation })
 {
@@ -50,7 +51,9 @@ export default function RegisterPage({ navigation })
                 .then((userCredential) => {
                     const user = userCredential.user;
                     user.photoURL = user.uid + '_pp';
-                    updateProfile(userCredential.user, {photoURL: user.photoURL})
+                    user.displayName = "Olav Ausland Onstad";
+                    initFirebaseUser(user.uid);
+                    updateProfile(userCredential.user, {photoURL: user.photoURL, displayName: user.displayName})
                     uploadImage(user.photoURL)
                 })
                 .catch((error) => {

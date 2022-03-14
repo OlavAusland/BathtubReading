@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text,  Image, Pressable} from 'react-native';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView} from 'react-native';
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js';
 import { Button, Portal, Modal, Provider } from 'react-native-paper';
@@ -36,7 +36,8 @@ useEffect(() => {
 }, []); 
 
 
-    return (      
+    return (
+      <ScrollView>
         <View style={newStyles.centeredView}>
              <View style={styles.Bookcontainer}>
                 <Image
@@ -63,7 +64,7 @@ useEffect(() => {
           onSwipeComplete={() => {setModalVisible(false);}}
           swipeDirection="left"
         >
-          <View style={newStyles.centeredView}>
+          <View>
             <View style={newStyles.modalView}>
               <Text style={newStyles.modalText}>Choose List</Text>
               <Pressable
@@ -93,6 +94,7 @@ useEffect(() => {
         }
         
         </View>
+      </ScrollView>
     );
 }
 const styles = StyleSheet.create({
