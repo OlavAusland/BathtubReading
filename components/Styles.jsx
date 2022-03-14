@@ -14,6 +14,12 @@ export const profileStyle = StyleSheet.create({
         height:'100%',
         alignItems:'center'
     },
+    avatar:{
+        width:150,
+        height:150,
+        borderRadius:150,
+        overlayColor:'rgba(0, 0, 0, 0)'
+    },
     settings:{
         width:'100%',
         overflow:'hidden'

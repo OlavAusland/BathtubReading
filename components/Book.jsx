@@ -3,6 +3,8 @@ import { View, StyleSheet, Text,  Image, Pressable, ScrollView} from 'react-nati
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js';
 import { Button, Portal, Modal, Provider } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
 
 const BookPage = props => {
@@ -36,102 +38,154 @@ useEffect(() => {
 }, []); 
 
 
-    return (
-      <ScrollView>
-        <View style={newStyles.centeredView}>
-             <View style={styles.Bookcontainer}>
-                <Image
-                    source={{ uri: mybook.imageURI }}
-                    style={{ width: 160, height: 170 }}
-                    />
-                <Text style={styles.booktitle}>{mybook.title}</Text>
-                <Text>Author(s): {mybook.author} </Text>
-                <Text>Publisher: {mybook.publisher} </Text>
-                <Text>Published: {mybook.date}</Text>
-                <Text>Language: {mybook.language}</Text>
-                <Text>Pages: {mybook.pages}</Text>
-                <Text>Description: {mybook.description} </Text>
-                <Text>Genre: {mybook.genres}</Text>
-                <Text>Printtype: {mybook.printtype}</Text>
-                <Text>rating: {mybook.rating}</Text>
+    return (   
+        <ScrollView>
+            <View style={[newStyles.pageView]}>
+            <View style={styles.imageBox}>
+                    <Image
+                        style={[styles.bookimage]}
+                        source={{ uri: mybook.imageURI }}
+                        />
             </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {setModalVisible(!modalVisible);}}
-          onBackdropPress={() => {setModalVisible(false);}}
-          onSwipeComplete={() => {setModalVisible(false);}}
-          swipeDirection="left"
-        >
-          <View>
-            <View style={newStyles.modalView}>
-              <Text style={newStyles.modalText}>Choose List</Text>
-              <Pressable
-                style={[newStyles.button, newStyles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Add</Text>
-              </Pressable>
-              <Pressable
-                style={[newStyles.button, newStyles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable>
+                <View style={styles.Booktext}>
+                    <Text style={styles.booktitle}>{mybook.title} </Text>
+                    <Text style={styles.bookAuthor}> 
+                        <Text style={{fontWeight: "bold"}}>{'\n'}Author(s): </Text>
+                        <Text>{mybook.author} </Text>
+                    </Text>
+                    <Text style={styles.bookAuthor}>
+                        <Text style={{fontWeight: "bold"}}>Publisher: </Text>
+                        <Text>{mybook.publisher} </Text>
+                    </Text>
+                    <Text style={styles.bookAuthor}>
+                        <Text style={{fontWeight: "bold"}}>Published: </Text>
+                        <Text>{mybook.date}</Text>
+                    </Text>
+                    <Text style={styles.bookAuthor}>
+                        <Text style={{fontWeight: "bold"}}>Language: </Text>
+                        <Text>{mybook.language}</Text>
+                    </Text>
+                    <Text style={styles.bookAuthor}>
+                        <Text style={{fontWeight: "bold"}}>Pages: </Text>
+                        <Text>{mybook.pages}</Text>
+                    </Text>
+                    <Text style={styles.bookAuthor}>
+                        <Text style={{fontWeight: "bold"}}>Genre: </Text>
+                        <Text>{mybook.genres}</Text>
+                    </Text>
+                    <Text style={styles.bookAuthor}>
+                        <Text style={{fontWeight: "bold"}}>Printtype: </Text>
+                        <Text>{mybook.printtype}{'\n'}</Text>
+                    </Text>
+                    <Text style={styles.bookDescription}>
+                        <Text style={{fontWeight: "bold"}}>Description:{'\n'}</Text>
+                        <Text>{mybook.description}</Text>
+                    </Text>
+                    <Text style={styles.bookAuthor}>{'\n'}{'\n'}
+                        <Text style={{fontWeight: "bold"}}> Rating: </Text>
+                        <Text>{mybook.rating}</Text>
+                    </Text>                
+                </View>
+                {!modalVisible && 
+                    
+                <Pressable
+                    style={[newStyles.button, newStyles.buttonOpen]}
+                    onPress={() => setModalVisible(true)}>
+                    <Text style={newStyles.textStyle}>Add to list</Text>
+                </Pressable>
+                }
+            <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {setModalVisible(!modalVisible);}}
+            >
+            <View>
+                <View style={newStyles.modalView}>
+                <Text style={newStyles.modalText}>Choose List</Text>
+                <Pressable
+                    style={[newStyles.button, newStyles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                >
+                    <Text style={newStyles.textStyle}>Add</Text>
+                </Pressable>
+                <Pressable
+                    style={[newStyles.button, newStyles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                >
+                    <Text style={newStyles.textStyle}>Cancel</Text>
+                </Pressable>
+                </View>
             </View>
-          </View>
-        </Modal>
-        {!modalVisible && 
-            
-            <Pressable
-            style={[newStyles.button, newStyles.buttonOpen]}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={newStyles.textStyle}>Add to list</Text>
-          </Pressable>
-          
-        }
-        
-        </View>
-      </ScrollView>
+            </Modal>
+            </View>
+        </ScrollView>
     );
 }
 const styles = StyleSheet.create({
-    Bookcontainer: {
-        marginTop: 50,
-        marginLeft: 50,
+    Booktext: {
+        margin: '9%',
+        padding: '3%',
+        backgroundColor: "#E4B7A0",
+        fontSize: 60
     },
     booktitle:{
-        fontSize: 60,
+        fontSize: 50,
         fontWeight: 'bold',
-        color:'grey'
-    }});
+        color:'black'
+    },
+    bookAuthor:{
+        fontSize: 16
+    },
+    bookDescription:{
+        fontSize: 16,
+        backgroundColor: "#F6EEE0",
+        padding: '5%',
+    },
+    bookimage:{
+        width: 200,
+        height: 250,
+    },
+    imageBox:{
+        justifyContent: "center",
+        alignItems: "center",
+        shadowColor:"black",
+        shadowOpacity:0.2,
+        shadowOffset: {height:2, width:2},
+
+    }
+
+});
 
 const newStyles = StyleSheet.create({
-    centeredView: {
+    pageView: {
+        marginTop: "20%",
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#F6EEE0",
+        height: '100%' 
     },
     modalView: {
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: "#F6EEE0",
         borderRadius: 20,
-        padding: 35,
+        padding: 70,
         alignItems: "center",
         elevation: 5
     },
     button: {
-        borderRadius: 20,
+        borderRadius: 5,
         padding: 10,
-        elevation: 2
+        elevation: 2,
+        margin: 10
     },
     buttonOpen: {
-        backgroundColor: "#2196F3",
+        backgroundColor: "#A45C40",
+        marginBottom: 20,
     },
     buttonClose: {
-        backgroundColor: "#2196F3",
+        backgroundColor: "#A45C40",
     },
     textStyle: {
         color: "white",
@@ -139,7 +193,7 @@ const newStyles = StyleSheet.create({
         textAlign: "center"
     },
     modalText: {
-        marginBottom: 15,
+        marginBottom: 10,
         textAlign: "center"
     }
     });
