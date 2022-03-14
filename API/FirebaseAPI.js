@@ -1,3 +1,4 @@
+import { async } from '@firebase/util';
 import { doc,  getDoc, getDocs, collection } from 'firebase/firestore';
 import { db } from '../firebase-config.js'
 
@@ -14,3 +15,10 @@ export async function getFirebaseBook(isbn){
     console.log("Document data:", book.data())
     return book.data()
     };
+
+
+export async function getFirebooksGenre(genres){
+    const book = await getDoc(doc(db, 'Books', genres));
+    console.log("Document data:", book)
+    return book.data()
+};
