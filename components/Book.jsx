@@ -13,13 +13,13 @@ const [mybook, setMybook] = useState('');
 const [modalVisible, setModalVisible] = useState(false);
 
 useEffect(() => {
-    const getMybook = async (isbn) => {
-        const data = await getBook('9780132856201');
+    const getMybook = async (isbn = '9780132856201') => {
+        const data = await getBook(isbn);
         const firebaseData = await getFirebaseBook('9780132856201');
         const firebaseDatas = await getFirebaseBooks();
         setMybook({
             title: data.items[0].volumeInfo.title,
-            author: data.items[0].volumeInfo.authors,
+            author: data.items[0].volumeInfo.authors.join(', '),
             genres: data.items[0].volumeInfo.categories,
             date: data.items[0].volumeInfo.publishedDate,
             imageURI: data.items[0].volumeInfo.imageLinks.thumbnail,
@@ -28,6 +28,7 @@ useEffect(() => {
             language: data.items[0].volumeInfo.language,
             pages: data.items[0].volumeInfo.pageCount,
             printtype: data.items[0].volumeInfo.printType,
+            Isbn: data.items[0].volumeInfo.industryIdentifiers[0].identifier,
             rating: firebaseData.rating
             
         });
@@ -75,14 +76,18 @@ useEffect(() => {
                 </Text>
                 <Text style={styles.bookAuthor}>
                     <Text style={{fontWeight: "bold"}}>Printtype: </Text>
-                    <Text>{mybook.printtype}{'\n'}</Text>
+                    <Text>{mybook.printtype}</Text>
+                </Text>
+                <Text style={styles.bookAuthor}>
+                    <Text style={{fontWeight: "bold"}}>ISBN: </Text>
+                    <Text>{mybook.Isbn}{'\n'}</Text>
                 </Text>
                 <Text style={styles.bookDescription}>
                     <Text style={{fontWeight: "bold"}}>Description:{'\n'}</Text>
                     <Text>{mybook.description}</Text>
                 </Text>
-                <Text style={styles.bookAuthor}>{'\n'}{'\n'}
-                    <Text style={{fontWeight: "bold"}}> Rating: </Text>
+                <Text style={styles.bookRating}>{'\n'}{'\n'}
+                    <Text style={{fontWeight: "bold"}}>Rating: </Text>
                     <Text>{mybook.rating}</Text>
                 </Text>                
             </View>
@@ -99,10 +104,12 @@ useEffect(() => {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {setModalVisible(!modalVisible);}}
+          StatusBarTranslucent={true}
         >
           <View>
             <View style={newStyles.modalView}>
               <Text style={newStyles.modalText}>Choose List</Text>
+              
               <Pressable
                 style={[newStyles.button, newStyles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -124,7 +131,7 @@ useEffect(() => {
 }
 const styles = StyleSheet.create({
     Booktext: {
-        margin: '9%',
+        marginTop: '9%',
         padding: '3%',
         backgroundColor: "#E4B7A0",
         fontSize: 60
@@ -135,16 +142,21 @@ const styles = StyleSheet.create({
         color:'black'
     },
     bookAuthor:{
-        fontSize: 16
+        fontSize: 19
+    },
+    bookRating:{
+        fontSize: 19,
+        marginBottom: "10%"
     },
     bookDescription:{
-        fontSize: 16,
+        fontSize: 19,
         backgroundColor: "#F6EEE0",
         padding: '5%',
     },
     bookimage:{
         width: 200,
         height: 250,
+        marginTop: "10%",
     },
     imageBox:{
         justifyContent: "center",
@@ -163,7 +175,7 @@ const newStyles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F6EEE0",
+        backgroundColor: "#A45C40",
         height: '100%' 
     },
     modalView: {
@@ -172,7 +184,8 @@ const newStyles = StyleSheet.create({
         borderRadius: 20,
         padding: 70,
         alignItems: "center",
-        elevation: 5
+        elevation: 5,
+        fontSize: 20
     },
     button: {
         borderRadius: 5,
@@ -181,20 +194,27 @@ const newStyles = StyleSheet.create({
         margin: 10
     },
     buttonOpen: {
-        backgroundColor: "#A45C40",
+        backgroundColor: "#FFFFFF",
+        color: "#000000",
         marginBottom: 20,
+        width:'90%',
+        height: '5%',
+        justifyContent: "center"
     },
     buttonClose: {
         backgroundColor: "#A45C40",
     },
     textStyle: {
-        color: "white",
+        color: "black",
         fontWeight: "bold",
-        textAlign: "center"
+        textAlign: "center",
+        justifyContent: "center",
+        fontSize: 20
     },
     modalText: {
         marginBottom: 10,
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 40,
     }
     });
 
