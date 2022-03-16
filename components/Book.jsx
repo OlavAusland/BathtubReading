@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal, Rating} from 'react-native';
 import { getBook } from '../API/GoogleAPI.js';
-import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js';
-
+import { getFirebaseBook } from '../API/FirebaseAPI.js';
 
 
 const BookPage = props => {
     
-const [mybook, setMybook] = useState('');
+const [mybook, setMybook] = useState(null);
 const [modalVisible, setModalVisible] = useState(false);
 const [loading, setLoading] = useState(true);
 
 useEffect(() => {
-    const getMybook = async (isbn = '9788202459772') => {
+    const getMybook = async (isbn = '9780439023481') => {
         const data = await getBook(isbn).then(setLoading(false));
         const firebaseData = await getFirebaseBook('9780132856201');
         const image = data.items[0].volumeInfo.imageLinks ?
@@ -21,7 +20,6 @@ useEffect(() => {
             style={[styles.bookimage]}
             source={require('../assets/Images/NoImage.jpg')}
         />;
-
 
 
         setMybook({
@@ -38,11 +36,12 @@ useEffect(() => {
             Isbn: data.items[0].volumeInfo.industryIdentifiers[0].identifier,
             rating: firebaseData.rating,
             
-        }).then(setLoading(false));
+        });
             
       }
       getMybook();
-}, []); 
+}, []);
+
 if(mybook != null && !loading)
     {
         return (   
@@ -93,7 +92,8 @@ if(mybook != null && !loading)
                     <Text style={styles.bookRating}>{'\n'}{'\n'}
                         <Text style={{fontWeight: "bold"}}>Rating: </Text>
                         <Text>{mybook.rating}</Text>
-                    </Text>                
+                    </Text> 
+                             
                 </View>
                 {!modalVisible && 
                     

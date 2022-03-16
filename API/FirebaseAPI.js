@@ -31,8 +31,11 @@ export async function initFirebaseUser(uid)
 
 export async function getUserLibrary(uid)
 {
-    console.log("UID: " + uid);
+    //console.log("UID: " + uid);
     const result = await getDoc(doc(db, 'Users', uid));
-    console.log(result.data())
+   // console.log(result.data())
     return [Object.values(result.data()['libraries']), Object.keys(result.data()['libraries'])]
 }
+
+
+
