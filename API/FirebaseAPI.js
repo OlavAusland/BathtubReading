@@ -1,5 +1,5 @@
 import { doc,  getDoc, getDocs, collection, setDoc} from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getAuth, updateProfile, updatePassword } from 'firebase/auth';
 import { db } from '../firebase-config.js'
 
 export async function getFirebaseBooks(){
@@ -17,7 +17,7 @@ export async function getFirebaseBook(isbn){
 };
 
 export async function getFirebaseUserInfo(){
-    const user = getAuth();
+    const user = getAuth().currentUser;
     
     const result = await getDocs(collection(db, 'Users', user.uid));
     //console.log("User Data: ", result.data());
@@ -31,8 +31,18 @@ export async function initFirebaseUser(uid)
 
 export async function getUserLibrary(uid)
 {
-    console.log("UID: " + uid);
     const result = await getDoc(doc(db, 'Users', uid));
-    console.log(result.data())
-    return [Object.values(result.data()['libraries']), Object.keys(result.data()['libraries'])]
+    const library = [];
+    Object.keys(result.data()['libraries']).forEach((key) => {
+        library.push({[key]: Array.from(new Set(result.data()['libraries'][key]))})
+    })
+    console.log(library)
+    
+    return library
+}
+
+export async function updateUser(username)
+{
+    const user = getAuth().currentUser;
+    await updateProfile(user, {displayName: username}).catch((error) => {console.log(error)});
 }

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Image, StyleSheet} from 'react-native'
-import { Searchbar } from 'react-native-paper';
-
 export default function HomePage()
 {
     return (
