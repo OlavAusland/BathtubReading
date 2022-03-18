@@ -23,7 +23,7 @@ function Home()
   return(
     <Tab.Navigator screenOptions={{headerShown: false}} initialRouteName='Book'>
       <Tab.Screen name="Book" component={BookPage}/>
-      <Tab.Screen name="Profile" component={ProfilePage}/>
+      {/*<Tab.Screen name="Profile" component={ProfilePage}/>*/}
     </Tab.Navigator>
   );
 }
