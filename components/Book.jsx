@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView,View, StyleSheet, Text,  Image, Pressable} from 'react-native';
+import React, { useState, useEffect } 
+from 'react';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js';
-import { Button, Portal, Modal, Provider } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
 
 const BookPage = props => {

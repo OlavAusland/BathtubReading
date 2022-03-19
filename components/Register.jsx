@@ -1,9 +1,8 @@
-import React, { View, Text, TextInput, StyleSheet, Button, Image} from 'react-native'
-import { getAuth, createUserWithEmailAndPassword, updateProfile, } from 'firebase/auth';
-import { useState, useEffect } from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import { db, storage } from '../firebase-config.js';
-import { ref, uploadBytes } from 'firebase/storage';
+import React, { useState, useEffect } 
+from 'react';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
+import { getBook } from '../API/GoogleAPI.js';
+import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js'; 
 
 export default function RegisterPage({ navigation })
 {

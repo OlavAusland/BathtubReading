@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
-import { db } from '../firebase-config.js'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-
-import { setBook } from '../API/GoogleAPI.js';
+import React, { useState, useEffect } 
+from 'react';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
+import { getBook } from '../API/GoogleAPI.js';
+import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js'; 
 
 export default function LoginPage({ navigation })
 {

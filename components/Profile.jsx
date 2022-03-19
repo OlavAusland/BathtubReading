@@ -1,11 +1,8 @@
-import React, { useEffect, useState} from 'react';
-import { View, Image, Text, Button, StyleSheet, ScrollView} from 'react-native';
-import { Card } from 'react-native-paper'
-import { db, storage } from "../firebase-config.js";
-import { getAuth, signOut, updateProfile } from 'firebase/auth';
-import { collection, doc, getDocs, setDoc, query, where } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes} from 'firebase/storage';
-import { navigation, usenavigationParam} from '@react-navigation/native';
+import React, { useState, useEffect } 
+from 'react';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
+import { getBook } from '../API/GoogleAPI.js';
+import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js'; 
 
 export default function ProfilePage({ navigation })
 {

@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, Button, Image, StyleSheet} from 'react-native'
-import { Searchbar } from 'react-native-paper';
+import React, { useState, useEffect } 
+from 'react';
+import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
+import { getBook } from '../API/GoogleAPI.js';
+import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js'; 
 
 export default function HomePage()
 {
