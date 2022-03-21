@@ -17,9 +17,9 @@ function DisplayUserLists(library)
             <View key={ Math.random().toString(36).substr(2, 9)}>
                 <Text style={{fontWeight:'bold', fontSize:30}}>{key.toUpperCase()}</Text>
                 <ScrollView horizontal={true}>
-                    {library.get(key).map((book) => {
+                    {library.get(key).map((book, index) => {
                         return(
-                            <View>
+                            <View key={`${key}-${index}`}>
                                 <Image
                                     style={profileStyle.image}
                                     source={{uri:book.imageURI}}
