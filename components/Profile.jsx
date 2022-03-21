@@ -9,6 +9,32 @@ import { getFirebaseBooks, getFirebaseBook, getUserLibrary, updateUser } from '.
 import { profileStyle } from './Styles.jsx'; 
 import { map, stringify } from '@firebase/util';
 
+function DisplayUserLists(library)
+{
+    return [...Array.from(library.keys())].map((key) => {
+        if(key == 'favorites'){return;}
+        return(
+            <View key={ Math.random().toString(36).substr(2, 9)}>
+                <Text style={{fontWeight:'bold', fontSize:30}}>{key.toUpperCase()}</Text>
+                <ScrollView horizontal={true}>
+                    {library.get(key).map((book) => {
+                        return(
+                            <View>
+                                <Image
+                                    style={profileStyle.image}
+                                    source={{uri:book.imageURI}}
+                                />
+                                <Text style={{overflow:'hidden'}}>{book.title}</Text>
+                            </View>
+                            
+                        );
+                    })}
+                </ScrollView>
+            </View>
+        )
+    })
+}
+
 async function GetUserListsInformation(user)
 {
     let userLibrary = [];
@@ -213,7 +239,7 @@ export default function ProfilePage({ navigation })
                 </View>
                 <View style={profileStyle.content}>
                     <View style={{flex:3, width:'90%'}}>
-                        <Text style={{fontWeight:'bold', fontSize:30}}>Favorites</Text>
+                        <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>
                         <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
                             {library.size > 0 && 
                                 library.get('favorites').map((obj) => {
@@ -233,30 +259,7 @@ export default function ProfilePage({ navigation })
                     <View style={{flex:1}}></View>
                     <View style={{flex:3,width:'90%'}}>
                         <ScrollView style={{borderWidth:2}}horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                            {library.size > 0 &&
-                                [...Array.from(library.keys())].map((key) => {
-                                    if(key == 'favorites'){return;}
-                                    return(
-                                        <View key={ Math.random().toString(36).substr(2, 9)}>
-                                            <Text style={{fontWeight:'bold', fontSize:30}}>{key}</Text>
-                                            <ScrollView horizontal={true}>
-                                                {library.get(key).map((book) => {
-                                                    return(
-                                                        <View>
-                                                            <Image
-                                                                style={profileStyle.image}
-                                                                source={{uri:book.imageURI}}
-                                                            />
-                                                            <Text style={{overflow:'hidden'}}>{book.title}</Text>
-                                                        </View>
-                                                        
-                                                    );
-                                                })}
-                                            </ScrollView>
-                                        </View>
-                                    )
-                                })
-                            }
+                            {DisplayUserLists(library)}
                         </ScrollView>
                     </View>
                 </View>
