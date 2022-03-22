@@ -22,7 +22,7 @@ function Home()
 {
   return(
     <Tab.Navigator screenOptions={{headerShown: false}} initialRouteName='Profile'>
-      <Tab.Screen name="Book" component={BookPage}/>
+      <Tab.Screen name="Home" component={HomePage}/>
       <Tab.Screen name="Profile" component={ProfilePage}/>
     </Tab.Navigator>
   );
@@ -32,7 +32,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Login'>
-        <Stack.Screen name='Home' component={Home}/>
+        <Stack.Screen name='Book' component={BookPage}/>
         <Stack.Screen name='Login' component={LoginPage}/>
         <Stack.Screen name='Register' component={RegisterPage}/>
       </Stack.Navigator>
