@@ -18,9 +18,13 @@ export async function getFirebaseBook(isbn){
 
 
 export async function getFirebooksGenre(genre){
-    const genreQuery = query(collection(db, 'Books'), where('genres', 'array-contains-any', ["Computers"]))
+    const genreQuery = query(collection(db, 'Books'), where('genres', 'array-contains', genre))
     const querySnapchot = await getDocs(genreQuery);
      querySnapchot.forEach((doc) => {
         console.log(doc.id, "=>", doc.data());
-    }); 
+    });
+    const books = querySnapchot.docs.map((doc) => ({...doc.data(), id: doc.id}))
+    return books
 };
+
+
