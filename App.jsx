@@ -32,7 +32,7 @@ function Home()
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='GenrePage'>
         <Stack.Screen name='BathubReading' component={Home}/>
         <Stack.Screen name='Book' component={BookPage}/>
         <Stack.Screen name='Login' component={LoginPage} />
