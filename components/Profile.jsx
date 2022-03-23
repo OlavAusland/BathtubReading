@@ -1,31 +1,116 @@
-import React, { useState, useEffect } 
-from 'react';
-import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
-import { getBook } from '../API/GoogleAPI.js';
-import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js'; 
+import React, { useEffect, useState} from 'react';
+import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, TouchableOpacity } from 'react-native';
+import { db, storage } from "../firebase-config.js";
+import { getAuth, signOut, updatePassword } from 'firebase/auth';
+import { collection, getDocs } from "firebase/firestore";
+import { getDownloadURL, ref} from 'firebase/storage';
+import { getBook, setBook } from '../API/GoogleAPI'
+import { getFirebaseBooks, getFirebaseBook, getUserLibrary, updateUser } from '../API/FirebaseAPI'
+import { profileStyle } from './Styles.jsx'; 
+import { map, stringify } from '@firebase/util';
+import BookPage from './Book.jsx';
+
+function DisplayUserLists(library)
+{
+    return [...Array.from(library.keys())].map((key) => {
+        if(key == 'favorites'){return;}
+        return(
+            <View key={ Math.random().toString(36).substr(2, 9)}>
+                <Text style={{fontWeight:'bold', fontSize:30}}>{key.toUpperCase()}</Text>
+                <ScrollView horizontal={true}>
+                    {library.get(key).map((book, index) => {
+                        return(
+                            <View key={`${key}-${index}`}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Book')}>
+                                    <Image
+                                        style={profileStyle.image}
+                                        source={{uri:book.imageURI}}
+                                    />
+                                </TouchableOpacity>
+                                <Text style={{overflow:'hidden'}}>{book.title}</Text>
+                            </View>
+                            
+                        );
+                    })}
+                </ScrollView>
+            </View>
+        )
+    })
+}
+
+async function GetUserListsInformation(user)
+{
+    let userLibrary = [];
+    let isbnArray = new Map();
+    let keys = []
+    const lists = await getUserLibrary(user.uid);
+    lists.map((list) => {
+        return Object.keys(list).map((key) => {
+            let temp = [];
+            [...Array(list[key].length).keys()].map((i) => {
+                temp.push(getFirebaseBook(list[key][i]))
+            })
+            keys.push(key)
+            isbnArray.set(key, temp)
+        })
+    });
+    
+    const resolve = async() => {
+        const test = new Map()
+        for(let i = 0; i < keys.length;i++)
+        {
+            await Promise.all(isbnArray.get(keys[i])).then((res) => {test.set(keys[i], res);});
+        }
+        return test;
+    }
+
+
+    return resolve();
+}   
 
 export default function ProfilePage({ navigation })
 {
-    
     const auth = getAuth();
-    
+    const [checked, setChecked] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const [user, setUser] = useState(auth.currentUser);
     const [avatar, setAvatar] = useState("");
-    const [library, setLibrary] = useState();
+    const [library, setLibrary] = useState(new Map());
     const [logout, setLogout] = useState(false);
     const [image, setImage] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    useEffect(async () => {
+    const [username, setUsername] = useState(user ? user.displayName : "");
+    const [password, setPassword] = useState("");
+    const [retypedPassword, setRetypedPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    
+    useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
-        
+        const test = await GetUserListsInformation(user);
+        setLibrary(test)
+    }, [user]);
+
+    useEffect(async() => {
+        const getMybooks = async () => {
+            const firebaseData = await getFirebaseBooks();
+            return firebaseData;
+          }
+          const books = await getMybooks();
+          //setLibrary(books);
+          //setBook('9783319195957')
+
+    }, []); 
+
+    useEffect(async() => {
         const getLibrary = async() => {
             const result = await getDocs(collection(db, "Books"));
             const data = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
-            setLibrary(data.json)
+            //setLibrary(data)
         };
         getLibrary();
-    }, [user]);
-
+    }, [])
+    
     useEffect(() => {
         if(logout)
         {
@@ -38,41 +123,144 @@ export default function ProfilePage({ navigation })
             setLogout(false);
         }
     }, [logout]);
-
-    if(user != null)
+    
+    if(user != null && !loading)
     {
         return (
-            <View style={[styles.container, {flexDirection:'column'}]}>
-                <View style={{ flex: 1, flexDirection:'row', justifyContent:'center'}}>
-                    <View style={{justifyContent:'center'}}>
-                        <Image style={styles.avatar}
+            <View style={[profileStyle.container, {flexDirection:'column'}]}>
+                <Modal
+                    animationType="slide"
+                    statusBarTranslucent={true}
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={profileStyle.modal}>
+                        <View style={profileStyle.modalView}>
+                            <View style={{flex:6, paddingTop:10}}>
+                                <View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <Text style={{flex:1}}>Username</Text>
+                                        <View style={{flex:1}}/>
+                                    </View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <TextInput
+                                            onChangeText={updated => setUsername(updated)}
+                                            style={profileStyle.input}>{user.displayName}
+                                        </TextInput>
+                                        <Pressable style={[profileStyle.checkAvailabilityButton, {flex:1}]}
+                                        
+                                        ><Text>Check Availabilty</Text></Pressable>
+                                    </View>
+                                </View>
+                                <View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <Text style={{flex:1}}>Email:</Text>
+                                    </View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <TextInput
+                                            editable={false}
+                                            style={[profileStyle.input, {backgroundColor:'lightgrey'}]}>{user.email}
+                                        </TextInput>
+                                    </View>
+                                </View>
+                                <View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <Text style={{flex:1}}>Password:</Text>
+                                    </View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <TextInput onChangeText={updated => setPassword(updated)} 
+                                        secureTextEntry={true} style={profileStyle.input}/>
+                                    </View>
+                                </View>
+                                <View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <Text style={{flex:1}}>Retype Password:</Text>
+                                    </View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        <TextInput 
+                                            onChangeText={updated => setRetypedPassword(updated)} 
+                                            secureTextEntry={true} style={profileStyle.input}/>
+                                    </View>
+                                </View>
+                                <View>
+                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
+                                        {password != retypedPassword &&
+                                            <Text style={{color:'red', fontWeight:'bold'}}>Password Does Not Match!</Text>
+                                        }
+                                        {passwordError != "" &&
+                                            <Text style={{color:'red', fontWeight:'bold'}}>{passwordError}</Text>
+                                        }
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{flex:6}}/>
+                            <View style={{flex:2, flexDirection:'row', width:'100%', backgroundColor:'#F6EEE0'}}>
+                                <Pressable
+                                        style={profileStyle.modalButton}
+                                        onPress={async() => {updateUser(username, password);
+                                            if(password == retypedPassword && password != "")
+                                            {
+                                                await updatePassword(auth.currentUser, password).then(setPasswordError("")).catch((error) => 
+                                                {console.log(error);setPasswordError(error.errorMessage)});
+                                            }setModalVisible(false);}}
+                                        >
+                                    <Text style={{fontSize:18, fontWeight:'bold'}}>Update</Text>
+                                </Pressable>
+                                <Pressable
+                                        style={profileStyle.modalButton}
+                                        onPress={() => {setModalVisible(false); }}
+                                    >
+                                    <Text style={{fontSize:18, fontWeight:'bold'}}>Close</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+                <View style={profileStyle.header}>
+                    <View style={{flex:10, justifyContent:'center', alignItems:'center'}}>
+                        <Image style={profileStyle.avatar}
                                 source={{uri: avatar}}
                         />
                     </View>
-                    <View style={{flexDirection:'column', justifyContent:'center'}}>
-                        <Text style={{fontWeight:'bold'}}>Olav Ausland Onstad</Text>
-                        <Text>olavausland@hotmail.com</Text>
+                    <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>
+                        <Text style={{fontWeight:'bold', fontSize:24}}>{user.displayName}</Text>
+                        <Text style={{fontSize:18}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={{flex: 2, alignItems:'center'}}>
-                    <Text style={{fontWeight:'bold'}}>Favorites</Text>
-                    <ScrollView style={styles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                        <Image style={{width:150, height:150}}
-                            source={{uri:image}}
-                        />
-                    </ScrollView>
+                <View style={profileStyle.settings}>
+                    <Pressable onPress={() => setModalVisible(true)} style={profileStyle.settingsButton}>
+                        <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
+                    </Pressable>
                 </View>
-                <View style={{flex: 1}}>
-                    <Button title="Sign Out" onPress={() => setLogout(true)}/>
+                <View style={profileStyle.content}>
+                    <View style={{flex:3, width:'90%'}}>
+                        <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>
+                        <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
+                            {library.size > 0 && 
+                                library.get('favorites').map((obj, index) => {
+                                    return(
+                                        <View key={'book-' + index}>
+                                            <Image
+                                                style={profileStyle.image}
+                                                source={{uri:obj.imageURI}}
+                                            />
+                                            <Text>{obj.title}</Text>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </ScrollView>
+                    </View>
+                    <View style={{flex:1}}></View>
+                    <View style={{flex:3,width:'90%'}}>
+                        <ScrollView style={{borderWidth:2}}horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                            {DisplayUserLists(library)}
+                        </ScrollView>
+                    </View>
                 </View>
             </View> 
         );
@@ -80,36 +268,12 @@ export default function ProfilePage({ navigation })
     else{
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1}}>
-                <Text style={{fontSize:64}}>Loading...</Text>
                 <Image
+                    style={{height:250, width:250}}
                     source={require('../assets/Images/Loading.gif')}
                 />
+                <Text style={{fontSize:40}}>Loading...</Text>
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container:{
-        width:'100%',
-        height:'100%',
-        alignItems: 'center',
-    },
-    card:{
-        width:'75%',
-        height:'20%',
-        shadowOffset: {width:0, height:6},
-        shadowColor: '#000000'
-    },
-    avatar:{
-        width:150,
-        height:150,
-        borderRadius:150,
-        overlayColor:'rgba(0, 0, 0, 0)'
-    },
-    scroller:{
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
-        shadowRadius: 6,
-        shadowOffset: {width:0, height:6}
-    }
-})

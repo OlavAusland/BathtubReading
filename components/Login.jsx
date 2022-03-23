@@ -1,8 +1,8 @@
-import React, { useState, useEffect } 
-from 'react';
-import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
-import { getBook } from '../API/GoogleAPI.js';
-import { getFirebaseBook, getFirebaseBooks } from '../API/FirebaseAPI.js'; 
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
+import { db } from '../firebase-config.js'
+import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import { loginStyle } from '../components/Styles'
 
 export default function LoginPage({ navigation })
 {
@@ -17,7 +17,7 @@ export default function LoginPage({ navigation })
         {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    navigation.navigate('Profile')
+                    navigation.navigate('BathubReading')
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -32,13 +32,11 @@ export default function LoginPage({ navigation })
     return (
         <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1}}>
             <TextInput
-                style={styles.input}
-                placeHolder="Email"
+                style={loginStyle.input}
                 onChangeText={updated => setEmail(updated)}/>
             <TextInput 
-                style={styles.input}
+                style={loginStyle.input}
                 secureTextEntry={true} 
-                placeHolder="Password"
                 onChangeText={updated => setPassword(updated)}/>
             
             <View style={{width: '80%'}}>
@@ -53,20 +51,3 @@ export default function LoginPage({ navigation })
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    input: {
-        width: '80%',
-        color: "#FFFFFF",
-        fontSize: 18,
-        backgroundColor: "#AFAAFA",
-        borderRadius:8,
-        padding:5,
-        marginBottom:20,
-        height:40,
-        shadowColor: '#171717',
-        shadowOffset: {width:0, height:4},
-        shadowOpacity: 0.2,
-        shadowRadius: 3
-    }
-});
