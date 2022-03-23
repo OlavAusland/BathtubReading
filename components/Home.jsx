@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Image, StyleSheet, ScrollView} from 'react-native'
-import { Searchbar } from 'react-native-paper';
 
 
 export default function HomePage()
@@ -8,8 +7,7 @@ export default function HomePage()
     return (
         <View style={[styles.container, {flexDirection:'column'}]}>
             <View style={{ flex: 1.5, backgroundColor: "#F6EEE0", borderBottomColor: 'black', borderBottomWidth:1}}>
-                <View style={{marginTop:30, padding:30, width: 190, alignSelf: 'flex-end'}}>{MySearchBar()}</View>
-                <View><Text style={{fontSize:50, marginLeft: 10, marginTop: -10}}> Discovery </Text></View>
+                <View><Text style={{fontSize:50, marginLeft: 10, marginTop: 90}}> Discovery </Text></View>
             </View>
             <View style={{ flex: 0.7, backgroundColor: "#F6EEE0", borderBottomColor: 'black', borderBottomWidth:1, backgroundColor:'#F6EEE0'}}>
                     <ScrollView style={styles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -136,17 +134,3 @@ const styles = StyleSheet.create({
         shadowOffset: {width:0, height:6}
     }
 })
-
-const MySearchBar = () => {
-    const [searchQuery, setSearchQuery] = React.useState('');
-  
-    const onChangeSearch = query => setSearchQuery(query);
-  
-    return (
-      <Searchbar
-        placeholder="..."
-        onChangeText={onChangeSearch}
-        value={searchQuery}
-      />
-    );
-  };
