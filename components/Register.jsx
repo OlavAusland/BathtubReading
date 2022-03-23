@@ -2,7 +2,7 @@ import React, { View, Text, TextInput, StyleSheet, Button, Image} from 'react-na
 import { getAuth, createUserWithEmailAndPassword, updateProfile  } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { db, storage } from '../firebase-config.js';
+import { storage } from '../firebase-config.js';
 import { ref, uploadBytes } from 'firebase/storage';
 import { initFirebaseUser } from '../API/FirebaseAPI.js';
 

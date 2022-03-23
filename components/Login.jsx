@@ -3,8 +3,7 @@ import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
 import { db } from '../firebase-config.js'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import { loginStyle } from '../styles/ProfileStyles'
-
-import { setBook } from '../API/GoogleAPI.js';
+import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
 export default function LoginPage({ navigation })
 {
@@ -19,7 +18,7 @@ export default function LoginPage({ navigation })
         {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
-                    navigation.navigate('Home')
+                    navigation.navigate('BathubReading')
                 })
                 .catch((error) => {
                     const errorCode = error.code;
@@ -35,12 +34,10 @@ export default function LoginPage({ navigation })
         <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1}}>
             <TextInput
                 style={loginStyle.input}
-                placeHolder="Email"
                 onChangeText={updated => setEmail(updated)}/>
             <TextInput 
                 style={loginStyle.input}
                 secureTextEntry={true} 
-                placeHolder="Password"
                 onChangeText={updated => setPassword(updated)}/>
             
             <View style={{width: '80%'}}>

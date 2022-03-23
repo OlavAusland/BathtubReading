@@ -6,11 +6,12 @@ import { AddToListModal } from './AddToListModal.jsx';
 import { setDoc, updateDoc, doc, deleteField, arrayRemove} from 'firebase/firestore';
 import { db } from '../firebase-config'
 import { bookStyles } from '../styles/BookStyles.jsx';
-//import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
-const BookPage = props => {
-    //auth = getAuth()
-    //const user = auth.currentUser;
+function BookPage({route, navigation}) {
+
+    const user = getAuth().currentUser;
+    const { isbn } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
     const [addList, setAddList] = useState([]);
@@ -18,12 +19,11 @@ const BookPage = props => {
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
  
-    
 
     useEffect(() => {
-        const getMybook = async (isbn = '9780439023481') => {
+        const getMybook = async() => {
             const data = await getBook(isbn).then(setLoading(false));
-            const firebaseData = await getFirebaseBook('9780132856201');
+            const firebaseData = await getFirebaseBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
@@ -49,7 +49,7 @@ const BookPage = props => {
             });
 
         }
-        const getLists = async (uid = 'j3THQoRMNIYvXmi4CVeCZPjRwUn2') => {
+        const getLists = async (uid = user.uid) => {
             const library = await getUserLibrary(uid);
             const categories = library.map((item) => { 
                 return Object.getOwnPropertyNames(item)[0];
@@ -78,10 +78,10 @@ const BookPage = props => {
         setAddList([])
         checked.forEach((val, key) => {if(Boolean(val)){setAddList(prev => Array.from(new Set([...prev, key])))}})
         addList.forEach((val) => {
-            setDoc(doc(db, 'Users', 'fLjdxpX56kXIrnxRRfBbUTOhR3J3'), {'libraries':{[val]:[mybook.Isbn]}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), {'libraries':{[val]:[isbn]}}, {merge:true})
         })
         lists.filter(val => !addList.includes(val)).forEach((key) => {
-            setDoc(doc(db, 'Users', 'fLjdxpX56kXIrnxRRfBbUTOhR3J3'), {'libraries':{[key]:arrayRemove(mybook.Isbn)}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), {'libraries':{[key]:arrayRemove(isbn)}}, {merge:true})
         })
     }
     

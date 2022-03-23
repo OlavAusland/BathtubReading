@@ -26,7 +26,7 @@ export async function getFirebaseUserInfo(){
 
 export async function initFirebaseUser(uid)
 {
-    const result = await setDoc(doc(db, 'Users', uid), {"libraries":{favorites:[], reading:[]}});
+    const result = await setDoc(doc(db, 'Users', uid), {"libraries":{favorites:[], reading:[], finished:[]}});
 }
 
 export async function getUserLibrary(uid)
@@ -34,9 +34,8 @@ export async function getUserLibrary(uid)
     const result = await getDoc(doc(db, 'Users', uid));
     const library = [];
     Object.keys(result.data()['libraries']).forEach((key) => {
-        library.push({[key]: result.data()['libraries'][key]})
-    })
-    
+        library.push({[key]: Array.from(new Set(result.data()['libraries'][key]))})
+    })    
     return library
 }
 
@@ -45,4 +44,3 @@ export async function updateUser(username)
     const user = getAuth().currentUser;
     await updateProfile(user, {displayName: username}).catch((error) => {console.log(error)});
 }
-

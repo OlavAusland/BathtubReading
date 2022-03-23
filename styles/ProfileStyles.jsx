@@ -21,11 +21,11 @@ export const profileStyle = StyleSheet.create({
         overlayColor:'rgba(0, 0, 0, 0)'
     },
     settings:{
-        width:'100%',
+        flexDirection:'row',
         overflow:'hidden'
     },
     settingsButton:{
-        width:'100%',
+        flex:1,
         overflow:'hidden',
         height:50,
         borderRadius:0,
@@ -42,13 +42,13 @@ export const profileStyle = StyleSheet.create({
         width:'100%',
         flex: 3,
         alignItems:'center',
-        backgroundColor:"#F6EEE0",
+        backgroundColor:"#E4B7A0",
     },
     list:{
         overflow:'hidden',
-        maxWidth:'90%',
-        maxHeight:150,
+        backgroundColor:'#F6EEE0',
         shadowColor:'black',
+        height:10,
         shadowOffset:{height:3, width:1},
         shadowOpacity:1,
         elevation:2,
@@ -58,7 +58,8 @@ export const profileStyle = StyleSheet.create({
     image:{
         width:150,
         height:150,
-        borderRadius:5
+        borderRadius:5,
+        backgroundColor:'black'
     },
     card:{
         backgroundColor:"#E4B7A0",
@@ -71,7 +72,7 @@ export const profileStyle = StyleSheet.create({
         margin: 5,
         marginTop:50,
         width:'97.5%',
-        height:'60%',
+        height:'65%',
         backgroundColor: "#E4B7A0",
         borderRadius: 20,
         alignItems: "center",
