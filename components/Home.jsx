@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, Image, StyleSheet} from 'react-native'
+import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView} from 'react-native'
 
 
 export default function HomePage()
@@ -142,7 +142,7 @@ const MySearchBar = () => {
     const onChangeSearch = query => setSearchQuery(query);
   
     return (
-      <Searchbar
+      <TextInput
         placeholder="..."
         onChangeText={onChangeSearch}
         value={searchQuery}

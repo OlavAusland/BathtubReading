@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, ModalDropdown } from 'react-native';
+import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, TouchableOpacity } from 'react-native';
 import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updatePassword } from 'firebase/auth';
 import { collection, getDocs } from "firebase/firestore";
@@ -8,6 +8,7 @@ import { getBook, setBook } from '../API/GoogleAPI'
 import { getFirebaseBooks, getFirebaseBook, getUserLibrary, updateUser } from '../API/FirebaseAPI'
 import { profileStyle } from './Styles.jsx'; 
 import { map, stringify } from '@firebase/util';
+import BookPage from './Book.jsx';
 
 function DisplayUserLists(library)
 {
@@ -20,10 +21,12 @@ function DisplayUserLists(library)
                     {library.get(key).map((book, index) => {
                         return(
                             <View key={`${key}-${index}`}>
-                                <Image
-                                    style={profileStyle.image}
-                                    source={{uri:book.imageURI}}
-                                />
+                                <TouchableOpacity onPress={() => navigation.navigate('Book')}>
+                                    <Image
+                                        style={profileStyle.image}
+                                        source={{uri:book.imageURI}}
+                                    />
+                                </TouchableOpacity>
                                 <Text style={{overflow:'hidden'}}>{book.title}</Text>
                             </View>
                             
