@@ -82,7 +82,7 @@ export default function ProfilePage({ navigation })
     const [image, setImage] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const [username, setUsername] = useState(user.displayName);
+    const [username, setUsername] = useState(user ? user.displayName : "");
     const [password, setPassword] = useState("");
     const [retypedPassword, setRetypedPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");

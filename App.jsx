@@ -21,9 +21,8 @@ const Tab = createMaterialTopTabNavigator();
 function Home()
 {
   return(
-    <Tab.Navigator screenOptions={{headerShown: false}} initialRouteName='Profile'>
+    <Tab.Navigator initialRouteName='Profile'>
       <Tab.Screen name="Home" component={HomePage}/>
-      <Tab.Screen name="Book" component={BookPage}/>
       <Tab.Screen name="Profile" component={ProfilePage}/>
     </Tab.Navigator>
   );
@@ -32,10 +31,10 @@ function Home()
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Login'>
-        <Stack.Screen name='Home' component={Home}/>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
+        <Stack.Screen name='BathubReading' component={Home}/>
         <Stack.Screen name='Book' component={BookPage}/>
-        <Stack.Screen name='Login' component={LoginPage}/>
+        <Stack.Screen name='Login' component={LoginPage} />
         <Stack.Screen name='Register' component={RegisterPage}/>
       </Stack.Navigator>
     </NavigationContainer>

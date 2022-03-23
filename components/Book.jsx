@@ -4,8 +4,9 @@ import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
 import { AddToListModal } from './AddToListModal.jsx';
 
-const BookPage = props => {
+function BookPage({route, navigation}) {
 
+    const isbn = route.isbn;
     const [mybook, setMybook] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);

@@ -26,7 +26,7 @@ export async function getFirebaseUserInfo(){
 
 export async function initFirebaseUser(uid)
 {
-    const result = await setDoc(doc(db, 'Users', uid), {"libraries":{favorites:[], reading:[]}});
+    const result = await setDoc(doc(db, 'Users', uid), {"libraries":{favorites:[], reading:[], finished:[]}});
 }
 
 export async function getUserLibrary(uid)
