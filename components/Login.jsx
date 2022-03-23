@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
 import { db } from '../firebase-config.js'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import { loginStyle } from '../components/Styles'
+import { loginStyle } from '../styles/ProfileStyles'
 
 import { setBook } from '../API/GoogleAPI.js';
 

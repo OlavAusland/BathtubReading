@@ -6,7 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
 import { getBook, setBook } from '../API/GoogleAPI'
 import { getFirebaseBooks, getUserLibrary } from '../API/FirebaseAPI'
-import { profileStyle } from './Styles.jsx'; 
+import { profileStyle } from '../styles/ProfileStyles.jsx'; 
 
 export default function ProfilePage({ navigation })
 {

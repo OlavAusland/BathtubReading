@@ -22,7 +22,7 @@ export const AddToListModal = (props) => {
                             Array.from(props.checked).map(([key, value]) => {
                                 //console.log("Key " + key + " Value " + value);
                                 return (
-                                    <View style={props.styles.section} >
+                                    <View key={"123 +"} style={props.styles.section} >
                                         <Checkbox key={"checkbox-" + key} value={value} onValueChange={(isChecked) => props.handleCheckbox(key, isChecked)} />
                                         <View style={props.styles.namelist}>
                                         <Text>{key}</Text>
