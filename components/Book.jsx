@@ -9,7 +9,7 @@ import { db } from '../firebase-config'
 
 function BookPage({route, navigation}) {
 
-    const isbn = route.isbn;
+    const { isbn } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
     const [addList, setAddList] = useState([]);
@@ -17,12 +17,11 @@ function BookPage({route, navigation}) {
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
  
-    
 
     useEffect(() => {
-        const getMybook = async (isbn = '9780439023481') => {
+        const getMybook = async() => {
             const data = await getBook(isbn).then(setLoading(false));
-            const firebaseData = await getFirebaseBook('9780132856201');
+            const firebaseData = await getFirebaseBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[styles.bookimage]} />
                 : <Image

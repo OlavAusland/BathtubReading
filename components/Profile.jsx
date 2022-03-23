@@ -44,7 +44,6 @@ async function GetUserListsInformation(user)
     let isbnArray = new Map();
     let keys = []
     const lists = await getUserLibrary(user.uid);
-    console.log(lists)
     lists.map((list) => {
         return Object.keys(list).map((key) => {
             let temp = [];
@@ -71,7 +70,6 @@ async function GetUserListsInformation(user)
 
 export default function ProfilePage({ navigation })
 {
-    console.log("---------- PROFILE_PAGE ----------")
     const auth = getAuth();
     const [checked, setChecked] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -91,8 +89,6 @@ export default function ProfilePage({ navigation })
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
         const test = await GetUserListsInformation(user);
         setLibrary(test)
-        
-        console.log('\n\n\n\n\n')
     }, [user]);
 
     useEffect(async() => {
@@ -245,9 +241,9 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>
                         <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
                             {library.size > 0 && 
-                                library.get('favorites').map((obj) => {
+                                library.get('favorites').map((obj, index) => {
                                     return(
-                                        <View>
+                                        <View key={'book-' + index}>
                                             <Image
                                                 style={profileStyle.image}
                                                 source={{uri:obj.imageURI}}

@@ -35,9 +35,7 @@ export async function getUserLibrary(uid)
     const library = [];
     Object.keys(result.data()['libraries']).forEach((key) => {
         library.push({[key]: Array.from(new Set(result.data()['libraries'][key]))})
-    })
-    console.log(library)
-    
+    })    
     return library
 }
 

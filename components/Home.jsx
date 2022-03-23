@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView} from 'react-native'
 
 
-export default function HomePage({route, navigation})
+export default function HomePage({navigation})
 {
     return (
         <View style={[styles.container, {flexDirection:'column'}]}>
@@ -52,7 +52,7 @@ export default function HomePage({route, navigation})
                     <Button title="Number 1" color="black" onPress={() => {navigation.navigate('Book', {isbn:'9780439023481'})}}/>
                     </View>               
                     <View style={{alignItems: 'center', justifyContent:'center'}}>
-                    <Button title="Number 2" color="black" onPress={() => alert('Button with adjusted color pressed')}/>
+                    <Button title="Number 2" color="black" onPress={() => {navigation.navigate('Book', {isbn:'9783319195957'})}}/>
                     </View>   
                     <View style={{alignItems: 'center', justifyContent:'center'}}>
                     <Button title="Number 3" color="black" onPress={() => alert('Button with adjusted color pressed')}/>
