@@ -3,16 +3,21 @@ import { View, StyleSheet, Text, Image, Pressable, ScrollView} from 'react-nativ
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
 import { AddToListModal } from './AddToListModal.jsx';
+import { setDoc, updateDoc, doc, deleteField, arrayRemove} from 'firebase/firestore';
+import { db } from '../firebase-config'
+//import { getAuth } from 'firebase/auth';
 
 function BookPage({route, navigation}) {
 
     const isbn = route.isbn;
     const [mybook, setMybook] = useState(null);
+    const [lists, setLists] = useState([]);
+    const [addList, setAddList] = useState([]);
+    const [checked, setChecked] = useState(new Map());
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [lists, setLists] = useState([]);
-    const [checked, setChecked] = useState([]);
-
+ 
+    
 
     useEffect(() => {
         const getMybook = async (isbn = '9780439023481') => {
@@ -58,21 +63,27 @@ function BookPage({route, navigation}) {
 
     useEffect(() => {
         lists.forEach((elem) =>{
-            setChecked(prevState => [...prevState, {[elem]:false}]) });
-            console.log(checked)
-    }, [lists]);
+            setChecked(prevState => prevState.set(elem, false))});
+    }, 
+  
+    [lists]);
 
 
-    const handleCheckbox = (event) => {
-        var updatedList = [...checked];
-        if (event.target.checked) {
-            updatedList = [...checked, event.target.value];
-        } else {
-            updatedList.splice(checked.indexOf(event.target.value), 1);
-        }
-        setChecked(updatedList);
+    const handleCheckbox = (key, isChecked) => {
+        setChecked(new Map(checked.set(key, isChecked)));        
     }
 
+    const handleAddButton = () =>{
+        setAddList([])
+        checked.forEach((val, key) => {if(Boolean(val)){setAddList(prev => Array.from(new Set([...prev, key])))}})
+        addList.forEach((val) => {
+            setDoc(doc(db, 'Users', 'fLjdxpX56kXIrnxRRfBbUTOhR3J3'), {'libraries':{[val]:[mybook.Isbn]}}, {merge:true})
+        })
+        lists.filter(val => !addList.includes(val)).forEach((key) => {
+            setDoc(doc(db, 'Users', 'fLjdxpX56kXIrnxRRfBbUTOhR3J3'), {'libraries':{[key]:arrayRemove(mybook.Isbn)}}, {merge:true})
+        })
+    }
+    
     if (mybook != null && !loading) {
         return (
             <ScrollView>
@@ -140,9 +151,10 @@ function BookPage({route, navigation}) {
                             setModalVisible={setModalVisible}
                             styles={styles}
                             lists={lists}
-                            checkList={checked}
-                            setCheckList={setChecked}
+                            checked={checked}
+                            setChecked={setChecked}
                             handleCheckbox={handleCheckbox}
+                            handleAddButton={handleAddButton}
                         />
                     </ScrollView>
                 </View>
@@ -198,14 +210,20 @@ const styles = StyleSheet.create({
         shadowOffset: { height: 2, width: 2 },
     },
     namelist: {
-        justifyContent: "flex-start"
-    }
+        justifyContent: "flex-start",
+        fontSize: 25
+    },
+    section: {
+        flex:1,
+        width:'100%',
+        flexDirection: 'row',
+        margin: '1%'
+      },
 
 });
 
 const newStyles = StyleSheet.create({
     pageView: {
-        marginTop: '20%',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
