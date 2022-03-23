@@ -5,10 +5,11 @@ import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
 import { AddToListModal } from './AddToListModal.jsx';
 import { setDoc, updateDoc, doc, deleteField, arrayRemove} from 'firebase/firestore';
 import { db } from '../firebase-config'
-//import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
 function BookPage({route, navigation}) {
 
+    const user = getAuth().currentUser;
     const { isbn } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
@@ -47,7 +48,7 @@ function BookPage({route, navigation}) {
             });
 
         }
-        const getLists = async (uid = 'j3THQoRMNIYvXmi4CVeCZPjRwUn2') => {
+        const getLists = async (uid = user.uid) => {
             const library = await getUserLibrary(uid);
             const categories = library.map((item) => { 
                 return Object.getOwnPropertyNames(item)[0];
@@ -76,10 +77,10 @@ function BookPage({route, navigation}) {
         setAddList([])
         checked.forEach((val, key) => {if(Boolean(val)){setAddList(prev => Array.from(new Set([...prev, key])))}})
         addList.forEach((val) => {
-            setDoc(doc(db, 'Users', 'fLjdxpX56kXIrnxRRfBbUTOhR3J3'), {'libraries':{[val]:[mybook.Isbn]}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), {'libraries':{[val]:[isbn]}}, {merge:true})
         })
         lists.filter(val => !addList.includes(val)).forEach((key) => {
-            setDoc(doc(db, 'Users', 'fLjdxpX56kXIrnxRRfBbUTOhR3J3'), {'libraries':{[key]:arrayRemove(mybook.Isbn)}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), {'libraries':{[key]:arrayRemove(isbn)}}, {merge:true})
         })
     }
     

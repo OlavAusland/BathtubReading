@@ -42,10 +42,11 @@ export const profileStyle = StyleSheet.create({
         width:'100%',
         flex: 3,
         alignItems:'center',
-        backgroundColor:"#F6EEE0",
+        backgroundColor:"#E4B7A0",
     },
     list:{
         overflow:'hidden',
+        backgroundColor:'#F6EEE0',
         shadowColor:'black',
         height:10,
         shadowOffset:{height:3, width:1},
