@@ -1,8 +1,9 @@
 import React, { useState, useEffect } 
 from 'react';
 import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
 import { getFirebooksGenre } from '../API/FirebaseAPI.js'; 
-import Placeholder from '../assets/Images/Computer-networking.jpg';
 
 
 const GenrePage = props => {
@@ -17,36 +18,41 @@ const GenrePage = props => {
 
         }
         getGenreBooks();
-        console.log("books", genreBooks)
-
 
     }, []);
 
+    const onPress = () => {
+        alert("bitch ass hoe")
+    }
+
+
     return(
-
-        //list the books with mapping
-
-        <View style={styles.Container}>
+        
+        <ScrollView style={styles.Container}>
             <Text style={styles.Title}>{genre}</Text>
             <View style={styles.Booklisting}>
             {genreBooks.length > 0 &&
-            genreBooks.map((book) => {
+            genreBooks.map((book, index) => {
                 return (
-                    <View style={[styles.BookCard, styles.shadowProp]}>
+                    <View key={'Book-' + index} style={[styles.BookCard, styles.shadowProp]}>
+                        <TouchableOpacity
+                        onPress={() => {onPress()}}>
                         <Image
                             style={styles.Imagestyle}
                             source={{uri: book.imageURI}}
                         />
                         <Text style={styles.Booktitle}>{book.title}</Text>
+                            </TouchableOpacity> 
                     </View>
                 );
             })
             }
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
+// COLORS: Cream: #F6EE0, Peach: #E4B7A0, Desert Sun: #A45C40, Coral: #C38370
 
 const styles = StyleSheet.create({
     Container:{
@@ -76,9 +82,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     Booktitle:{
-        fontSize: 45,
+        fontSize: 30,
         fontWeight: 'normal',
-        color:'black'
+        color:'black',
+        alignContent: "center"
     },
     Imagestyle:{
         width: 200,
