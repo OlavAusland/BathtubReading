@@ -7,8 +7,7 @@ export default function HomePage({navigation})
     return (
         <View style={[styles.container, {flexDirection:'column'}]}>
             <View style={{ flex: 1.5, backgroundColor: "#F6EEE0", borderBottomColor: 'black', borderBottomWidth:1}}>
-                <View style={{marginTop:30, padding:30, width: 190, alignSelf: 'flex-end'}}>{MySearchBar()}</View>
-                <View><Text style={{fontSize:50, marginLeft: 10, marginTop: -10}}> Discovery </Text></View>
+                <View><Text style={{fontSize:50, marginLeft: 10, marginTop: 90}}> Discovery </Text></View>
             </View>
             <View style={{ flex: 0.7, backgroundColor: "#F6EEE0", borderBottomColor: 'black', borderBottomWidth:1, backgroundColor:'#F6EEE0'}}>
                     <ScrollView style={styles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
