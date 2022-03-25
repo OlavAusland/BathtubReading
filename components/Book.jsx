@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable, ScrollView} from 'react-native';
+import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
 import { AddToListModal } from './AddToListModal.jsx';
-import { setDoc, updateDoc, doc, deleteField, arrayRemove} from 'firebase/firestore';
+import { setDoc, updateDoc, doc, deleteField, arrayRemove } from 'firebase/firestore';
 import { db } from '../firebase-config'
 import { bookStyles } from '../styles/BookStyles.jsx';
 import { getAuth } from 'firebase/auth';
 
-function BookPage({route, navigation}) {
+function BookPage({ route, navigation }) {
 
     const user = getAuth().currentUser;
     const { isbn } = route.params;
@@ -18,10 +18,11 @@ function BookPage({route, navigation}) {
     const [checked, setChecked] = useState(new Map());
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
- 
+    const [library, setLibrary] = useState(new Map());
+
 
     useEffect(() => {
-        const getMybook = async() => {
+        const getMybook = async () => {
             const data = await getBook(isbn).then(setLoading(false));
             const firebaseData = await getFirebaseBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
@@ -49,42 +50,72 @@ function BookPage({route, navigation}) {
             });
 
         }
+
         const getLists = async (uid = user.uid) => {
-            const library = await getUserLibrary(uid);
-            const categories = library.map((item) => { 
+            const fetchedLibrary = await getUserLibrary(user.uid);
+            setLibrary(fetchedLibrary)
+
+            const categories = fetchedLibrary.map((item) => {
                 return Object.getOwnPropertyNames(item)[0];
             });
 
             setLists(categories);
-        
+
         }
         getMybook();
         getLists();
     }, []);
 
+
+    /*
+        useEffect(() => {
+            lists.forEach((elem) =>{
+                setChecked(prevState => prevState.set(elem, false))});
+        }, 
+      
+        [lists]);
+    */
+
+
     useEffect(() => {
-        lists.forEach((elem) =>{
-            setChecked(prevState => prevState.set(elem, false))});
-    }, 
-  
-    [lists]);
+        if (library !== undefined && library.size !== 0) {
+            const updateChecked = () => {
+                library.forEach((elem) => {
+                    const name = Object.getOwnPropertyNames(elem)[0];
+                    const values = elem[name]
+                    let existsInCategory = false;
+                    console.log(values)
+
+                    if (values.includes(isbn)) {
+                        existsInCategory = true;
+                    }
+
+                    setChecked(prevState => prevState.set(name, existsInCategory))
+                });
+            }
+            if (library !== undefined && library.length !== 0) {
+                updateChecked();
+            }
+        }
+    }, [library, lists]);
 
 
     const handleCheckbox = (key, isChecked) => {
-        setChecked(new Map(checked.set(key, isChecked)));        
+        setChecked(new Map(checked.set(key, isChecked)));
     }
 
-    const handleAddButton = () =>{
+
+    const handleAddButton = () => {
         setAddList([])
-        checked.forEach((val, key) => {if(Boolean(val)){setAddList(prev => Array.from(new Set([...prev, key])))}})
+        checked.forEach((val, key) => { if (Boolean(val)) { setAddList(prev => Array.from(new Set([...prev, key]))) } })
         addList.forEach((val) => {
-            setDoc(doc(db, 'Users', user.uid), {'libraries':{[val]:[isbn]}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), { 'libraries': { [val]: [isbn] } }, { merge: true })
         })
         lists.filter(val => !addList.includes(val)).forEach((key) => {
-            setDoc(doc(db, 'Users', user.uid), {'libraries':{[key]:arrayRemove(isbn)}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), { 'libraries': { [key]: arrayRemove(isbn) } }, { merge: true })
         })
     }
-    
+
     if (mybook != null && !loading) {
         return (
             <ScrollView>
@@ -145,8 +176,8 @@ function BookPage({route, navigation}) {
                             <Text style={bookStyles.textStyle}>Add to list</Text>
                         </Pressable>
                     }
-                   <ScrollView>
-                        <AddToListModal 
+                    <ScrollView>
+                        <AddToListModal
                             newStyles={bookStyles}
                             modalVisible={modalVisible}
                             setModalVisible={setModalVisible}
@@ -164,7 +195,7 @@ function BookPage({route, navigation}) {
     }
     else {
         return (
-            <View style={{ justifyContent:"center", alignItems: 'center', flex: 1 }}>
+            <View style={{ justifyContent: "center", alignItems: 'center', flex: 1 }}>
                 <Image
                     style={{ height: 250, width: 250 }}
                     source={require('../assets/Images/Loading.gif')}

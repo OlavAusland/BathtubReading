@@ -3,7 +3,6 @@ import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
 import { db } from '../firebase-config.js'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 import { loginStyle } from '../styles/ProfileStyles'
-import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
 
 export default function LoginPage({ navigation })
 {

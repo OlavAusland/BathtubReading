@@ -37,14 +37,16 @@ export const bookStyles = StyleSheet.create({
         shadowOffset: { height: 2, width: 2 },
     },
     namelist: {
-        justifyContent: "flex-start",
-        fontSize: 25
+        justifyContent: "center",
+        fontSize: 30
+        
     },
     section: {
         flex:1,
         width:'100%',
         flexDirection: 'row',
-        margin: '1%'
+        margin: '1%',
+        justifyContent: 'flex-start'
       },
     pageView: {
         flex: 1,
@@ -78,6 +80,7 @@ export const bookStyles = StyleSheet.create({
     },
     buttonClose: {
         backgroundColor: '#A45C40',
+        width: '50%'
     },
     textStyle: {
         color: 'black',
@@ -90,5 +93,9 @@ export const bookStyles = StyleSheet.create({
         marginBottom: 10,
         textAlign: 'center',
         fontSize: 40,
+    },
+    checkBoxStyle: {
+        paddingLeft: 5,
+        paddingRight: 5
     }
 });
