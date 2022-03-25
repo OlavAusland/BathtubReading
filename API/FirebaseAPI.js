@@ -62,6 +62,14 @@ export async function getNewestFirebaseBooks()
     return result
 }
 
+export async function getBooksByKeyword(keyword)
+{
+    const bookQuery = query(collection(db, 'Books'), where('title', 'contains', keyword))
+    const querySnapshot = await getDocs(bookQuery);
+    const result = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+    return result;
+}
+
 export async function updateUser(username)
 {
     const user = getAuth().currentUser;

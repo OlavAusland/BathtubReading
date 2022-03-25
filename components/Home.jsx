@@ -1,6 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
-import { getFirebooksGenre, getNewestFirebaseBooks } from '../API/FirebaseAPI'
+import { getFirebooksGenre, getNewestFirebaseBooks, getBooksByKeyword} from '../API/FirebaseAPI'
+
+function SearchResultsView(props)
+{
+    const [books, setBooks] = useState([]);
+
+    useEffect(async() => {
+        const result = await getBooksByKeyword()
+        setBooks(result);
+    }, [props.keyword])
+
+    useEffect(() => {console.log(books)}, [books])
+
+    return(
+        <View>
+            {books && books.map((book, index) => {
+                return(
+                    <View>
+                        <Text>{book.title}</Text>
+                    </View>
+                );
+            })}
+        </View>
+    );
+}
 
 function DefaultHome(props)
 {
@@ -19,9 +43,9 @@ function DefaultHome(props)
             <View style={{ flex: 1, borderBottomWidth:1, backgroundColor: "#E4B7A0", borderRightColor: 'black', alignItems: 'center' }}>
                 <Text style={{ fontSize: 34, marginTop: 10, fontWeight:'bold'}}> NEWEST </Text>
                 <ScrollView style={{backgroundColor:'#F6EEE0',width:'100%'}}>
-                    {newest.map((book) => {
+                    {newest.map((book, index) => {
                         return(
-                            <View style={{flexDirection:'row'}}>
+                            <View key={book + index} style={{flexDirection:'row'}}>
                                 <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
                                     <Image
                                         style={{flex:1, height:100, width:100}}
@@ -82,6 +106,8 @@ export default function HomePage({ navigation }) {
     
     const [genre, setGenre] = useState('')
     const [displayGenre, setDisplayGenre] = useState(false);
+    const [searching, setSearching] = useState(true);
+    const [searchKeyword, setSearchKeyword] = useState('');
 
     const HandleGenreChange = (val) => {
         if(genre == val){setDisplayGenre(false);setGenre('')}
@@ -92,6 +118,14 @@ export default function HomePage({ navigation }) {
         <View style={[styles.container, { flexDirection: 'column' }]}>
             <View style={{ flex: 3, backgroundColor: "#A45C40", borderBottomColor: 'black', borderBottomWidth: 1 }}>
                 <View><Text style={{ fontSize: 50, marginLeft: 10}}> Discovery </Text></View>
+                <View style={{width:'55%',borderRadius:10, marginLeft:25, marginTop:10, backgroundColor:'#FFFFFF'}}>
+                    <TextInput
+                        onEndEditing={(e) => {setSearchKeyword(e.nativeEvent.text);console.log(e.nativeEvent.text)}}
+                        onPressIn={() => {setSearching(false)}}
+                        placeholder="Search"
+                    />
+
+                </View>
             </View>
             <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderBottomColor: 'black', borderBottomWidth: 1 }}>
                 <ScrollView style={styles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -101,7 +135,6 @@ export default function HomePage({ navigation }) {
                                 <View key={elem} style={{ alignItems: 'center', justifyContent: 'center' }}>
                                     <View style={styles.scrollButtons}>
                                         <Button title={elem.toUpperCase()} color="#A45C40" onPress={() => {HandleGenreChange(elem);}} />
-                                        {/*{() => navigation.navigate('Book', {isbn:'9783319195957'})}*/}
                                     </View>
                                 </View>
                             )
@@ -110,8 +143,9 @@ export default function HomePage({ navigation }) {
                 </ScrollView>
             </View>
             <View style={{ flex: 7, backgroundColor: "#F6EEE0" }}>
-                {!displayGenre && <DefaultHome navigation={navigation}/>}
-                {displayGenre && <GenreHome genre={genre} navigation={navigation}/>}
+                {(!displayGenre && !searching) && <DefaultHome navigation={navigation}/>}
+                {(displayGenre && !searching) && <GenreHome genre={genre} navigation={navigation}/>}
+                {true && <SearchResultsView keyword={searchKeyword}/>}
             </View>
         </View>
     );

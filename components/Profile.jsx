@@ -231,11 +231,13 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontSize:18}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={profileStyle.settings}>
+                {/*
+                 <View style={profileStyle.settings}>
                     <Pressable onPress={() => setModalVisible(true)} style={profileStyle.settingsButton}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
                 </View>
+                */}
                 <View style={profileStyle.content}>
                     <View style={{flex:3, width:'90%'}}>
                         <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>
