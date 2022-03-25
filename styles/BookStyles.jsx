@@ -38,8 +38,7 @@ export const bookStyles = StyleSheet.create({
     },
     namelist: {
         justifyContent: "center",
-        fontSize: 30
-        
+        fontSize: 30,
     },
     section: {
         flex:1,
@@ -64,23 +63,29 @@ export const bookStyles = StyleSheet.create({
         elevation: 5,
         fontSize: 20
     },
-    button: {
-        borderRadius: 5,
-        padding: 10,
-        elevation: 2,
-        margin: 10
-    },
+    
     buttonOpen: {
         backgroundColor: '#FFFFFF',
         color: '#000000',
         marginBottom: 20,
         width: '90%',
-        height: '5%',
-        justifyContent:'center'
+        height: 60,
+        justifyContent:'center',
+        borderRadius: 5,
+        padding: 10,
+        elevation: 2,
+        margin: 10
     },
     buttonClose: {
         backgroundColor: '#A45C40',
-        width: '50%'
+        width: '100%',
+        borderRadius: 5,
+        justifyContent:'center',
+        alignContent: 'center',
+        elevation: 2,
+        marginLeft: 5,
+        marginTop:60,
+        height: 50,
     },
     textStyle: {
         color: 'black',
@@ -97,5 +102,8 @@ export const bookStyles = StyleSheet.create({
     checkBoxStyle: {
         paddingLeft: 5,
         paddingRight: 5
+    },
+    checkboxtext:{
+        
     }
 });

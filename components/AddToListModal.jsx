@@ -23,12 +23,8 @@ export const AddToListModal = (props) => {
                                 return (
                                     <View key={'Samma det' + index}style={props.styles.section} >
                                         <Checkbox style={props.checkBoxStyle} key={"checkbox-" + key} value={value} onValueChange={(isChecked) => props.handleCheckbox(key, isChecked)} />
-                                        <Text>{key}</Text>
-                                        {/*
-                                        <View style={props.styles.namelist}>
-                                        </View>
-                                        */
-                                        }
+                                        <Text style={props.checkboxtext}>{key}</Text>
+                                       
                                     </View>
                                 );
                             })
@@ -38,13 +34,13 @@ export const AddToListModal = (props) => {
                     <View style={{ flexDirection: 'row' }}>
                         <Pressable
 
-                            style={[props.newStyles.button, props.newStyles.buttonClose, { flex: 1 }]}
+                            style={[ props.newStyles.buttonClose, { flex: 1 }]}
                             onPress={() => props.handleAddButton()}
                         >
                             <Text style={props.newStyles.textStyle}>Add</Text>
                         </Pressable>
                         <Pressable
-                            style={[props.newStyles.button, props.newStyles.buttonClose, { flex: 1 }]}
+                            style={[ props.newStyles.buttonClose, { flex: 1 }]}
                             onPress={() => props.setModalVisible(!props.modalVisible)}
                         >
                             <Text style={props.newStyles.textStyle}>Cancel</Text>
