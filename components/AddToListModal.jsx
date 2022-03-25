@@ -37,7 +37,7 @@ export const AddToListModal = (props) => {
                         <Pressable
 
                             style={[props.newStyles.button, props.newStyles.buttonClose, { flex: 1 }]}
-                            onPress={() => props.handleAddButton()}
+                            onPress={() => {props.handleAddButton();props.setModalVisible(!props.modalVisible)}}
                         >
                             <Text style={props.newStyles.textStyle}>Add</Text>
                         </Pressable>

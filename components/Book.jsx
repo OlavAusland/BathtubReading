@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Image, Pressable, ScrollView} from 'react-nativ
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
 import { AddToListModal } from './AddToListModal.jsx';
-import { setDoc, updateDoc, doc, deleteField, arrayRemove} from 'firebase/firestore';
+import { setDoc, updateDoc, doc, deleteField, arrayRemove, arrayUnion} from 'firebase/firestore';
 import { db } from '../firebase-config'
 import { getAuth } from 'firebase/auth';
 
@@ -77,7 +77,7 @@ function BookPage({route, navigation}) {
         setAddList([])
         checked.forEach((val, key) => {if(Boolean(val)){setAddList(prev => Array.from(new Set([...prev, key])))}})
         addList.forEach((val) => {
-            setDoc(doc(db, 'Users', user.uid), {'libraries':{[val]:[isbn]}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), {'libraries':{[val]:arrayUnion(isbn)}}, {merge:true})
         })
         lists.filter(val => !addList.includes(val)).forEach((key) => {
             setDoc(doc(db, 'Users', user.uid), {'libraries':{[key]:arrayRemove(isbn)}}, {merge:true})
