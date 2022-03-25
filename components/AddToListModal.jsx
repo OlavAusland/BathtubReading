@@ -20,13 +20,15 @@ export const AddToListModal = (props) => {
                     <ScrollView contentContainerStyle={props.styles.namelist}>
                         {props.checked.size > 0 &&
                             Array.from(props.checked).map(([key, value], index) => {
-                                //console.log("Key " + key + " Value " + value);
                                 return (
                                     <View key={'Samma det' + index}style={props.styles.section} >
-                                        <Checkbox key={"checkbox-" + key} value={value} onValueChange={(isChecked) => props.handleCheckbox(key, isChecked)} />
-                                        <View style={props.styles.namelist}>
+                                        <Checkbox style={props.checkBoxStyle} key={"checkbox-" + key} value={value} onValueChange={(isChecked) => props.handleCheckbox(key, isChecked)} />
                                         <Text>{key}</Text>
+                                        {/*
+                                        <View style={props.styles.namelist}>
                                         </View>
+                                        */
+                                        }
                                     </View>
                                 );
                             })

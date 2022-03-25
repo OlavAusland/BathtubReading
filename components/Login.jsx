@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
 import { db } from '../firebase-config.js'
-import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
-import { loginStyle } from '../components/Styles'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+import { loginStyle } from '../styles/ProfileStyles'
 
 export default function LoginPage({ navigation })
 {
@@ -33,6 +33,7 @@ export default function LoginPage({ navigation })
         <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1}}>
             <TextInput
                 style={loginStyle.input}
+                name = "Email"
                 onChangeText={updated => setEmail(updated)}/>
             <TextInput 
                 style={loginStyle.input}

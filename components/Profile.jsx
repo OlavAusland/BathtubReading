@@ -6,7 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
 import { getBook, setBook } from '../API/GoogleAPI'
 import { getFirebaseBooks, getFirebaseBook, getUserLibrary, updateUser } from '../API/FirebaseAPI'
-import { profileStyle } from './Styles.jsx'; 
+import { profileStyle } from '../styles/ProfileStyles' 
 import { map, stringify } from '@firebase/util';
 import BookPage from './Book.jsx';
 
@@ -223,7 +223,7 @@ export default function ProfilePage({ navigation })
                 <View style={profileStyle.header}>
                     <View style={{flex:10, justifyContent:'center', alignItems:'center'}}>
                         <Image style={profileStyle.avatar}
-                                source={{uri: avatar}}
+                                source={{uri: avatar}} // HANDLING FOR NO IMAGE
                         />
                     </View>
                     <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>

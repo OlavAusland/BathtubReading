@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, Pressable, ScrollView} from 'react-native';
+import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 import { getBook } from '../API/GoogleAPI.js';
 import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
 import { AddToListModal } from './AddToListModal.jsx';
 import { setDoc, updateDoc, doc, deleteField, arrayRemove, arrayUnion} from 'firebase/firestore';
 import { db } from '../firebase-config'
+import { bookStyles } from '../styles/BookStyles.jsx';
 import { getAuth } from 'firebase/auth';
 
-function BookPage({route, navigation}) {
+function BookPage({ route, navigation }) {
 
     const user = getAuth().currentUser;
     const { isbn } = route.params;
@@ -17,16 +18,17 @@ function BookPage({route, navigation}) {
     const [checked, setChecked] = useState(new Map());
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
- 
+    const [library, setLibrary] = useState(new Map());
+
 
     useEffect(() => {
-        const getMybook = async() => {
+        const getMybook = async () => {
             const data = await getBook(isbn).then(setLoading(false));
             const firebaseData = await getFirebaseBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
-                <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[styles.bookimage]} />
+                <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
-                    style={[styles.bookimage]}
+                    style={[bookStyles.bookimage]}
                     source={require('../assets/Images/NoImage.jpg')}
                 />;
 
@@ -48,89 +50,118 @@ function BookPage({route, navigation}) {
             });
 
         }
+
         const getLists = async (uid = user.uid) => {
-            const library = await getUserLibrary(uid);
-            const categories = library.map((item) => { 
+            const fetchedLibrary = await getUserLibrary(user.uid);
+            setLibrary(fetchedLibrary)
+
+            const categories = fetchedLibrary.map((item) => {
                 return Object.getOwnPropertyNames(item)[0];
             });
 
             setLists(categories);
-        
+
         }
         getMybook();
         getLists();
     }, []);
 
+
+    /*
+        useEffect(() => {
+            lists.forEach((elem) =>{
+                setChecked(prevState => prevState.set(elem, false))});
+        }, 
+      
+        [lists]);
+    */
+
+
     useEffect(() => {
-        lists.forEach((elem) =>{
-            setChecked(prevState => prevState.set(elem, false))});
-    }, 
-  
-    [lists]);
+        if (library !== undefined && library.size !== 0) {
+            const updateChecked = () => {
+                library.forEach((elem) => {
+                    const name = Object.getOwnPropertyNames(elem)[0];
+                    const values = elem[name]
+                    let existsInCategory = false;
+
+                    if (values.includes(isbn)) {
+                        existsInCategory = true;
+                    }
+
+                    setChecked(prevState => prevState.set(name, existsInCategory))
+                });
+            }
+            if (library !== undefined && library.length !== 0) {
+                updateChecked();
+            }
+        }
+    }, [library, lists]);
 
 
     const handleCheckbox = (key, isChecked) => {
-        setChecked(new Map(checked.set(key, isChecked)));        
+        setChecked(new Map(checked.set(key, isChecked)));
     }
 
-    const handleAddButton = () =>{
+
+    const handleAddButton = () => {
         setAddList([])
-        checked.forEach((val, key) => {if(Boolean(val)){setAddList(prev => Array.from(new Set([...prev, key])))}})
+        checked.forEach((val, key) => { if (Boolean(val)) { setAddList(prev => Array.from(new Set([...prev, key]))) } })
         addList.forEach((val) => {
             setDoc(doc(db, 'Users', user.uid), {'libraries':{[val]:arrayUnion(isbn)}}, {merge:true})
         })
         lists.filter(val => !addList.includes(val)).forEach((key) => {
-            setDoc(doc(db, 'Users', user.uid), {'libraries':{[key]:arrayRemove(isbn)}}, {merge:true})
+            setDoc(doc(db, 'Users', user.uid), { 'libraries': { [key]: arrayRemove(isbn) } }, { merge: true })
         })
     }
-    
+
     if (mybook != null && !loading) {
         return (
             <ScrollView>
-                <View style={[newStyles.pageView]}>
-                    <View style={styles.imageBox}>
+                <View style={[bookStyles.pageView]}>
+                    <View style={bookStyles.imageBox}>
                         {mybook.image}
 
                     </View>
-                    <View style={styles.Booktext}>
-                        <Text style={styles.booktitle} numberOfLines={2} adjustsFontSizeToFit>{mybook.title} </Text>
-                        <Text style={styles.bookAuthor}>
+                    <View style={bookStyles.Booktext}>
+                        <Text style={bookStyles.booktitle} numberOfLines={2} adjustsFontSizeToFit>{mybook.title} </Text>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>{'\n'}Author(s): </Text>
                             <Text>{mybook.author} </Text>
                         </Text>
-                        <Text style={styles.bookAuthor}>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>Publisher: </Text>
                             <Text>{mybook.publisher} </Text>
                         </Text>
-                        <Text style={styles.bookAuthor}>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>Published: </Text>
                             <Text>{mybook.date}</Text>
                         </Text>
-                        <Text style={styles.bookAuthor}>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>Language: </Text>
                             <Text>{mybook.language}</Text>
                         </Text>
-                        <Text style={styles.bookAuthor}>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>Pages: </Text>
                             <Text>{mybook.pages}</Text>
                         </Text>
-                        <Text style={styles.bookAuthor}>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>Genre: </Text>
                             <Text>{mybook.genres}</Text>
                         </Text>
-                        <Text style={styles.bookAuthor}>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>Printtype: </Text>
                             <Text>{mybook.printtype}</Text>
                         </Text>
-                        <Text style={styles.bookAuthor}>
+                        <Text style={bookStyles.bookAuthor}>
                             <Text style={{ fontWeight: "bold" }}>ISBN: </Text>
                             <Text>{mybook.Isbn}{'\n'}</Text>
                         </Text>
-                        <Text style={styles.bookDescription}>
+                        <Text style={bookStyles.bookDescription}>
                             <Text style={{ fontWeight: "bold" }}>Description:{'\n'}</Text>
                             <Text>{mybook.description}</Text>
                         </Text>
-                        <Text style={styles.bookRating}>{'\n'}{'\n'}
+                        <Text style={bookStyles.bookRating}>{'\n'}{'\n'}
                             <Text style={{ fontWeight: "bold" }}>Rating: </Text>
                             <Text>{mybook.rating}</Text>
                         </Text>
@@ -139,17 +170,17 @@ function BookPage({route, navigation}) {
                     {!modalVisible &&
 
                         <Pressable
-                            style={[newStyles.button, newStyles.buttonOpen]}
+                            style={[bookStyles.button, bookStyles.buttonOpen]}
                             onPress={() => setModalVisible(true)}>
-                            <Text style={newStyles.textStyle}>Add to list</Text>
+                            <Text style={bookStyles.textStyle}>Add to list</Text>
                         </Pressable>
                     }
-                   <ScrollView>
-                        <AddToListModal 
-                            newStyles={newStyles}
+                    <ScrollView>
+                        <AddToListModal
+                            newStyles={bookStyles}
                             modalVisible={modalVisible}
                             setModalVisible={setModalVisible}
-                            styles={styles}
+                            styles={bookStyles}
                             lists={lists}
                             checked={checked}
                             setChecked={setChecked}
@@ -163,7 +194,7 @@ function BookPage({route, navigation}) {
     }
     else {
         return (
-            <View style={{ justifyContent:"center", alignItems: 'center', flex: 1 }}>
+            <View style={{ justifyContent: "center", alignItems: 'center', flex: 1 }}>
                 <Image
                     style={{ height: 250, width: 250 }}
                     source={require('../assets/Images/Loading.gif')}
@@ -173,101 +204,6 @@ function BookPage({route, navigation}) {
         );
     }
 }
-const styles = StyleSheet.create({
-    Booktext: {
-        marginTop: '9%',
-        padding: '3%',
-        backgroundColor: "#E4B7A0",
-        fontSize: 80
-    },
-    booktitle: {
-        fontSize: 60,
-        fontWeight: 'bold',
-        color: 'black'
-    },
-    bookAuthor: {
-        fontSize: 19
-    },
-    bookRating: {
-        fontSize: 19,
-        marginBottom: "10%"
-    },
-    bookDescription: {
-        fontSize: 19,
-        backgroundColor: "#F6EEE0",
-        padding: '5%',
-    },
-    bookimage: {
-        width: 200,
-        height: 250,
-        marginTop: "10%",
-    },
-    imageBox: {
-        justifyContent: "center",
-        alignItems: "center",
-        shadowColor: "black",
-        shadowOpacity: 0.2,
-        shadowOffset: { height: 2, width: 2 },
-    },
-    namelist: {
-        justifyContent: "flex-start",
-        fontSize: 25
-    },
-    section: {
-        flex:1,
-        width:'100%',
-        flexDirection: 'row',
-        margin: '1%'
-      },
 
-});
-
-const newStyles = StyleSheet.create({
-    pageView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#A45C40',
-        height: '100%'
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: '#F6EEE0',
-        borderRadius: 20,
-        padding: 70,
-        alignItems: 'center',
-        elevation: 5,
-        fontSize: 20
-    },
-    button: {
-        borderRadius: 5,
-        padding: 10,
-        elevation: 2,
-        margin: 10
-    },
-    buttonOpen: {
-        backgroundColor: '#FFFFFF',
-        color: '#000000',
-        marginBottom: 20,
-        width: '90%',
-        height: '5%',
-        justifyContent:'center'
-    },
-    buttonClose: {
-        backgroundColor: '#A45C40',
-    },
-    textStyle: {
-        color: 'black',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        justifyContent: 'center',
-        fontSize: 20
-    },
-    modalText: {
-        marginBottom: 10,
-        textAlign: 'center',
-        fontSize: 40,
-    }
-});
 
 export default BookPage

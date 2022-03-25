@@ -1,6 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 
+function DefaultHome()
+{
+    return(
+        <View style={[styles.container, { flexDirection: 'row' }]}>
+            <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, marginTop: 10 }}> TOP 10 </Text>
+            </View>
+            <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
+                <Text style={{ fontSize: 20, marginTop: 10 }}> NEWEST </Text>
+            </View>
+        </View>
+    );
+}
+
+function GenreHome()
+{
+    return (
+        <ScrollView style={{flex:1, flexDirection:'column'}}>
+            {[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map((item) => {
+                return(
+                    <View style={{flex:1, backgroundColor:'#FFFFFF', flexDirection:'row', alignItems:'center'}}>
+                        <Image
+                            style={{width:150, height:150}}
+                            source={require('../assets/Images/NoImage.jpg')}
+                        />
+                        <View>
+                            <Text>Title: Hei</Text>
+                            <Text>ISBN: Hei</Text>
+                            <Text>Genre: Hei</Text>
+                        </View>
+                    </View>
+                )
+            })}
+        </ScrollView>
+    );
+}
+
 
 export default function HomePage({ navigation }) {
     return (
@@ -27,16 +64,9 @@ export default function HomePage({ navigation }) {
                 </ScrollView>
             </View>
             <View style={{ flex: 7, backgroundColor: "#F6EEE0" }}>
-                <View style={[styles.container, { flexDirection: 'row' }]}>
-                    <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 20, marginTop: 10 }}> TOP 10 </Text>
-                    </View>
-                    <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 20, marginTop: 10 }}> NEWEST </Text>
-                    </View>
-                </View>
+                {false && <DefaultHome/>}
+                {true && <GenreHome/>}
             </View>
-
         </View>
     );
 }
