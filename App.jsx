@@ -8,6 +8,7 @@ import ProfilePage from './components/Profile'
 import RegisterPage from './components/Register';
 import HomePage from './components/Home';
 import BookPage from './components/Book';
+import GenrePage from './components/GenrePage';
 import { TestPage } from './components/Test';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -31,11 +32,12 @@ function Home()
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='GenrePage'>
         <Stack.Screen name='BathubReading' component={Home}/>
         <Stack.Screen name='Book' component={BookPage}/>
         <Stack.Screen name='Login' component={LoginPage} />
         <Stack.Screen name='Register' component={RegisterPage}/>
+        <Stack.Screen name='GenrePage' component={GenrePage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
