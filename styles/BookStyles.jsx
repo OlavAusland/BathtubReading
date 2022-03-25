@@ -36,17 +36,7 @@ export const bookStyles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowOffset: { height: 2, width: 2 },
     },
-    namelist: {
-        justifyContent: "center",
-        fontSize: 30,
-    },
-    section: {
-        flex:1,
-        width:'100%',
-        flexDirection: 'row',
-        margin: '1%',
-        justifyContent: 'flex-start'
-      },
+     
     pageView: {
         flex: 1,
         justifyContent: 'center',
@@ -54,17 +44,9 @@ export const bookStyles = StyleSheet.create({
         backgroundColor: '#A45C40',
         height: '100%'
     },
-    modalView: {
-        margin: 20,
-        backgroundColor: '#F6EEE0',
-        borderRadius: 20,
-        padding: 70,
-        alignItems: 'center',
-        elevation: 5,
-        fontSize: 20
-    },
+   
     
-    buttonOpen: {
+    openModalButton: {
         backgroundColor: '#FFFFFF',
         color: '#000000',
         marginBottom: 20,
@@ -76,8 +58,8 @@ export const bookStyles = StyleSheet.create({
         elevation: 2,
         margin: 10
     },
-    buttonClose: {
-        backgroundColor: '#A45C40',
+    modalButton: {
+        backgroundColor: '#FFFFFF',
         width: '100%',
         borderRadius: 5,
         justifyContent:'center',
@@ -94,16 +76,36 @@ export const bookStyles = StyleSheet.create({
         justifyContent: 'center',
         fontSize: 20
     },
-    modalText: {
-        marginBottom: 10,
+   
+    modalView: {
+        margin: 20,
+        backgroundColor: '#C38370',
+        borderRadius: 20,
+        padding: 20,
+        elevation: 5,
+    },
+    modalTitel: {
+        marginBottom: 30,
         textAlign: 'center',
-        fontSize: 40,
+        fontSize: 45,
     },
+      
+    checkboxView: {
+        flex:1,
+        width:'100%',
+        flexDirection: 'row',
+        marginTop: 10,
+      },
+
     checkBoxStyle: {
-        paddingLeft: 5,
-        paddingRight: 5
+        width: 30,
+        height: 30,
+        marginLeft: 15,
+        backgroundColor:'#FFFFFF'
     },
+
     checkboxtext:{
-        
+        fontSize: 25,
+        marginLeft: 10,
     }
 });

@@ -171,14 +171,13 @@ function BookPage({ route, navigation }) {
                     {!modalVisible &&
 
                         <Pressable
-                            style={[bookStyles.button, bookStyles.buttonOpen]}
+                            style={[bookStyles.button, bookStyles.openModalButton]}
                             onPress={() => setModalVisible(true)}>
                             <Text style={bookStyles.textStyle}>Add to list</Text>
                         </Pressable>
                     }
                     <ScrollView>
                         <AddToListModal
-                            newStyles={bookStyles}
                             modalVisible={modalVisible}
                             setModalVisible={setModalVisible}
                             styles={bookStyles}

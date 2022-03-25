@@ -93,17 +93,17 @@ export default function RegisterPage({ navigation }) {
                 placeholder="Password" />
             <View style={{ width: '80%' }}>
                 <Pressable style={registersStyles.registerButtons} onPress={pickImage}>
-                    <Text>
+                    <Text style={registersStyles.buttontext}>
                         Upload Image
                     </Text>
                 </Pressable>
                 <Pressable style={registersStyles.registerButtons} onPress={() => { setLoading(true); setRegister(true) }}>
-                    <Text>
+                    <Text style={registersStyles.buttontext}>
                         Register
                     </Text>
                 </Pressable>
                 <Pressable style={registersStyles.registerButtons} title="Back" onPress={() => navigation.navigate("Login")} >
-                    <Text>
+                    <Text style={registersStyles.buttontext}>
                         Back
                     </Text>
                 </Pressable>

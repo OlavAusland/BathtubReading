@@ -19,10 +19,11 @@ export const loginStyle = StyleSheet.create({
         backgroundColor: "#F6EEE0",
         color: '#000000',
         marginTop: 10,
-        height: "20%",
+        height: 40,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 10
+        borderRadius: 10,
+       
         
     },
     buttontext:{
