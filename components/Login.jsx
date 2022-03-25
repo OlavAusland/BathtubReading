@@ -33,6 +33,7 @@ export default function LoginPage({ navigation })
         <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1}}>
             <TextInput
                 style={loginStyle.input}
+                name = "Email"
                 onChangeText={updated => setEmail(updated)}/>
             <TextInput 
                 style={loginStyle.input}
