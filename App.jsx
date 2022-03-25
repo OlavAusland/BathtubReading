@@ -19,7 +19,7 @@ console.ignoredYellowBox = ['Setting a timer'];
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function Home()
+function BathubReading()
 {
   return(
     <Tab.Navigator initialRouteName='Profile'>
@@ -32,12 +32,11 @@ function Home()
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='GenrePage'>
-        <Stack.Screen name='BathubReading' component={Home}/>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
+        <Stack.Screen name='BathubReading' component={BathubReading}/>
         <Stack.Screen name='Book' component={BookPage}/>
         <Stack.Screen name='Login' component={LoginPage} />
         <Stack.Screen name='Register' component={RegisterPage}/>
-        <Stack.Screen name='GenrePage' component={GenrePage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

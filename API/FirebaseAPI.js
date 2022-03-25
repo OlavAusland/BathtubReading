@@ -1,4 +1,4 @@
-import { doc,  getDoc, getDocs, collection, setDoc, query, where} from 'firebase/firestore';
+import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy} from 'firebase/firestore';
 import { getAuth, updateProfile, updatePassword } from 'firebase/auth';
 import { db } from '../firebase-config.js'
 
@@ -21,9 +21,11 @@ export async function getFirebaseBook(isbn){
 export async function getFirebooksGenre(genre){
     const genreQuery = query(collection(db, 'Books'), where('genres', 'array-contains', genre))
     const querySnapchot = await getDocs(genreQuery);
-     querySnapchot.forEach((doc) => {
+    /*
+    querySnapchot.forEach((doc) => {
         console.log(doc.id, "=>", doc.data());
     });
+    */
     const books = querySnapchot.docs.map((doc) => ({...doc.data(), id: doc.id}))
     return books
 };
@@ -50,6 +52,14 @@ export async function getUserLibrary(uid)
         library.push({[key]: Array.from(new Set(result.data()['libraries'][key]))})
     })    
     return library
+}
+
+export async function getNewestFirebaseBooks()
+{
+    const bookQuery = query(collection(db, 'Books'), where('date', '>', '2004'), orderBy('date', 'desc'))
+    const querySnapshot = await getDocs(bookQuery);
+    const result = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+    return result
 }
 
 export async function updateUser(username)
