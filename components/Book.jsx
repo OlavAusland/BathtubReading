@@ -66,17 +66,6 @@ function BookPage({ route, navigation }) {
         getLists();
     }, []);
 
-
-    /*
-        useEffect(() => {
-            lists.forEach((elem) =>{
-                setChecked(prevState => prevState.set(elem, false))});
-        }, 
-      
-        [lists]);
-    */
-
-
     useEffect(() => {
         if (library !== undefined && library.size !== 0) {
             const updateChecked = () => {
