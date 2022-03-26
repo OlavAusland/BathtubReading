@@ -8,6 +8,7 @@ import ProfilePage from './components/Profile'
 import RegisterPage from './components/Register';
 import HomePage from './components/Home';
 import BookPage from './components/Book';
+import GenrePage from './components/GenrePage';
 import { TestPage } from './components/Test';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,7 +19,7 @@ console.ignoredYellowBox = ['Setting a timer'];
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function Home()
+function BathubReading()
 {
   return(
     <Tab.Navigator initialRouteName='Profile'>
@@ -32,7 +33,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
-        <Stack.Screen name='BathubReading' component={Home}/>
+        <Stack.Screen name='BathubReading' component={BathubReading}/>
         <Stack.Screen name='Book' component={BookPage}/>
         <Stack.Screen name='Login' component={LoginPage} />
         <Stack.Screen name='Register' component={RegisterPage}/>
