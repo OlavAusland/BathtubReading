@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { storage } from '../firebase-config.js';
 import { ref, uploadBytes } from 'firebase/storage';
-import { initFirebaseUser } from '../API/FirebaseAPI.js';
+import { initUser } from '../api/firebaseAPI.js';
 import { registersStyles } from '../styles/RegisterStyle';
 import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
@@ -55,7 +55,7 @@ export default function RegisterPage({ navigation }) {
                     const user = userCredential.user;
                     user.photoURL = user.uid + '_pp';
                     user.displayName = username;
-                    initFirebaseUser(user.uid);
+                    initUser(user.uid);
                     updateProfile(userCredential.user, { photoURL: user.photoURL, displayName: user.displayName })
                     uploadImage(user.photoURL)
                 })

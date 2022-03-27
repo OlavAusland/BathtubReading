@@ -4,8 +4,8 @@ import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updatePassword } from 'firebase/auth';
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
-import { getBook, setBook } from '../API/GoogleAPI'
-import { getFirebaseBooks, getFirebaseBook, getUserLibrary, updateUser } from '../API/FirebaseAPI'
+//import { getBook } from '../api/googleAPI'
+import { getBooks, getBook, getUserLibrary, updateUser } from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
 import { map, stringify } from '@firebase/util';
 import BookPage from './Book.jsx';
@@ -48,7 +48,7 @@ async function GetUserListsInformation(user)
         return Object.keys(list).map((key) => {
             let temp = [];
             [...Array(list[key].length).keys()].map((i) => {
-                temp.push(getFirebaseBook(list[key][i]))
+                temp.push(getBook(list[key][i]))
             })
             keys.push(key)
             isbnArray.set(key, temp)
@@ -93,7 +93,7 @@ export default function ProfilePage({ navigation })
 
     useEffect(async() => {
         const getMybooks = async () => {
-            const firebaseData = await getFirebaseBooks();
+            const firebaseData = await getBooks();
             return firebaseData;
           }
           const books = await getMybooks();

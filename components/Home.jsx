@@ -1,52 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import { getFirebooksGenre, getNewestFirebaseBooks, getBooksByKeyword} from '../API/FirebaseAPI'
+import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import * as firebaseApi from "../api/firebaseAPI";
+import { SearchResultsView } from "./home/SearchResultsView";
 
-function SearchResultsView(props)
-{
-    const [books, setBooks] = useState([]);
-
-    useEffect(async() => {
-        const result = await getBooksByKeyword(props.keyword)
-        setBooks(result);
-    }, [props.keyword])
-
-    useEffect(() => {console.log(books)}, [books])
-
-    if(books.length > 0)
-    {
-        return (
-            <ScrollView style={{flex:1, flexDirection:'column', backgroundColor:'#E4B7A0'}}>
-                {books.map((book, index) => {
-                    return(
-                        <View key={book + index} style={{flex:1, backgroundColor:'#F6EEE0', flexDirection:'row', marginTop:10, alignItems:'center'}}>
-                            <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
-                                <Image
-                                    style={{width:125, height:125, margin:10}}
-                                    source={{uri:book.imageURI}}
-                                />
-                            </TouchableOpacity>
-                            <View>
-                                <Text>Title: {book.title}</Text>
-                                <Text>ISBN: {book.isbn}</Text>
-                                <Text>Genre: {book.genres.join(',')}</Text>
-                            </View>
-                        </View>
-                    )
-                })}
-            </ScrollView>
-        );
-    }else{
-        return(
-            <View style={{justifyContent:'center', alignItems:'center'}}>
-                <Pressable style={{backgroundColor:'#FAB232', width:'50%', borderRadius:10, marginTop:25, justifyContent:'center', alignItems:'center'}}>
-                    <Text style={{fontSize:30}}>Add Book</Text>
-                </Pressable>
-            </View>
-        );
-    }
-}
 
 function DefaultHome(props)
 {
@@ -54,7 +10,7 @@ function DefaultHome(props)
     const [topTen, setTopTen] = useState([]);
     
     useEffect(async() => {
-        const result = await getNewestFirebaseBooks();
+        const result = await firebaseApi.getNewestBooks();
         setNewest(result);
     }, [])
     return(
@@ -74,7 +30,7 @@ function DefaultHome(props)
                                         source={{uri: book.imageURI}}
                                     />
                                 </TouchableOpacity>
-                                <Text style={{flex:1}} numberOfLines={5} adjustsFontSizeToFit>Computer Networking</Text>
+                                <Text style={{flex:1}} numberOfLines={5} adjustsFontSizeToFit>{book.title}</Text>
                             </View>
                         );
                     })}
@@ -92,7 +48,7 @@ function GenreHome(props)
 
     useEffect(() => {
         const getGenreBooks = async () =>{
-            const genreBookslist = await getFirebooksGenre(genre)
+            const genreBookslist = await firebaseApi.getBookGenre(genre)
             setGenreBooks(genreBookslist)
 
         }
@@ -113,7 +69,7 @@ function GenreHome(props)
                         </TouchableOpacity>
                         <View>
                             <Text>Title: {book.title}</Text>
-                            <Text>ISBN: {book.isbn}</Text>
+                            <Text>ISBN: {book.id}</Text>
                             <Text>Genre: {book.genres.join(',')}</Text>
                         </View>
                     </View>
@@ -128,12 +84,20 @@ export default function HomePage({ navigation }) {
     
     const [genre, setGenre] = useState('')
     const [displayGenre, setDisplayGenre] = useState(false);
-    const [searching, setSearching] = useState(true);
-    const [searchKeyword, setSearchKeyword] = useState('');
+    const [searching, setSearching] = useState(false);
+    const [books, setBooks] = useState();
 
-    const HandleGenreChange = (val) => {
-        if(genre == val){setDisplayGenre(false);setGenre('')}
+    const handleGenreChange = (val) => {
+        setSearching(false)
+        if(genre === val){setDisplayGenre(false);setGenre('')}
         else{setDisplayGenre(true);setGenre(val)}
+    }
+
+    const handleOnEndEditing = async(e) => {
+        console.log("Handleonediting: " + e.nativeEvent.text);
+        const bookquery = await firebaseApi.getBooksByKeyword(e.nativeEvent.text);
+        console.log("Books:" + books);
+        setBooks(bookquery)
     }
 
     return (
@@ -142,8 +106,8 @@ export default function HomePage({ navigation }) {
                 <View><Text style={{ fontSize: 50, marginLeft: 10}}> Discovery </Text></View>
                 <View style={{width:'55%',borderRadius:10, marginLeft:25, marginTop:10, backgroundColor:'#FFFFFF'}}>
                     <TextInput
-                        onEndEditing={(e) => {setSearchKeyword(e.nativeEvent.text);console.log(e.nativeEvent.text);getBooksByKeyword(e.nativeEvent.text);}}
-                        onPressIn={() => {setSearching(false)}}
+                        onEndEditing={(e) => handleOnEndEditing(e)}
+                        onPressIn={() => {setSearching(true)}}
                         placeholder="Search"
                     />
                 </View>
@@ -155,7 +119,7 @@ export default function HomePage({ navigation }) {
                             return (
                                 <View key={elem} style={{ alignItems: 'center', justifyContent: 'center' }}>
                                     <View style={styles.scrollButtons}>
-                                        <Button title={elem.toUpperCase()} color="#A45C40" onPress={() => {HandleGenreChange(elem);}} />
+                                        <Button title={elem.toUpperCase()} color="#A45C40" onPress={() => {handleGenreChange(elem);}} />
                                     </View>
                                 </View>
                             )
@@ -164,9 +128,9 @@ export default function HomePage({ navigation }) {
                 </ScrollView>
             </View>
             <View style={{ flex: 7, backgroundColor: "#F6EEE0" }}>
-                {(!displayGenre && !searching && false) && <DefaultHome navigation={navigation}/>}
-                {(displayGenre && !searching && false) && <GenreHome genre={genre} navigation={navigation}/>}
-                {true && <SearchResultsView keyword={searchKeyword}/>}
+                {(!displayGenre && !searching ) && <DefaultHome navigation={navigation}/>}
+                {(displayGenre && !searching ) && <GenreHome genre={genre} navigation={navigation}/>}
+                {(searching) && <SearchResultsView books={books} />} 
             </View>
         </View>
     );

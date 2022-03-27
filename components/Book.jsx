@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, ScrollView } from 'react-native';
-import { getBook } from '../API/GoogleAPI.js';
-import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
-import { AddToListModal } from './AddToListModal.jsx';
-import { setDoc, updateDoc, doc, deleteField, arrayRemove, arrayUnion} from 'firebase/firestore';
-import { db } from '../firebase-config'
-import { bookStyles } from '../styles/BookStyles.jsx';
+//import { getBook } from '../api/googleAPI';
+import * as firebaseApi from "../api/firebaseAPI";
+import * as googleApi from "../api/googleAPI";
+import { AddToListModal } from './AddToListModal';
+import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
+import { Rating } from "react-native-ratings";
 
 function BookPage({ route, navigation }) {
 
@@ -14,17 +14,17 @@ function BookPage({ route, navigation }) {
     const { isbn } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
-    const [addList, setAddList] = useState([]);
     const [checked, setChecked] = useState(new Map());
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
     const [library, setLibrary] = useState(new Map());
+    const [userRating, setUserRating] = useState(0);
 
 
     useEffect(() => {
         const getMybook = async () => {
-            const data = await getBook(isbn).then(setLoading(false));
-            const firebaseData = await getFirebaseBook(isbn);
+            const data = await googleApi.getBook(isbn).then(setLoading(false));
+            const firebaseData = await firebaseApi.getBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
@@ -52,7 +52,7 @@ function BookPage({ route, navigation }) {
         }
 
         const getLists = async (uid = user.uid) => {
-            const fetchedLibrary = await getUserLibrary(user.uid);
+            const fetchedLibrary = await firebaseApi.getUserLibrary(user.uid);
             setLibrary(fetchedLibrary)
 
             const categories = fetchedLibrary.map((item) => {
@@ -62,28 +62,34 @@ function BookPage({ route, navigation }) {
             setLists(categories);
 
         }
+
+        const getUserRating = async () => {
+            const rating = await firebaseApi.getUserRating(isbn, user);
+            setUserRating(rating);
+        }
+
         getMybook();
         getLists();
+        getUserRating();
     }, []);
 
     useEffect(() => {
-        if (library !== undefined && library.size !== 0) {
-            const updateChecked = () => {
-                library.forEach((elem) => {
-                    const name = Object.getOwnPropertyNames(elem)[0];
-                    const values = elem[name]
-                    let existsInCategory = false;
+        const updateChecked = () => {
+            library.forEach((elem) => {
+                const name = Object.getOwnPropertyNames(elem)[0];
+                const values = elem[name]
+                let existsInCategory = false;
 
-                    if (values.includes(isbn)) {
-                        existsInCategory = true;
-                    }
+                if (values.includes(isbn)) {
+                    existsInCategory = true;
+                }
 
-                    setChecked(prevState => prevState.set(name, existsInCategory))
-                });
-            }
-            if (library !== undefined && library.length !== 0) {
-                updateChecked();
-            }
+                setChecked(prevState => prevState.set(name, existsInCategory))
+            });
+        }
+
+        if (library !== undefined && library.length !== 0) {
+            updateChecked();
         }
     }, [library, lists]);
 
@@ -94,14 +100,17 @@ function BookPage({ route, navigation }) {
 
 
     const handleAddButton = () => {
-        setAddList([])
-        checked.forEach((val, key) => { if (Boolean(val)) { setAddList(prev => Array.from(new Set([...prev, key]))) } })
-        addList.forEach((val) => {
-            setDoc(doc(db, 'Users', user.uid), {'libraries':{[val]:arrayUnion(isbn)}}, {merge:true})
-        })
-        lists.filter(val => !addList.includes(val)).forEach((key) => {
-            setDoc(doc(db, 'Users', user.uid), { 'libraries': { [key]: arrayRemove(isbn) } }, { merge: true })
-        })
+        checked.forEach((val, key) => {
+            if (val === true) {
+                firebaseApi.addBookToUserLibrary(user, key, isbn);
+            } else {
+                firebaseApi.removeBookFromUserLibrary(user, key, isbn);
+            }
+        });
+    }
+
+    const handleRating = (val) => {
+        firebaseApi.addRating(user, isbn, val)
     }
 
     if (mybook != null && !loading) {
@@ -152,7 +161,14 @@ function BookPage({ route, navigation }) {
                         </Text>
                         <Text style={bookStyles.bookRating}>{'\n'}{'\n'}
                             <Text style={{ fontWeight: "bold" }}>Rating: </Text>
-                            <Text>{mybook.rating}</Text>
+                            <Rating
+                                type='star'
+                                ratingCount={5}
+                                imageSize={60}
+                                showRating
+                                startingValue={userRating}
+                                onFinishRating={handleRating}
+                            />
                         </Text>
 
                     </View>

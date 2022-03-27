@@ -1,15 +1,10 @@
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import { db } from "./firebase-config";
-import { useEffect, useState } from "react";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { StyleSheet } from 'react-native';
 
 import LoginPage from './components/Login'
 import ProfilePage from './components/Profile'
 import RegisterPage from './components/Register';
 import HomePage from './components/Home';
 import BookPage from './components/Book';
-import GenrePage from './components/GenrePage';
-import { TestPage } from './components/Test';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
