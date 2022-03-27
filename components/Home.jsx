@@ -23,7 +23,6 @@ export default function HomePage({ navigation }) {
     const handleOnEndEditing = async(e) => {
         console.log("Handleonediting: " + e.nativeEvent.text);
         const bookquery = await firebaseApi.getBooksByKeyword(e.nativeEvent.text);
-        console.log("Books:" + books);
         setBooks(bookquery)
     }
 

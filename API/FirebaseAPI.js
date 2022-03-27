@@ -85,9 +85,13 @@ export async function getBooksByKeyword(keyword)
 {
     const booksRef = collection(db, "Books");
 
-    const querySnapshot = await getDocs(booksRef);
-    const result = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
-    return result;
+    const books = await getDocs(booksRef);
+    const result = books.docs.map((doc) => ({...doc.data(), id: doc.id}));
+
+    let queriedBooks = []
+    
+    result.map((book) => {if(book.title.includes(keyword)){queriedBooks.push(book)}})
+    return queriedBooks;
 }
 
 export async function updateUser(username)
