@@ -4,7 +4,10 @@ import { bookStyles } from '../../styles/BookStyles.jsx';
 
 export const AddToListModal = (props) => {
     if (props.lists === undefined || props.checked === undefined) {
-        return <div>Fakk off</div>
+        return (
+        <View>
+            <Text>Ops.... Something vent wrong</Text>
+        </View>)
     }
 
     return (

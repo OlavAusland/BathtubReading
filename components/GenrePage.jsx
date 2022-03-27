@@ -54,6 +54,8 @@ const GenrePage = props => {
 
 // COLORS: Cream: #F6EE0, Peach: #E4B7A0, Desert Sun: #A45C40, Coral: #C38370
 
+E3CAA5
+
 const styles = StyleSheet.create({
     Container:{
         padding: 24,

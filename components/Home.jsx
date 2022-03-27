@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import { Text, View, Button,TextInput, ScrollView, } from 'react-native';
+import { Text, View, Button,TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import * as firebaseApi from "../api/firebaseAPI";
 import { SearchResultsView } from "./home/SearchResultsView";
 import { GenreView} from "./home/GenreView"
@@ -62,8 +62,6 @@ export default function HomePage({ navigation }) {
         </View>
     );
 }
-
-
 
 
 
