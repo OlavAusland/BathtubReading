@@ -3,7 +3,7 @@ import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 //import { getBook } from '../api/googleAPI';
 import * as firebaseApi from "../api/firebaseAPI";
 import * as googleApi from "../api/googleAPI";
-import { AddToListModal } from './AddToListModal';
+import { AddToListModal } from './books/AddToListModal';
 import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
 import { Rating } from "react-native-ratings";
