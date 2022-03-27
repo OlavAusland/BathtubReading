@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 //import { getBook } from '../api/googleAPI';
+<<<<<<< HEAD
 import * as firebaseApi from "../API/FirebaseAPI";
 import * as googleApi from "../API/GoogleAPI";
 import { AddToListModal } from './AddToListModal';
+=======
+import * as firebaseApi from "../api/firebaseAPI";
+import * as googleApi from "../api/googleAPI";
+import { AddToListModal } from './books/AddToListModal';
+>>>>>>> origin/8-create-navbar
 import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
 import { Rating } from "react-native-ratings";
