@@ -1,8 +1,6 @@
 import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy, getApp} from 'firebase/firestore';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { db, app } from '../firebase-config.js'
-import { async } from '@firebase/util';
-
 
 export const addBook = async(isbn, book) => {
     //console.log(data);
@@ -87,8 +85,7 @@ export async function getBooksByKeyword(keyword)
 {
     const booksRef = collection(db, "Books");
 
-    const bookQuery = query(booksRef, where('title', '==', keyword));
-    const querySnapshot = await getDocs(bookQuery);
+    const querySnapshot = await getDocs(booksRef);
     const result = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
     return result;
 }

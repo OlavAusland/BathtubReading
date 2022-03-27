@@ -5,9 +5,8 @@ import { getAuth, signOut, updatePassword } from 'firebase/auth';
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
 //import { getBook } from '../api/googleAPI'
-import { getBooks, getBook, getUserLibrary, updateUser } from '../api/firebaseAPI'
+import { getBooks, getBook, getUserLibrary, updateUser } from '../API/FirebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
-import { map, stringify } from '@firebase/util';
 import BookPage from './Book.jsx';
 
 function DisplayUserLists(library)

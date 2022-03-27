@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, ScrollView } from 'react-native';
 //import { getBook } from '../api/googleAPI';
-import * as firebaseApi from "../api/firebaseAPI";
-import * as googleApi from "../api/googleAPI";
+import * as firebaseApi from "../API/FirebaseAPI";
+import * as googleApi from "../API/GoogleAPI";
 import { AddToListModal } from './AddToListModal';
 import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
