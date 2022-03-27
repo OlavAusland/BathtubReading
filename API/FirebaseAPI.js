@@ -1,6 +1,7 @@
-import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy} from 'firebase/firestore';
+import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy, startAt, limit, endAt} from 'firebase/firestore';
 import { getAuth, updateProfile, updatePassword } from 'firebase/auth';
 import { db } from '../firebase-config.js'
+import { FireSQL } from 'firesql';
 
 export async function getFirebaseBooks(){
     const data = await getDocs(collection(db, 'Books'));
@@ -64,7 +65,10 @@ export async function getNewestFirebaseBooks()
 
 export async function getBooksByKeyword(keyword)
 {
-    const bookQuery = query(collection(db, 'Books'), where('title', 'contains', keyword))
+    const fireSQL = new FireSQL(collection( 'Users', '9783319195957'));
+    console.log(fireSQL.query(`SELECT * FROM Books WHERE title = 'Computer Networking'`))
+
+    const bookQuery = query(collection(db, 'Books'), where('title', '>=', keyword))
     const querySnapshot = await getDocs(bookQuery);
     const result = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
     return result;
