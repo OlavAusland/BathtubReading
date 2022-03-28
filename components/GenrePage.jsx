@@ -23,9 +23,7 @@ const GenrePage = props => {
         alert("bitch ass hoe")
     }
 
-
     return(
-        
         <ScrollView style={styles.Container}>
             <Text style={styles.Title}>{genre}</Text>
             <View style={styles.Booklisting}>
