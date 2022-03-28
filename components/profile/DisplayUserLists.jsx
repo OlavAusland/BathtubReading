@@ -3,16 +3,17 @@ import { profileStyle } from '../../styles/ProfileStyles';
 
 export const DisplayUserLists = (library, navigation) => 
 {
+    console.log(navigation)
     return [...Array.from(library.keys())].map((key) => {
         return(
             <View key={ Math.random().toString(36).substr(2, 9)}>
                 <Text style={{fontWeight:'bold', fontSize:20, marginTop: 20}}>{key.toUpperCase()}</Text>
                 <ScrollView horizontal={true}>
-                    {library.get(key).map((book, index) => {
-                        if(book == undefined){return;}
+                    {library && library.get(key).map((book, index) => {
+                        if(book === undefined){return;}
                         return(
                             <View key={`${key}-${index}`}>
-                                <TouchableOpacity onPress={() => navigation.navigate('Book', {navigation:navigation})}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Book', {isbn:book.id, book})}>
                                     <Image
                                         style={profileStyle.image}
                                         source={book.imageURI !==' '? {uri: book.imageURI} : require('../../assets/Images/NoImage.jpg')}

@@ -7,11 +7,9 @@ import { getDownloadURL, ref} from 'firebase/storage';
 //import { getBook } from '../api/googleAPI'
 import { getBooks, updateUser } from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
-import BookPage from './Book.jsx';
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal } from './profile/ProfileModal.jsx';
-import { homeStyles } from '../styles/HomeStyles.jsx';
 
 
 export default function ProfilePage({ navigation })
@@ -27,7 +25,8 @@ export default function ProfilePage({ navigation })
     useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
         const userBooks = await GetUserListsInformation(user);
-        setLibrary(userBooks)
+        setLibrary(userBooks);
+        console.log(library);
     }, [user]);
 
     useEffect(async() => {
@@ -37,15 +36,7 @@ export default function ProfilePage({ navigation })
           }
           const books = await getMybooks();
 
-    }, []); 
-
-    useEffect(async() => {
-        const getLibrary = async() => {
-            const result = await getDocs(collection(db, "Books"));
-            const data = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
-        };
-        getLibrary();
-    }, [])
+    }, []);
     
     useEffect(() => {
         if(logout)
@@ -83,32 +74,6 @@ export default function ProfilePage({ navigation })
                 </View>
                 <View style={profileStyle.content}>
                 <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
-                    
-           {/*      
-                    <View style={{flex:6, width:'90%'}}>
-                    <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
-
-                        <Text style={{fontWeight:'bold', fontSize:20}}>FAVORITES:</Text>
-                        <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {library.size > 0 && 
-                                library.get('favorites').map((obj, index) => {
-                                    console.log('bilde', obj.imageURI)
-                                    if(obj != undefined)
-                                    {
-                                        return(
-                                            <View key={'book-' + index}>
-                                                <Image
-                                                    style={profileStyle.image}
-                                                    source={obj.imageURI !== ' ' ? {uri: obj.imageURI} : require('../assets/Images/NoImage.jpg')}/>
-                                                <Text style={{marginLeft: 5, marginTop: 2, width:100 }}>{obj.title ? obj.title: 'Unknown'}</Text>
-                                            </View>
-                                        )
-                                    }
-                                })
-                            }
-                        </ScrollView>
-                    </View>
-                    <View style={{flex:1}}></View> */}
                     <View style={{flex:4,width:'90%'}}>
                         <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
                             {DisplayUserLists(library, navigation)}

@@ -21,7 +21,6 @@ export default function BookPage({ route }) {
     const [userRating, setUserRating] = useState(0);
 
     useEffect(async() => {
-        console.log(isbn)
         await firebaseApi.getBook(isbn).then((getRes) => {
             if(getRes == undefined)
             {
