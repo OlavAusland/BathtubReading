@@ -88,10 +88,12 @@ export default function ProfilePage({ navigation })
                                 library.get('favorites').map((obj, index) => {
                                     return(
                                         <View key={'book-' + index}>
-                                            <Image
-                                                style={profileStyle.image}
-                                                source={{uri:obj.imageURI}}
-                                            />
+                                            {obj.imageURI?
+                                            <Image source={{ uri:obj.imageURI }} style={[profileStyle.image]} />
+                                            : <Image
+                                                style={[profileStyle.image]}
+                                                source={'../assets/Images/NoImage.jpg'}
+                                            />}
                                             <Text>{obj.title}</Text>
                                         </View>
                                     )

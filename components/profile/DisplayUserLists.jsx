@@ -13,10 +13,11 @@ export const DisplayUserLists = (library) =>
                         return(
                             <View key={`${key}-${index}`}>
                                 <TouchableOpacity onPress={() => navigation.navigate('Book')}>
-                                    <Image
-                                        style={profileStyle.image}
-                                        source={{uri:book.imageURI}}
-                                    />
+                                <Image source={{ uri:obj.imageURI }} style={[profileStyle.image]} />
+                                            : <Image
+                                                style={[profileStyle.image]}
+                                                source={'../assets/Images/NoImage.jpg'}
+                                            />
                                 </TouchableOpacity>
                                 <Text style={{overflow:'hidden'}}>{book.title}</Text>
                             </View>

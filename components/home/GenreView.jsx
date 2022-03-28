@@ -1,6 +1,6 @@
 import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react';
-import * as firebaseApi from "../../API/FirebaseAPI";
+import * as firebaseApi from "../../api/firebaseAPI";
 
 export const GenreView = (props) =>
 {
@@ -24,10 +24,12 @@ export const GenreView = (props) =>
                 return(
                     <View key={book + index} style={{flex:1, backgroundColor:'#F6EEE0', flexDirection:'row', marginTop:10, alignItems:'center'}}>
                         <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
-                            <Image
-                                style={{width:125, height:125, margin:10}}
-                                source={{uri:book.imageURI}}
-                            />
+                           <Image source={{ uri:book.imageURI }} style={{width:125, height:125, margin:10}} />
+                                : <Image
+                                    style={{width:125, height:125, margin:10}}
+                                    source={'../assets/Images/NoImage.jpg'}
+                                />;
+
                         </TouchableOpacity>
                         <View>
                             <Text>Title: {book.title}</Text>

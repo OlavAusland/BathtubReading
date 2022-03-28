@@ -1,7 +1,7 @@
 import { Text, View,  Image,  ScrollView, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { homeStyles } from '../../styles/HomeStyles';
-import * as firebaseApi from "../../API/FirebaseAPI";
+import * as firebaseApi from "../../api/firebaseAPI";
 
 export const DefaultHome = (props) =>
 {
@@ -24,11 +24,12 @@ export const DefaultHome = (props) =>
                         return(
                             <View key={book + index} style={{flexDirection:'row'}}>
                                 <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
-                                    <Image
-                                        style={{flex:1, height:100, width:100}}
-                                        source={{uri: book.imageURI}}
-                                    />
-                                </TouchableOpacity>
+                                   <Image source={{ uri:book.imageURI }} style={{flex:1, height:100, width:100}} />
+                                        : <Image
+                                            style={{flex:1, height:100, width:100}}
+                                            source={'../assets/Images/NoImage.jpg'}
+                                        />;
+                            </TouchableOpacity>
                                 <Text style={{flex:1}} numberOfLines={5} adjustsFontSizeToFit>{book.title}</Text>
                             </View>
                         );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
-import * as firebaseApi from "../API/FirebaseAPI.js";
+import * as firebaseApi from "../api/firebaseAPI.js";
 import { SearchResultsView } from "./home/SearchResultsView";
 import { GenreView} from "./home/GenreView"
 import { DefaultHome } from './home/DefaultView';

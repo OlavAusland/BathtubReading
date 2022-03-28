@@ -9,7 +9,7 @@ export const addBook = async(isbn, book) => {
         title: book.items[0].volumeInfo.title,
         genres: book.items[0].volumeInfo.categories,
         date: book.items[0].volumeInfo.publishedDate,
-        imageURI: book.items[0].volumeInfo.imageLinks.thumbnail? book.items[0].volumeInfo.imageLinks.thumbnail : undefined
+        imageURI: book.items[0].volumeInfo.imageLinks.thumbnail ? book.items[0].volumeInfo.imageLinks.thumbnail : ''
     });
 }
 
@@ -21,19 +21,16 @@ export const removeBookFromUserLibrary = async(user, library, isbn) => {
     setDoc(doc(db, 'Users', user.uid), { 'libraries': { [library]: arrayRemove(isbn) }}, { merge: true })
 };
 
-
 export const getBooks = async() => {
     const data = await getDocs(collection(db, 'Books'));
     const books = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
     return books
 };
 
-
 export const getBook = async(isbn) =>{
     const book = await getDoc(doc(db, 'Books', isbn));
     return book.data()
     };
-
 
 export const getBookGenre = async(genre) => {
     const genreQuery = query(collection(db, 'Books'), where('genres', 'array-contains', genre))
@@ -41,7 +38,6 @@ export const getBookGenre = async(genre) => {
     const books = querySnapchot.docs.map((doc) => ({...doc.data(), id: doc.id}))
     return books
 };
-
 
 export const getUserInfo = async() => {
     const user = getAuth().currentUser;
