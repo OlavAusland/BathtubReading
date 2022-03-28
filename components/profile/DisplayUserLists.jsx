@@ -10,16 +10,16 @@ export const DisplayUserLists = (library) =>
                 <Text style={{fontWeight:'bold', fontSize:30}}>{key.toUpperCase()}</Text>
                 <ScrollView horizontal={true}>
                     {library.get(key).map((book, index) => {
+                        if(book == undefined){return;}
                         return(
                             <View key={`${key}-${index}`}>
                                 <TouchableOpacity onPress={() => navigation.navigate('Book')}>
-                                <Image source={{ uri:obj.imageURI }} style={[profileStyle.image]} />
-                                            : <Image
-                                                style={[profileStyle.image]}
-                                                source={'../assets/Images/NoImage.jpg'}
-                                            />
+                                    <Image
+                                        style={profileStyle.image}
+                                        //source={book.imageURI ? {uri:book.imageURI} : '../assets/Images/NoImage.png'}
+                                    />
                                 </TouchableOpacity>
-                                <Text style={{overflow:'hidden'}}>{book.title}</Text>
+                                <Text style={{overflow:'hidden'}}>{book.title ? book.title : ''}</Text>
                             </View>
                             
                         );

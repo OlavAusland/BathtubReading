@@ -24,12 +24,10 @@ export const DefaultHome = (props) =>
                         return(
                             <View key={book + index} style={{flexDirection:'row'}}>
                                 <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
-                                   <Image source={{ uri:book.imageURI }} style={{flex:1, height:100, width:100}} />
-                                        : <Image
-                                            style={{flex:1, height:100, width:100}}
-                                            source={'../assets/Images/NoImage.jpg'}
-                                        />;
-                            </TouchableOpacity>
+                                    <Image
+                                        style={{flex:1, height:100, width:100}}
+                                    />
+                                </TouchableOpacity>
                                 <Text style={{flex:1}} numberOfLines={5} adjustsFontSizeToFit>{book.title}</Text>
                             </View>
                         );

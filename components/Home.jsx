@@ -20,6 +20,17 @@ export default function HomePage({ navigation }) {
         else{setDisplayGenre(true);setGenre(val)}
     }
 
+    const handleSearch = () => {
+        setSearching(true)
+        setDisplayGenre(false)
+        setGenre('')
+    }
+
+    const handleSearchResults = (books) => {
+        setBooks(books)
+        setSearching(false)
+    }
+
     const handleOnEndEditing = async(e) => {
         console.log("Handleonediting: " + e.nativeEvent.text);
         const bookquery = await firebaseApi.getBooksByKeyword(e.nativeEvent.text);
