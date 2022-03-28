@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, ScrollView } from 'react-native';
-//import { getBook } from '../api/googleAPI';
 import * as firebaseApi from "../api/firebaseAPI";
 import * as googleApi from "../api/googleAPI";
-import { AddToListModal } from './books/AddToListModal';
+import { AddToListModal } from './book/AddToListModal';
 import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
 import { Rating } from "react-native-ratings";
 
-function BookPage({ route, navigation }) {
+export default function BookPage({ route }) {
 
     const user = getAuth().currentUser;
     const { isbn } = route.params;
@@ -29,7 +28,7 @@ function BookPage({ route, navigation }) {
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
                     style={[bookStyles.bookimage]}
-                    source={require('../assets/Images/NoImage.jpg')}
+                    source={'../assets/Images/NoImage.jpg'}
                 />;
 
 
@@ -83,7 +82,6 @@ function BookPage({ route, navigation }) {
                 if (values.includes(isbn)) {
                     existsInCategory = true;
                 }
-
                 setChecked(prevState => prevState.set(name, existsInCategory))
             });
         }
@@ -208,6 +206,3 @@ function BookPage({ route, navigation }) {
         );
     }
 }
-
-
-export default BookPage
