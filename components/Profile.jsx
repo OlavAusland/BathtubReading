@@ -82,8 +82,13 @@ export default function ProfilePage({ navigation })
                     </Pressable>
                 </View>
                 <View style={profileStyle.content}>
+                <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
+                    
+           {/*      
                     <View style={{flex:6, width:'90%'}}>
-                        <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>
+                    <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
+
+                        <Text style={{fontWeight:'bold', fontSize:20}}>FAVORITES:</Text>
                         <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
                             {library.size > 0 && 
                                 library.get('favorites').map((obj, index) => {
@@ -94,9 +99,8 @@ export default function ProfilePage({ navigation })
                                             <View key={'book-' + index}>
                                                 <Image
                                                     style={profileStyle.image}
-                                                    source={obj.imageURI !== ' ' ? {uri: obj.imageURI} : require('../assets/Images/NoImage.jpg')}
-                                                />
-                                                <Text>{obj.title ? obj.title: 'Unknown'}</Text>
+                                                    source={obj.imageURI !== ' ' ? {uri: obj.imageURI} : require('../assets/Images/NoImage.jpg')}/>
+                                                <Text style={{marginLeft: 5, marginTop: 2, width:100 }}>{obj.title ? obj.title: 'Unknown'}</Text>
                                             </View>
                                         )
                                     }
@@ -104,9 +108,9 @@ export default function ProfilePage({ navigation })
                             }
                         </ScrollView>
                     </View>
-                    <View style={{flex:1}}></View>
-                    <View style={{flex:3,width:'90%'}}>
-                        <ScrollView style={{borderWidth:2}}horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                    <View style={{flex:1}}></View> */}
+                    <View style={{flex:4,width:'90%'}}>
+                        <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
                             {DisplayUserLists(library, navigation)}
                         </ScrollView>
                     </View>

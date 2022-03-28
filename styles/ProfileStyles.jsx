@@ -48,18 +48,17 @@ export const profileStyle = StyleSheet.create({
         overflow:'hidden',
         backgroundColor:'#F6EEE0',
         shadowColor:'black',
-        height:10,
+        height:20,
         shadowOffset:{height:3, width:1},
         shadowOpacity:1,
-        elevation:2,
-        borderBottomWidth:1,
-        borderWidth:2   
+    
     },
     image:{
-        width:150,
-        height:150,
+        width:140,
+        height:140,
         borderRadius:5,
-        backgroundColor:'black'
+        backgroundColor:'black',
+        margin: 7
     },
     card:{
         backgroundColor:"#F6EEE0",

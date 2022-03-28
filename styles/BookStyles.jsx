@@ -5,7 +5,8 @@ export const bookStyles = StyleSheet.create({
         marginTop: '9%',
         padding: '3%',
         backgroundColor: "#F6EEE0",
-        fontSize: 80
+        fontSize: 80,
+        width:'100%'
     },
     booktitle: {
         fontSize: 60,
