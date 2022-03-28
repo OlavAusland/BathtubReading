@@ -9,7 +9,7 @@ import { getBooks, updateUser } from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
 import BookPage from './Book.jsx';
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
-import { GetUserListsInformation } from './profile/GetUserListsInformation.jsx';
+import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal } from './profile/ProfileModal.jsx';
 
 
@@ -106,7 +106,7 @@ export default function ProfilePage({ navigation })
                     <View style={{flex:1}}></View>
                     <View style={{flex:3,width:'90%'}}>
                         <ScrollView style={{borderWidth:2}}horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                            {DisplayUserLists(library)}
+                            {DisplayUserLists(library, navigation)}
                         </ScrollView>
                     </View>
                 </View>
