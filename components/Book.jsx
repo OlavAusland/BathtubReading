@@ -21,11 +21,8 @@ export default function BookPage({ route }) {
 
 
     useEffect(() => {
-        const getMybook = async () => {
-
-            
+        const getMybook = async () => {         
             const data = await googleApi.getBook(isbn).then(setLoading(false));
-          
             const firebaseData = await firebaseApi.getBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />

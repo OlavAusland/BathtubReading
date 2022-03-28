@@ -16,7 +16,7 @@ export const DisplayUserLists = (library) =>
                                 <TouchableOpacity onPress={() => navigation.navigate('Book')}>
                                     <Image
                                         style={profileStyle.image}
-                                        source={obj.image ? {uri: obj.image} : '../assets/Images/NoImage.jpg'}
+                                        source={book.imageURI !==' '? {uri: book.imageURI} : require('../../assets/Images/NoImage.jpg')}
                                     />
                                 </TouchableOpacity>
                                 <Text style={{overflow:'hidden'}}>{book.title ? book.title : ''}</Text>

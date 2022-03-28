@@ -86,13 +86,14 @@ export default function ProfilePage({ navigation })
                         <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
                             {library.size > 0 && 
                                 library.get('favorites').map((obj, index) => {
+                                    console.log('bilde', obj.imageURI)
                                     if(obj != undefined)
                                     {
                                         return(
                                             <View key={'book-' + index}>
                                                 <Image
                                                     style={profileStyle.image}
-                                                    source={obj.image ? {uri: obj.image} : '../assets/Images/NoImage.jpg'}
+                                                    source={obj.imageURI !== ' ' ? {uri: obj.imageURI} : require('../assets/Images/NoImage.jpg')}
                                                 />
                                                 <Text>{obj.title ? obj.title: 'Unknown'}</Text>
                                             </View>

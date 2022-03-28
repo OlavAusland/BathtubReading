@@ -1,4 +1,4 @@
-import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy, getApp} from 'firebase/firestore';
+import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy, arrayUnion, arrayRemove} from 'firebase/firestore';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { db } from '../firebase-config.js'
 
