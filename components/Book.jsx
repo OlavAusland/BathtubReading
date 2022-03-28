@@ -165,7 +165,6 @@ export default function BookPage({ route }) {
                             <Text>{mybook.description}</Text>
                         </Text>
                         <Text style={bookStyles.bookRating}>{'\n'}{'\n'}
-                            <Text style={{ fontWeight: "bold" }}>Rating: </Text>
                             <Rating
                                 type='star'
                                 ratingCount={5}
@@ -173,6 +172,9 @@ export default function BookPage({ route }) {
                                 showRating
                                 startingValue={userRating}
                                 onFinishRating={handleRating}
+                                tintColor ='#E4B7A0'
+                                ratingTextColor = '#000000'
+                                fractions = {1}
                             />
                         </Text>
 
