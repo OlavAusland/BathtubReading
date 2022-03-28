@@ -1,4 +1,4 @@
-import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy, arrayUnion, arrayRemove} from 'firebase/firestore';
+import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy,  getApp,  arrayUnion, arrayRemove} from 'firebase/firestore';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { db } from '../firebase-config.js'
 
@@ -75,7 +75,7 @@ export const getNewestBooks = async() => {
     const bookQuery = query(collection(db, 'Books'), where('date', '>', '2004'), orderBy('date', 'desc'))
     const querySnapshot = await getDocs(bookQuery);
     const result = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
-    return result
+    return result.slice(0, 25);
 }
 
 export const updateUser = async(username) => {

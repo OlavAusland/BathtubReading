@@ -11,6 +11,7 @@ import BookPage from './Book.jsx';
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal } from './profile/ProfileModal.jsx';
+import { homeStyles } from '../styles/HomeStyles.jsx';
 
 
 export default function ProfilePage({ navigation })
@@ -75,13 +76,13 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontSize:18, color:'white'}}>{user.email}</Text>
                     </View>
                 </View>
-                 <View style={profileStyle.settings}>
-                    <Pressable onPress={() => setModalVisible(true)} style={profileStyle.settingsButton}>
+                <View style={{ flex:1, width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
+                    <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
                 </View>
                 <View style={profileStyle.content}>
-                    <View style={{flex:3, width:'90%'}}>
+                    <View style={{flex:6, width:'90%'}}>
                         <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>
                         <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
                             {library.size > 0 && 

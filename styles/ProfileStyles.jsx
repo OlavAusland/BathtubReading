@@ -2,10 +2,9 @@ import { StyleSheet } from "react-native"
 
 export const profileStyle = StyleSheet.create({
     header:{
-        flex: 1, 
+        flex: 3, 
         flexDirection:'row', 
         justifyContent:'center', 
-        paddingTop:25,
         backgroundColor:"#194a50",
         width:'100%',
     },
@@ -22,7 +21,8 @@ export const profileStyle = StyleSheet.create({
     },
     settings:{
         flexDirection:'row',
-        overflow:'hidden'
+        overflow:'hidden',
+        padding:5
     },
     settingsButton:{
         flex:1,
@@ -40,7 +40,7 @@ export const profileStyle = StyleSheet.create({
     content:{
         overflow:'hidden',
         width:'100%',
-        flex: 3,
+        flex: 9,
         alignItems:'center',
         backgroundColor:"#F6EEE0",
     },

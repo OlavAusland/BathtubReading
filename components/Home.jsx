@@ -21,34 +21,24 @@ export default function HomePage({ navigation }) {
         else{setDisplayGenre(true);setGenre(val)}
     }
 
-    const handleSearch = () => {
-        setSearching(true)
-        setDisplayGenre(false)
-        setGenre('')
-    }
-
-    const handleSearchResults = (books) => {
-        setBooks(books)
-        setSearching(false)
-    }
-
-    const handleOnEndEditing = async(e) => {
-        setSearchKeyword(e.nativeEvent.text);
+    const handleSearch = (event) => {
+        setSearchKeyword(event.nativeEvent.text);
+        setSearching(searchKeyword.length > 0);
     }
 
     return (
         <View style={[homeStyles.container, { flexDirection: 'column' }]}>
-            <View style={{ flex: 3, backgroundColor: "#194a50", borderBottomColor: 'black', borderBottomWidth: 1 }}>
+            <View style={{ flex: 3, backgroundColor: "#194a50", borderBottomColor: 'black'}}>
                 <View><Text style={{ fontSize: 50, marginLeft: 10, color: 'white'}}> Discovery </Text></View>
                 <View style={{width:'55%',borderRadius:10, marginLeft:25, marginTop:10, backgroundColor:'#FFFFFF'}}>
                     <TextInput
-                        onEndEditing={(e) => setSearchKeyword(e.nativeEvent.text)}
+                        onEndEditing={(e) => handleSearch(e)}
                         onPressIn={() => {setSearching(true)}}
                         placeholder="Search"
                     />
                 </View>
             </View>
-            <View style={{ flex: 1, backgroundColor: "#FFFFFF", borderBottomColor: 'black', borderBottomWidth: 1 }}>
+            <View style={{ flex:1, backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
                 <ScrollView style={homeStyles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
                     {
                         ['Computers', 'Science','Classic','Horror','Fantasy', 'Romance', 'Non-Fiction'].map((elem, index) => {
@@ -63,7 +53,7 @@ export default function HomePage({ navigation }) {
                     }
                 </ScrollView>
             </View>
-            <View style={{ flex: 7, backgroundColor: "#194a50" }}>
+            <View style={{ flex: 9, backgroundColor: "#194a50" }}>
                 {(!displayGenre && !searching ) && <DefaultHome navigation={navigation}/>}
                 {(displayGenre && !searching ) && <GenreView genre={genre} navigation={navigation}/>}
                 {(searching) && <SearchResultsView books={books} navigation={navigation} keyword={searchKeyword}/>} 
