@@ -71,8 +71,8 @@ export default function ProfilePage({ navigation })
                         />
                     </View>
                     <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>
-                        <Text style={{fontWeight:'bold', fontSize:24}}>{user.displayName}</Text>
-                        <Text style={{fontSize:18}}>{user.email}</Text>
+                        <Text style={{fontWeight:'bold', fontSize:24, color:'white'}}>{user.displayName}</Text>
+                        <Text style={{fontSize:18, color:'white'}}>{user.email}</Text>
                     </View>
                 </View>
                  <View style={profileStyle.settings}>

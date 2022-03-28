@@ -6,7 +6,7 @@ export const profileStyle = StyleSheet.create({
         flexDirection:'row', 
         justifyContent:'center', 
         paddingTop:25,
-        backgroundColor:"#A45C40",
+        backgroundColor:"#194a50",
         width:'100%',
     },
     container:{
@@ -42,7 +42,7 @@ export const profileStyle = StyleSheet.create({
         width:'100%',
         flex: 3,
         alignItems:'center',
-        backgroundColor:"#E4B7A0",
+        backgroundColor:"#F6EEE0",
     },
     list:{
         overflow:'hidden',
@@ -62,7 +62,7 @@ export const profileStyle = StyleSheet.create({
         backgroundColor:'black'
     },
     card:{
-        backgroundColor:"#E4B7A0",
+        backgroundColor:"#F6EEE0",
         borderRadius:5,
         borderWidth:1
     },
@@ -73,7 +73,7 @@ export const profileStyle = StyleSheet.create({
         marginTop:50,
         width:'97.5%',
         height:'65%',
-        backgroundColor: "#E4B7A0",
+        backgroundColor: "#F6EEE0",
         borderRadius: 20,
         alignItems: "center",
         shadowColor: "#000",
@@ -119,3 +119,6 @@ export const profileStyle = StyleSheet.create({
         elevation:2
     } 
 })
+
+
+

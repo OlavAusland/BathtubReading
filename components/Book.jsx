@@ -24,12 +24,8 @@ export default function BookPage({ route }) {
         const getMybook = async () => {
 
             
-            let isb =  '9780471778646'
-            const data = await googleApi.getBook(isb).then(setLoading(false));
-            firebaseApi.addBook(isb, data)
-
-
-
+            const data = await googleApi.getBook(isbn).then(setLoading(false));
+          
             const firebaseData = await firebaseApi.getBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
@@ -172,7 +168,7 @@ export default function BookPage({ route }) {
                                 showRating
                                 startingValue={userRating}
                                 onFinishRating={handleRating}
-                                tintColor ='#E4B7A0'
+                                tintColor ='#F6EEE0'
                                 ratingTextColor = '#000000'
                                 fractions = {1}
                             />

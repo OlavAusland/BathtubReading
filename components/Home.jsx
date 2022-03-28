@@ -39,8 +39,8 @@ export default function HomePage({ navigation }) {
 
     return (
         <View style={[homeStyles.container, { flexDirection: 'column' }]}>
-            <View style={{ flex: 3, backgroundColor: "#A45C40", borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <View><Text style={{ fontSize: 50, marginLeft: 10}}> Discovery </Text></View>
+            <View style={{ flex: 3, backgroundColor: "#194a50", borderBottomColor: 'black', borderBottomWidth: 1 }}>
+                <View><Text style={{ fontSize: 50, marginLeft: 10, color: 'white'}}> Discovery </Text></View>
                 <View style={{width:'55%',borderRadius:10, marginLeft:25, marginTop:10, backgroundColor:'#FFFFFF'}}>
                     <TextInput
                         onEndEditing={(e) => handleOnEndEditing(e)}
@@ -49,14 +49,14 @@ export default function HomePage({ navigation }) {
                     />
                 </View>
             </View>
-            <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderBottomColor: 'black', borderBottomWidth: 1 }}>
+            <View style={{ flex: 1, backgroundColor: "#FFFFFF", borderBottomColor: 'black', borderBottomWidth: 1 }}>
                 <ScrollView style={homeStyles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
                     {
                         ['Computers', 'Science','Classic','Horror','Fantasy', 'Romance', 'Non-Fiction'].map((elem, index) => {
                             return (
                                 <View key={elem} style={{ alignItems: 'center', justifyContent: 'center' }}>
                                     <View style={homeStyles.scrollButtons}>
-                                        <Button title={elem.toUpperCase()} color="#A45C40" onPress={() => {handleGenreChange(elem);}} />
+                                        <Button title={elem.toUpperCase()} color="#194a50" onPress={() => {handleGenreChange(elem);}} />
                                     </View>
                                 </View>
                             )
@@ -64,7 +64,7 @@ export default function HomePage({ navigation }) {
                     }
                 </ScrollView>
             </View>
-            <View style={{ flex: 7, backgroundColor: "#F6EEE0" }}>
+            <View style={{ flex: 7, backgroundColor: "" }}>
                 {(!displayGenre && !searching ) && <DefaultHome navigation={navigation}/>}
                 {(displayGenre && !searching ) && <GenreView genre={genre} navigation={navigation}/>}
                 {(searching) && <SearchResultsView books={books} />} 

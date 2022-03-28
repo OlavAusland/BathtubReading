@@ -14,10 +14,10 @@ export const DefaultHome = (props) =>
     }, [])
     return(
         <View style={[homeStyles.container, { flexDirection: 'row' }]}>
-            <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
+            <View style={{ flex: 1, backgroundColor: "#F6EEE0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
                 <Text style={{ fontSize: 20, marginTop: 10 }}> TOP 10 </Text>
             </View>
-            <View style={{ flex: 1, borderBottomWidth:1, backgroundColor: "#E4B7A0", borderRightColor: 'black', alignItems: 'center' }}>
+            <View style={{ flex: 1, borderBottomWidth:1, backgroundColor: "#F6EEE0", borderRightColor: 'black', alignItems: 'center' }}>
                 <Text style={{ fontSize: 34, marginTop: 10, fontWeight:'bold'}}> NEWEST </Text>
                 <ScrollView style={{backgroundColor:'#F6EEE0',width:'100%'}}>
                     {newest.map((book, index) => {

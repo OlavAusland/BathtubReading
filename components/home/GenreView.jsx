@@ -19,7 +19,7 @@ export const GenreView = (props) =>
     }, [props.genre]);
 
     return (
-        <ScrollView style={{flex:1, flexDirection:'column', backgroundColor:'#E4B7A0'}}>
+        <ScrollView style={{flex:1, flexDirection:'column', backgroundColor:'#F6EEE0'}}>
             {genreBooks.map((book, index) => {
                 return(
                     <View key={book + index} style={{flex:1, backgroundColor:'#F6EEE0', flexDirection:'row', marginTop:10, alignItems:'center'}}>
