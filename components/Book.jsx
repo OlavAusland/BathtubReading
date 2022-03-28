@@ -22,13 +22,16 @@ export default function BookPage({ route }) {
 
     useEffect(() => {
         const getMybook = async () => {
+
+            
             const data = await googleApi.getBook(isbn).then(setLoading(false));
+          
             const firebaseData = await firebaseApi.getBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
                     style={[bookStyles.bookimage]}
-                    source={'../assets/Images/NoImage.jpg'}
+                    source={require('../assets/Images/NoImage.jpg')}
                 />;
 
 
@@ -158,7 +161,6 @@ export default function BookPage({ route }) {
                             <Text>{mybook.description}</Text>
                         </Text>
                         <Text style={bookStyles.bookRating}>{'\n'}{'\n'}
-                            <Text style={{ fontWeight: "bold" }}>Rating: </Text>
                             <Rating
                                 type='star'
                                 ratingCount={5}
@@ -166,6 +168,9 @@ export default function BookPage({ route }) {
                                 showRating
                                 startingValue={userRating}
                                 onFinishRating={handleRating}
+                                tintColor ='#F6EEE0'
+                                ratingTextColor = '#000000'
+                                fractions = {1}
                             />
                         </Text>
 

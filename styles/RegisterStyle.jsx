@@ -5,7 +5,7 @@ export const registersStyles = StyleSheet.create({
         justifyContent: 'center',
         flex:1,
         alignItems:'center',
-        backgroundColor: "#A45C40"
+        backgroundColor: "#194a50"
     },
     input: {
         width: '80%',
@@ -35,3 +35,6 @@ export const registersStyles = StyleSheet.create({
         fontSize: 20,
     }
 })
+
+
+

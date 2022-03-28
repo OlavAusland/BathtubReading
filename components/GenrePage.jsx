@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text,  Image, ScrollView, Modal} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { getFirebooksGenre } from '../API/FirebaseAPI.js'; 
+import { getFirebooksGenre } from '../api/firebaseAPI.js'; 
 
 
 const GenrePage = props => {
@@ -23,9 +23,7 @@ const GenrePage = props => {
         alert("bitch ass hoe")
     }
 
-
     return(
-        
         <ScrollView style={styles.Container}>
             <Text style={styles.Title}>{genre}</Text>
             <View style={styles.Booklisting}>
@@ -99,3 +97,7 @@ const styles = StyleSheet.create({
 })
 
 export default GenrePage
+
+
+
+

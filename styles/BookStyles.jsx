@@ -4,7 +4,7 @@ export const bookStyles = StyleSheet.create({
     Booktext: {
         marginTop: '9%',
         padding: '3%',
-        backgroundColor: "#E4B7A0",
+        backgroundColor: "#F6EEE0",
         fontSize: 80
     },
     booktitle: {
@@ -41,7 +41,7 @@ export const bookStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#A45C40',
+        backgroundColor: '#194a50',
         height: '100%'
     },
    
@@ -79,15 +79,17 @@ export const bookStyles = StyleSheet.create({
    
     modalView: {
         margin: 20,
-        backgroundColor: '#C38370',
+        backgroundColor: '#194a50',
         borderRadius: 20,
         padding: 20,
         elevation: 5,
+        
     },
     modalTitel: {
         marginBottom: 30,
         textAlign: 'center',
         fontSize: 45,
+        color: '#FFFFFF'
     },
       
     checkboxView: {
@@ -107,5 +109,6 @@ export const bookStyles = StyleSheet.create({
     checkboxtext:{
         fontSize: 25,
         marginLeft: 10,
+        color: '#FFFFFF'
     }
 });
