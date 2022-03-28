@@ -2,8 +2,6 @@ import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy, getAp
 import { getAuth, updateProfile } from 'firebase/auth';
 import { db } from '../firebase-config.js'
 
-
-
 export const addBook = async(isbn, book) => {
     
     console.log('Firebase book' + book)
@@ -73,10 +71,11 @@ export const getNewestBooks = async() => {
 
 export const getBooksByKeyword = async(keyword) => {
     const booksRef = collection(db, "Books");
-    const bookQuery = query(booksRef, where('title', '==', keyword));
-    const querySnapshot = await getDocs(bookQuery);
-    const result = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
-    return result;
+    const books = await getDocs(booksRef);
+    const result = books.docs.map((doc) => ({...doc.data(), id: doc.id}));
+    let queriedBooks = []
+    result.map((book) => {if(book.title.includes(keyword)){queriedBooks.push(book)}})
+    return queriedBooks;
 }
 
 export const updateUser = async(username) => {

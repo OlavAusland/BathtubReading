@@ -1,6 +1,6 @@
 import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react';
-import * as firebaseApi from "../../api/firebaseAPI";
+import * as firebaseApi from "../../API/FirebaseAPI";
 
 export const GenreView = (props) =>
 {

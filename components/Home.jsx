@@ -1,6 +1,6 @@
-import React, { useState} from 'react';
-import { Text, View, Button,TextInput, ScrollView, } from 'react-native';
-import * as firebaseApi from "../api/firebaseAPI";
+import React, { useState, useEffect } from 'react';
+import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import * as firebaseApi from "../API/FirebaseAPI.js";
 import { SearchResultsView } from "./home/SearchResultsView";
 import { GenreView} from "./home/GenreView"
 import { DefaultHome } from './home/DefaultView';
@@ -23,7 +23,6 @@ export default function HomePage({ navigation }) {
     const handleOnEndEditing = async(e) => {
         console.log("Handleonediting: " + e.nativeEvent.text);
         const bookquery = await firebaseApi.getBooksByKeyword(e.nativeEvent.text);
-        console.log("Books:" + books);
         setBooks(bookquery)
     }
 
