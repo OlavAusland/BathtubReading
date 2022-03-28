@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
-import * as firebaseApi from "../API/FirebaseAPI.js";
+import * as firebaseApi from "../api/firebaseAPI.js";
 import { SearchResultsView } from "./home/SearchResultsView";
 import { GenreView} from "./home/GenreView"
 import { DefaultHome } from './home/DefaultView';
@@ -18,6 +18,17 @@ export default function HomePage({ navigation }) {
         setSearching(false)
         if(genre === val){setDisplayGenre(false);setGenre('')}
         else{setDisplayGenre(true);setGenre(val)}
+    }
+
+    const handleSearch = () => {
+        setSearching(true)
+        setDisplayGenre(false)
+        setGenre('')
+    }
+
+    const handleSearchResults = (books) => {
+        setBooks(books)
+        setSearching(false)
     }
 
     const handleOnEndEditing = async(e) => {

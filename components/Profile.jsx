@@ -67,7 +67,7 @@ export default function ProfilePage({ navigation })
                 <View style={profileStyle.header}>
                     <View style={{flex:10, justifyContent:'center', alignItems:'center'}}>
                         <Image style={profileStyle.avatar}
-                                source={{uri: avatar}} // HANDLING FOR NO IMAGE
+                                source={avatar ? {uri: avatar} : require('../assets/Images/NoImage.jpg')} // HANDLING FOR NO IMAGE
                         />
                     </View>
                     <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>
@@ -86,15 +86,18 @@ export default function ProfilePage({ navigation })
                         <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
                             {library.size > 0 && 
                                 library.get('favorites').map((obj, index) => {
-                                    return(
-                                        <View key={'book-' + index}>
-                                            <Image
-                                                style={profileStyle.image}
-                                                source={{uri:obj.imageURI}}
-                                            />
-                                            <Text>{obj.title}</Text>
-                                        </View>
-                                    )
+                                    if(obj != undefined)
+                                    {
+                                        return(
+                                            <View key={'book-' + index}>
+                                                <Image
+                                                    style={profileStyle.image}
+                                                    source={obj.image ? {uri: obj.image} : '../assets/Images/NoImage.jpg'}
+                                                />
+                                                <Text>{obj.title ? obj.title: 'Unknown'}</Text>
+                                            </View>
+                                        )
+                                    }
                                 })
                             }
                         </ScrollView>
