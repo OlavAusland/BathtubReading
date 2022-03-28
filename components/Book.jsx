@@ -24,10 +24,9 @@ export default function BookPage({ route }) {
         const getMybook = async () => {
 
             
-
-            const data = await googleApi.getBook('9780140430721').then(setLoading(false));
-            console.log (data)
-            firebaseApi.addBook('9780140430721', data)
+            let isb =  '9780471778646'
+            const data = await googleApi.getBook(isb).then(setLoading(false));
+            firebaseApi.addBook(isb, data)
 
 
 
@@ -36,7 +35,7 @@ export default function BookPage({ route }) {
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
                     style={[bookStyles.bookimage]}
-                    source={'../assets/Images/NoImage.jpg'}
+                    source={require('../assets/Images/NoImage.jpg')}
                 />;
 
 

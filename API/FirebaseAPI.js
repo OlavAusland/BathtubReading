@@ -3,13 +3,14 @@ import { getAuth, updateProfile } from 'firebase/auth';
 import { db } from '../firebase-config.js'
 
 export const addBook = async(isbn, book) => {
-    
+   const image = book.items[0].volumeInfo.imageLinks ? book.items[0].volumeInfo.imageLinks.thumbnail : ' '
+      
     console.log('Firebase book' + book)
     setDoc(doc(db, 'Books', isbn), {
         title: book.items[0].volumeInfo.title,
         genres: book.items[0].volumeInfo.categories,
         date: book.items[0].volumeInfo.publishedDate,
-        imageURI: book.items[0].volumeInfo.imageLinks.thumbnail ? book.items[0].volumeInfo.imageLinks.thumbnail : ''
+        imageURI: image
     });
 }
 
