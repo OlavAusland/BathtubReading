@@ -13,9 +13,8 @@ export const SearchResultsView = (props) => {
                             <Image source={{ uri:book.imageURI }} style={{width:125, height:125, margin:10}} />
                                 : <Image
                                     style={{width:125, height:125, margin:10}}
-                                    source={'../assets/Images/NoImage.jpg'}
-                                />;
-                                                            
+                                    source={book.imageURI ? {uri:book.imageURI} : '../assets/Images/NoImage.jpg'}
+                                />
                             </TouchableOpacity>
                             <View>
                                 <Text>Title: {book.title}</Text>

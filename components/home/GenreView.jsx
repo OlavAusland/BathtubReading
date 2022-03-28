@@ -24,12 +24,10 @@ export const GenreView = (props) =>
                 return(
                     <View key={book + index} style={{flex:1, backgroundColor:'#F6EEE0', flexDirection:'row', marginTop:10, alignItems:'center'}}>
                         <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
-                           <Image source={{ uri:book.imageURI }} style={{width:125, height:125, margin:10}} />
-                                : <Image
-                                    style={{width:125, height:125, margin:10}}
-                                    source={'../assets/Images/NoImage.jpg'}
-                                />;
-
+                            <Image
+                                style={{width:125, height:125, margin:10}}
+                                source={book.imageURI ? {uri:book.imageURI} : '../assets/Images/NoImage.jpg'}
+                            />
                         </TouchableOpacity>
                         <View>
                             <Text>Title: {book.title}</Text>
