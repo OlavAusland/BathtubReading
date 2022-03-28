@@ -3,10 +3,11 @@ from 'react';
 import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
+import { NavigationState } from 'react-native-tab-view';
 import { getFirebooksGenre } from '../API/FirebaseAPI.js'; 
 
 
-const GenrePage = props => {
+function GenrePage({navigation}) {
     
     const [genre, setGenre] = useState("Computers")
     const[genreBooks, setGenreBooks] = useState([]);
@@ -21,8 +22,9 @@ const GenrePage = props => {
 
     }, []);
 
-    const onPress = () => {
-        alert("bitch ass hoe")
+    const onPress = (_isbn) => {
+        navigation.navigate('Book', {isbn:_isbn})
+        console.log(_isbn)
     }
 
 
@@ -36,7 +38,7 @@ const GenrePage = props => {
                 return (
                     <View key={'Book-' + index} style={[styles.BookCard, styles.shadowProp]}>
                         <TouchableOpacity
-                        onPress={() => {onPress()}}>
+                        onPress={() => {onPress(book.id)}}>
                         <Image
                             style={styles.Imagestyle}
                             source={{uri: book.imageURI}}
@@ -57,7 +59,7 @@ const GenrePage = props => {
 const styles = StyleSheet.create({
     Container:{
         padding: 24,
-        backgroundColor: "#F6EEE0"
+        backgroundColor: "#A45C40"
     },
     Title:{
         alignSelf:"center",
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
     },
     Booklisting:{
         alignContent: "flex-start",
+        alignItems: "center"
     },
     BookContainer:{
         flex: 1,
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
         alignItems: "baseline"
     },
     BookCard:{
-        backgroundColor: "#E4B7A0",
+        backgroundColor: "#F6EEE0",
         borderRadius: 8,
         paddingVertical: 45,
         paddingHorizontal:25,
@@ -90,7 +93,7 @@ const styles = StyleSheet.create({
     Imagestyle:{
         width: 200,
         height: 260,
-
+        alignSelf: "center"
     },
     shadowProp:{
         shadowColor: '#100f0f',
