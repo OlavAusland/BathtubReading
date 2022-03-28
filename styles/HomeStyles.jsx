@@ -4,7 +4,7 @@ import { StyleSheet } from "react-native"
 export const homeStyles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        flex: 2
+        flex: 10
     },
 
     scroller: {
@@ -15,8 +15,7 @@ export const homeStyles = StyleSheet.create({
 
     scrollButtons: {
         borderRadius: 10,
-        padding: 5,
-        margin: 10
+        padding: 5
     },
 
     listButtons: {

@@ -15,7 +15,7 @@ export const SearchResultsView = (props) => {
     return (
         <ScrollView style={{ flex: 1, flexDirection: 'column', backgroundColor: '#194a50'}}>
             {books.items && books.items.map((book, index) => {
-                if(!book.volumeInfo.industryIdentifiers.length > 0) {return} 
+                if(!book.volumeInfo.industryIdentifiers) {return} 
                 return (
                     <View key={'book' + index} style={{ flex: 1, backgroundColor: '#F6EEE0', flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                         <View style={{flex:2}}>
