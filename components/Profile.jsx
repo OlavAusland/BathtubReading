@@ -9,7 +9,7 @@ import { getBooks, updateUser } from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
 import BookPage from './Book.jsx';
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
-import { GetUserListsInformation } from './profile/GetUserListsInformation.jsx';
+import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal } from './profile/ProfileModal.jsx';
 
 

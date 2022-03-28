@@ -24,7 +24,6 @@ export const removeBookFromUserLibrary = async(user, library, isbn) => {
 export async function getBooks() {
     const data = await getDocs(collection(db, 'Books'));
     const books = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
-    //console.log("Document datas:", books)
     return books
 };
 

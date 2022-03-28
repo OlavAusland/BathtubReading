@@ -7,4 +7,10 @@ export async function getBook(isbn){
     return json
 };
 
+export async function getBooks(title){
+    const result = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${title}`);
+    const json = await result.json()
+    return json
+}
+
 
