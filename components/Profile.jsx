@@ -76,39 +76,14 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontSize:18, color:'white'}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={{ flex:1, width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
+                <View style={{ flex:1, width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black',}}>
                     <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
                 </View>
                 <View style={profileStyle.content}>
-                <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
+                <Text style={{fontSize:40, marginTop:10, marginBottom: 30, fontWeight: 'bold'}}>My Lists:</Text>
                     
-           {/*      
-                    <View style={{flex:6, width:'90%'}}>
-                    <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
-
-                        <Text style={{fontWeight:'bold', fontSize:20}}>FAVORITES:</Text>
-                        <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {library.size > 0 && 
-                                library.get('favorites').map((obj, index) => {
-                                    console.log('bilde', obj.imageURI)
-                                    if(obj != undefined)
-                                    {
-                                        return(
-                                            <View key={'book-' + index}>
-                                                <Image
-                                                    style={profileStyle.image}
-                                                    source={obj.imageURI !== ' ' ? {uri: obj.imageURI} : require('../assets/Images/NoImage.jpg')}/>
-                                                <Text style={{marginLeft: 5, marginTop: 2, width:100 }}>{obj.title ? obj.title: 'Unknown'}</Text>
-                                            </View>
-                                        )
-                                    }
-                                })
-                            }
-                        </ScrollView>
-                    </View>
-                    <View style={{flex:1}}></View> */}
                     <View style={{flex:4,width:'90%'}}>
                         <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
                             {DisplayUserLists(library, navigation)}

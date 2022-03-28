@@ -41,8 +41,8 @@ export const profileStyle = StyleSheet.create({
         overflow:'hidden',
         width:'100%',
         flex: 9,
-        alignItems:'center',
         backgroundColor:"#F6EEE0",
+        marginLeft: 20
     },
     list:{
         overflow:'hidden',
@@ -54,8 +54,8 @@ export const profileStyle = StyleSheet.create({
     
     },
     image:{
-        width:140,
-        height:140,
+        width:120,
+        height:120,
         borderRadius:5,
         backgroundColor:'black',
         margin: 7
