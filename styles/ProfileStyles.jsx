@@ -73,7 +73,7 @@ export const profileStyle = StyleSheet.create({
         marginTop:50,
         width:'97.5%',
         height:'65%',
-        backgroundColor: "#F6EEE0",
+        backgroundColor: "#194a50",
         borderRadius: 20,
         alignItems: "center",
         shadowColor: "#000",
@@ -105,7 +105,10 @@ export const profileStyle = StyleSheet.create({
         shadowColor: '#171717',
         shadowOffset: {width:0, height:4},
         shadowOpacity: 0.2,
-        elevation:2
+        elevation:2,
+        marginLeft: 15,
+        marginRight: 10,
+    
     },
     checkAvailabilityButton:{
         justifyContent:'center', 
@@ -116,8 +119,10 @@ export const profileStyle = StyleSheet.create({
         shadowColor: '#171717',
         shadowOffset: {width:0, height:4},
         shadowOpacity: 0.2,
-        elevation:2
+        elevation:2,
+        marginRight: 10,
     } 
+
 })
 
 

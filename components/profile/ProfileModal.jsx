@@ -24,7 +24,7 @@ export const ProfileModal = (props) => {
                     <View style={{flex:6, paddingTop:10}}>
                         <View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                <Text style={{flex:1}}>Username</Text>
+                                <Text style={{flex:1, color:"white",  marginLeft: 15}}>Username</Text>
                                 <View style={{flex:1}}/>
                             </View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
@@ -39,7 +39,7 @@ export const ProfileModal = (props) => {
                         </View>
                         <View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                <Text style={{flex:1}}>Email:</Text>
+                                <Text style={{flex:1, color:"white", marginLeft: 15}}>Email:</Text>
                             </View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
                                 <TextInput
@@ -50,7 +50,7 @@ export const ProfileModal = (props) => {
                         </View>
                         <View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                <Text style={{flex:1}}>Password:</Text>
+                                <Text style={{flex:1, color:"white",  marginLeft: 15}}>Password:</Text>
                             </View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
                                 <TextInput onChangeText={updated => setPassword(updated)} 
@@ -59,7 +59,7 @@ export const ProfileModal = (props) => {
                         </View>
                         <View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                <Text style={{flex:1}}>Retype Password:</Text>
+                                <Text style={{flex:1, color:"white", marginLeft: 15}}>Retype Password:</Text>
                             </View>
                             <View style={{flexDirection:'row', minWidth:'100%'}}>
                                 <TextInput 
