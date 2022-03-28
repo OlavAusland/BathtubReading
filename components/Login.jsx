@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, Text, TextInput, Image} from 'react-native';
+import { View, StyleSheet, Button, Text, TextInput, Image, Pressable} from 'react-native';
 import { db } from '../firebase-config.js'
-import { getAuth, signInWithEmailAndPassword} from "firebase/auth";
-import { loginStyle } from '../components/Styles'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+import { loginStyle } from '../styles/LoginStyle'
 
 export default function LoginPage({ navigation })
 {
@@ -30,23 +30,30 @@ export default function LoginPage({ navigation })
     }, [login])
 
     return (
-        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1}}>
+        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1, backgroundColor:'#A45C40'}}>
             <TextInput
                 style={loginStyle.input}
+                placeholder = "Email"
                 onChangeText={updated => setEmail(updated)}/>
             <TextInput 
                 style={loginStyle.input}
                 secureTextEntry={true} 
+                placeholder = "Password"
                 onChangeText={updated => setPassword(updated)}/>
             
             <View style={{width: '80%'}}>
                 {error && <Text style={{color:'rgb(255, 0, 0)', fontSize:18 , alignSelf:'center'}}>{error}</Text>}
-                <Button
-                    title="Login"
-                    onPress={() => setLogin(true)}/>
-                <Button
-                    title="Register"
-                    onPress={() => navigation.navigate("Register")}/>
+                <Pressable
+                    style={loginStyle.loginButtons}
+                    onPress={() => setLogin(true)}>
+                        <Text style={loginStyle.buttontext}>Login</Text>
+                </Pressable>
+                <Pressable
+                    style={loginStyle.loginButtons}
+                    onPress={() => navigation.navigate("Register")}>
+                       <Text style={loginStyle.buttontext}> Register</Text>
+                </Pressable>
+                    
             </View>
         </View>
     );

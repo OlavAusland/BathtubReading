@@ -4,9 +4,9 @@ import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updatePassword } from 'firebase/auth';
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
-import { getBook, setBook } from '../API/GoogleAPI'
-import { getFirebaseBooks, getFirebaseBook, getUserLibrary, updateUser } from '../API/FirebaseAPI'
-import { profileStyle } from './Styles.jsx'; 
+//import { getBook } from '../api/googleAPI'
+import { getBooks, getBook, getUserLibrary, updateUser } from '../api/firebaseAPI'
+import { profileStyle } from '../styles/ProfileStyles' 
 import { map, stringify } from '@firebase/util';
 import BookPage from './Book.jsx';
 
@@ -48,7 +48,7 @@ async function GetUserListsInformation(user)
         return Object.keys(list).map((key) => {
             let temp = [];
             [...Array(list[key].length).keys()].map((i) => {
-                temp.push(getFirebaseBook(list[key][i]))
+                temp.push(getBook(list[key][i]))
             })
             keys.push(key)
             isbnArray.set(key, temp)
@@ -93,7 +93,7 @@ export default function ProfilePage({ navigation })
 
     useEffect(async() => {
         const getMybooks = async () => {
-            const firebaseData = await getFirebaseBooks();
+            const firebaseData = await getBooks();
             return firebaseData;
           }
           const books = await getMybooks();
@@ -223,7 +223,7 @@ export default function ProfilePage({ navigation })
                 <View style={profileStyle.header}>
                     <View style={{flex:10, justifyContent:'center', alignItems:'center'}}>
                         <Image style={profileStyle.avatar}
-                                source={{uri: avatar}}
+                                source={{uri: avatar}} // HANDLING FOR NO IMAGE
                         />
                     </View>
                     <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>
@@ -231,11 +231,13 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontSize:18}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={profileStyle.settings}>
+                {/*
+                 <View style={profileStyle.settings}>
                     <Pressable onPress={() => setModalVisible(true)} style={profileStyle.settingsButton}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
                 </View>
+                */}
                 <View style={profileStyle.content}>
                     <View style={{flex:3, width:'90%'}}>
                         <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>

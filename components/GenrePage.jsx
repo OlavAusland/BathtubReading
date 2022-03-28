@@ -1,6 +1,5 @@
-import React, { useState, useEffect } 
-from 'react';
-import { View, StyleSheet, Text,  Image, Pressable, ScrollView, Modal} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text,  Image, ScrollView, Modal} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 import { NavigationState } from 'react-native-tab-view';

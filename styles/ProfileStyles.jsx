@@ -42,10 +42,11 @@ export const profileStyle = StyleSheet.create({
         width:'100%',
         flex: 3,
         alignItems:'center',
-        backgroundColor:"#F6EEE0",
+        backgroundColor:"#E4B7A0",
     },
     list:{
         overflow:'hidden',
+        backgroundColor:'#F6EEE0',
         shadowColor:'black',
         height:10,
         shadowOffset:{height:3, width:1},
@@ -118,20 +119,3 @@ export const profileStyle = StyleSheet.create({
         elevation:2
     } 
 })
-
-export const loginStyle = StyleSheet.create({
-    input: {
-        width: '80%',
-        color: "#FFFFFF",
-        fontSize: 18,
-        backgroundColor: "#AFAAFA",
-        borderRadius:8,
-        padding:5,
-        marginBottom:20,
-        height:40,
-        shadowColor: '#171717',
-        shadowOffset: {width:0, height:4},
-        shadowOpacity: 0.2,
-        shadowRadius: 3
-    }
-});
