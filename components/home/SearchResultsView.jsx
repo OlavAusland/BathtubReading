@@ -12,7 +12,7 @@ export const SearchResultsView = (props) => {
                             <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
                                 <Image
                                     style={{width:125, height:125, margin:10}}
-                                    source={{uri:book.imageURI}}
+                                    source={book.imageURI ? {uri:book.imageURI} : '../assets/Images/NoImage.jpg'}
                                 />
                             </TouchableOpacity>
                             <View>

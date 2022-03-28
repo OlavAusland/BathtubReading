@@ -26,6 +26,7 @@ export const DefaultHome = (props) =>
                                 <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
                                     <Image
                                         style={{flex:1, height:100, width:100}}
+                                        source={book.imageURI ? {uri: book.imageURI} : '../assets/Images/NoImage.jpg'}
                                     />
                                 </TouchableOpacity>
                                 <Text style={{flex:1}} numberOfLines={5} adjustsFontSizeToFit>{book.title}</Text>
