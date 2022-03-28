@@ -92,7 +92,7 @@ export default function ProfilePage({ navigation })
                                             <View key={'book-' + index}>
                                                 <Image
                                                     style={profileStyle.image}
-                                                    source={obj.image ? {uri: obj.image} : '../assets/Images/NoImage.jpg'}
+                                                    source={obj.imageURI !== ' ' ? {uri: obj.imageURI} : require('../assets/Images/NoImage.jpg')}
                                                 />
                                                 <Text>{obj.title ? obj.title: 'Unknown'}</Text>
                                             </View>
@@ -105,7 +105,7 @@ export default function ProfilePage({ navigation })
                     <View style={{flex:1}}></View>
                     <View style={{flex:3,width:'90%'}}>
                         <ScrollView style={{borderWidth:2}}horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                            {DisplayUserLists(library)}
+                            {DisplayUserLists(library, navigation)}
                         </ScrollView>
                     </View>
                 </View>

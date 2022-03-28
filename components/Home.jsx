@@ -9,6 +9,7 @@ import { homeStyles } from '../styles/HomeStyles';
 
 export default function HomePage({ navigation }) {
     
+    const [searchKeyword, setSearchKeyword] = useState('');
     const [genre, setGenre] = useState('')
     const [displayGenre, setDisplayGenre] = useState(false);
     const [searching, setSearching] = useState(false);
@@ -32,9 +33,7 @@ export default function HomePage({ navigation }) {
     }
 
     const handleOnEndEditing = async(e) => {
-        console.log("Handleonediting: " + e.nativeEvent.text);
-        const bookquery = await firebaseApi.getBooksByKeyword(e.nativeEvent.text);
-        setBooks(bookquery)
+        setSearchKeyword(e.nativeEvent.text);
     }
 
     return (
@@ -43,7 +42,7 @@ export default function HomePage({ navigation }) {
                 <View><Text style={{ fontSize: 50, marginLeft: 10, color: 'white'}}> Discovery </Text></View>
                 <View style={{width:'55%',borderRadius:10, marginLeft:25, marginTop:10, backgroundColor:'#FFFFFF'}}>
                     <TextInput
-                        onEndEditing={(e) => handleOnEndEditing(e)}
+                        onEndEditing={(e) => setSearchKeyword(e.nativeEvent.text)}
                         onPressIn={() => {setSearching(true)}}
                         placeholder="Search"
                     />
@@ -64,10 +63,10 @@ export default function HomePage({ navigation }) {
                     }
                 </ScrollView>
             </View>
-            <View style={{ flex: 7, backgroundColor: "" }}>
+            <View style={{ flex: 7, backgroundColor: "#194a50" }}>
                 {(!displayGenre && !searching ) && <DefaultHome navigation={navigation}/>}
                 {(displayGenre && !searching ) && <GenreView genre={genre} navigation={navigation}/>}
-                {(searching) && <SearchResultsView books={books} />} 
+                {(searching) && <SearchResultsView books={books} navigation={navigation} keyword={searchKeyword}/>} 
             </View>
         </View>
     );

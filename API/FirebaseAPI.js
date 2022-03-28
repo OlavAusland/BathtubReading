@@ -66,15 +66,6 @@ export const getNewestBooks = async() => {
     return result
 }
 
-export const getBooksByKeyword = async(keyword) => {
-    const booksRef = collection(db, "Books");
-    const books = await getDocs(booksRef);
-    const result = books.docs.map((doc) => ({...doc.data(), id: doc.id}));
-    let queriedBooks = []
-    result.map((book) => {if(book.title.includes(keyword)){queriedBooks.push(book)}})
-    return queriedBooks;
-}
-
 export const updateUser = async(username) => {
     const user = getAuth().currentUser;
     await updateProfile(user, {displayName: username}).catch((error) => {console.log(error)});

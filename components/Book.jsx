@@ -10,7 +10,8 @@ import { Rating } from "react-native-ratings";
 export default function BookPage({ route }) {
 
     const user = getAuth().currentUser;
-    const { isbn } = route.params;
+    const [existst, setExsists] = useState(false);
+    const isbn = route.params.isbn;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
     const [checked, setChecked] = useState(new Map());
@@ -18,7 +19,6 @@ export default function BookPage({ route }) {
     const [loading, setLoading] = useState(true);
     const [library, setLibrary] = useState(new Map());
     const [userRating, setUserRating] = useState(0);
-
 
     useEffect(() => {
         const getMybook = async () => {
