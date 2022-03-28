@@ -19,7 +19,7 @@ export const SearchResultsView = (props) => {
                 return (
                     <View key={'book' + index} style={{ flex: 1, backgroundColor: '#F6EEE0', flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
                         <View style={{flex:2}}>
-                            <TouchableOpacity style={{flex:1}} onPress={() => { props.navigation.navigate('Book', { isbn: `${book.volumeInfo.industryIdentifiers[0]}`, book:book }) }}>
+                            <TouchableOpacity style={{flex:1}} onPress={() => { props.navigation.navigate('Book', { isbn: `${book.volumeInfo.industryIdentifiers[0].identifier}`, book:book }) }}>
                                 <Image
                                     style={{ width: 125, height: 125, margin: 10 }}
                                     source={book.volumeInfo.imageLinks ? {uri: book.volumeInfo.imageLinks.thumbnail} : require('../../assets/Images/NoImage.jpg')}
@@ -28,7 +28,7 @@ export const SearchResultsView = (props) => {
                         </View>
                         <View style={{flex:3, height:'80%'}}>
                             <Text style={{fontWeight:'bold'}}>Title: {book.volumeInfo.title}</Text>
-                            <Text>Authors: {book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : book.volume.authors}</Text>
+                            <Text>Authors: {book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : book.volumeInfo.authors}</Text>
                             <Text>Published: {book.volumeInfo.publishedDate}</Text>
                         </View>
                     </View>

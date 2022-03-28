@@ -14,6 +14,18 @@ export const addBook = async(isbn, book) => {
     });
 }
 
+export const addBookByObject = async(isbn, book) => {
+    console.log(isbn)
+    const image = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : ' '
+    setDoc(doc(db, 'Books', isbn), {
+        title: book.volumeInfo.title ? book.volumeInfo.title : ' ',
+        genres: book.volumeInfo.categories ? book.volumeInfo.categories : [],
+        date: book.volumeInfo.publishedDate ? book.volumeInfo.publishedDate : ' ',
+        imageURI: image,
+        rating:0
+    });
+}
+
 export const addBookToUserLibrary = async(user, library, isbn) => {
     await setDoc(doc(db, 'Users', user.uid), { 'libraries': { [library]: arrayUnion(isbn) }}, {merge:true})
 };
