@@ -8,7 +8,7 @@ import { getAuth } from 'firebase/auth';
 import { Rating } from "react-native-ratings";
 import ProfilePage from './Profile';
 
-export default function BookPage({ route }) {
+export default function BookPage({ route, navigate }) {
 
     const user = getAuth().currentUser;
     const [existst, setExsists] = useState(false);

@@ -21,7 +21,7 @@ export const DefaultHome = (props) =>
 
     return(
         <View style={[homeStyles.container, { flexDirection: 'row' }]}>
-            <ScrollView horizontal={true} snapToAlignment={'center'} snapToInterval={400} decelerationRate={0} contentContainerStyle={{width:'200%'}}>
+            <ScrollView horizontal={true} snapToAlignment={'center'} snapToInterval={0} decelerationRate={0} contentContainerStyle={{width:'200%'}}>
                 <View style={{ flex: 1, backgroundColor: "#F6EEE0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
                     <Text style={{ fontSize: 34, marginTop: 10, fontWeight:'bold'}}> TOP 10 </Text>
                     <ScrollView style={{backgroundColor:'#F6EEE0', flex:1, width:'100%'}}>
