@@ -4,7 +4,6 @@ import * as firebaseApi from "../../api/firebaseAPI";
 
 export const GenreView = (props) =>
 {
-    console.log(props.genre)
     const genre = props.genre;
     const [genreBooks, setGenreBooks] = useState([]);
 

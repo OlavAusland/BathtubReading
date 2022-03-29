@@ -9,7 +9,8 @@ import { getBooks, updateUser } from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
-import { ProfileModal } from './profile/ProfileModal.jsx';
+import { ProfileModal} from './profile/ProfileModal.jsx';
+import { getAllGenres, addGenre, AddUserList, RemoveUserList} from '../api/firebaseAPI';
 
 
 export default function ProfilePage({ navigation })
@@ -19,25 +20,31 @@ export default function ProfilePage({ navigation })
     const [user, setUser] = useState(auth.currentUser);
     const [avatar, setAvatar] = useState("");
     const [library, setLibrary] = useState(new Map());
-    const [logout, setLogout] = useState(false);
+    const [logout, setLogout] = useState(false);    
     const [loading, setLoading] = useState(false);
-    
+
+    useEffect(() => {getAllGenres()}, [])
+
     useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
         const userBooks = await GetUserListsInformation(user);
         setLibrary(userBooks);
-        console.log(library);
     }, [user]);
 
+    /*
     useEffect(async() => {
-        const getMybooks = async () => {
-            const firebaseData = await getBooks();
-            return firebaseData;
-          }
-          const books = await getMybooks();
+        let res = await RemoveUserList(user, 'lol');
+        console.log(res);
 
-    }, []);
-    
+    },[])
+
+    useEffect(async() => {
+        let res = await AddUserList(user, 'lol');
+        console.log(res);
+
+    },[])
+    */
+
     useEffect(() => {
         if(logout)
         {
@@ -67,9 +74,12 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontSize:18, color:'white'}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={{ flex:1, width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
+                <View style={{ flex:1, flexDirection:'row', width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
                     <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
+                    </Pressable>
+                    <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
+                        <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
                     </Pressable>
                 </View>
                 <View style={profileStyle.content}>

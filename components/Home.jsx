@@ -5,26 +5,30 @@ import { SearchResultsView } from "./home/SearchResultsView";
 import { GenreView} from "./home/GenreView"
 import { DefaultHome } from './home/DefaultView';
 import { homeStyles } from '../styles/HomeStyles';
+import { getAllGenres } from '../api/firebaseAPI.js';
 
 
 export default function HomePage({ navigation }) {
     
+    const [allGenres, setAllGenres] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
-    const [genre, setGenre] = useState('')
+    const [queryGenre, setQueryGenre] = useState('');
     const [displayGenre, setDisplayGenre] = useState(false);
     const [searching, setSearching] = useState(false);
     const [books, setBooks] = useState();
 
     const handleGenreChange = (val) => {
         setSearching(false)
-        if(genre === val){setDisplayGenre(false);setGenre('')}
-        else{setDisplayGenre(true);setGenre(val)}
+        if(queryGenre === val){setDisplayGenre(false);setQueryGenre('')}
+        else{setDisplayGenre(true);setQueryGenre(val)}
     }
 
     const handleSearch = (event) => {
         setSearchKeyword(event.nativeEvent.text);
         setSearching(searchKeyword.length > 0);
     }
+
+    useEffect(async() => {const genres = await getAllGenres(); setAllGenres(genres)}, []);
 
     return (
         <View style={[homeStyles.container, { flexDirection: 'column' }]}>
@@ -40,8 +44,8 @@ export default function HomePage({ navigation }) {
             </View>
             <View style={{ flex:1, backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
                 <ScrollView style={homeStyles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {
-                        ['Computers', 'Science','Classic','Horror','Fantasy', 'Romance', 'Non-Fiction'].map((elem, index) => {
+                    {allGenres.length > 0 &&
+                        allGenres.map((elem, index) => {
                             return (
                                 <View key={elem} style={{ alignItems: 'center', justifyContent: 'center' }}>
                                     <View style={homeStyles.scrollButtons}>
@@ -55,7 +59,7 @@ export default function HomePage({ navigation }) {
             </View>
             <View style={{ flex: 9, backgroundColor: "#194a50" }}>
                 {(!displayGenre && !searching ) && <DefaultHome navigation={navigation}/>}
-                {(displayGenre && !searching ) && <GenreView genre={genre} navigation={navigation}/>}
+                {(displayGenre && !searching ) && <GenreView genre={queryGenre} navigation={navigation}/>}
                 {(searching) && <SearchResultsView books={books} navigation={navigation} keyword={searchKeyword}/>} 
             </View>
         </View>
