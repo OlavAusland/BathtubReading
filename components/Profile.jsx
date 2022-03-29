@@ -94,7 +94,7 @@ export default function ProfilePage({ navigation })
                 <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
                     <View style={{flex:4,width:'90%'}}>
                         <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                            {DisplayUserLists(library, navigation)}
+                            {DisplayUserLists(library, navigation, user)}
                         </ScrollView>
                     </View>
                 </View>
