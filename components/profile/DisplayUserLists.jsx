@@ -3,13 +3,14 @@ import { profileStyle } from '../../styles/ProfileStyles';
 
 export const DisplayUserLists = (library, navigation) => 
 {
-    console.log(navigation)
+    
     return [...Array.from(library.keys())].map((key) => {
         return(
             <View key={ Math.random().toString(36).substr(2, 9)} style={{marginBottom: 20}}>
                 <Text style={{fontWeight:'bold', fontSize:20, marginLeft: 8, marginTop: 20}}>{key.toUpperCase()}</Text>
                 <ScrollView horizontal={true}>
                     {library && library.get(key).map((book, index) => {
+                     console.log('img:', book)
                         if(book === undefined){return;}
                         return(
                             <View key={`${key}-${index}`}>

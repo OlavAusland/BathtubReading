@@ -42,7 +42,7 @@ export const getBooks = async() => {
 
 export const getBook = async(isbn) =>{
     const book = await getDoc(doc(db, 'Books', isbn));
-    return book.data()
+    return {...book.data(), id:book.id};
     };
 
 export const getBookGenre = async(genre) => {

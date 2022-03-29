@@ -48,7 +48,6 @@ export default function RegisterPage({ navigation }) {
 
     useEffect(async () => {
         if (register) {
-            console.log(loading)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;

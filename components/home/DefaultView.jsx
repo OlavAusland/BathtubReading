@@ -15,7 +15,6 @@ export const DefaultHome = (props) =>
 
     useEffect(async() => {
         const result = await firebaseApi.getTopBooks();
-        console.log(result)
         setTopTen(result);
     }, []);
 

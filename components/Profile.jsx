@@ -4,7 +4,6 @@ import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updatePassword } from 'firebase/auth';
 import { collection, getDocs } from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
-//import { getBook } from '../api/googleAPI'
 import { getBooks, updateUser } from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
@@ -21,12 +20,12 @@ export default function ProfilePage({ navigation })
     const [library, setLibrary] = useState(new Map());
     const [logout, setLogout] = useState(false);
     const [loading, setLoading] = useState(false);
-    
+
+
     useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
         const userBooks = await GetUserListsInformation(user);
         setLibrary(userBooks);
-        console.log(library);
     }, [user]);
 
     useEffect(async() => {
@@ -51,6 +50,8 @@ export default function ProfilePage({ navigation })
         }
     }, [logout]);
     
+  
+
     if(user != null && !loading)
     {
         return (
