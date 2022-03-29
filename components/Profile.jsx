@@ -9,6 +9,7 @@ import { profileStyle } from '../styles/ProfileStyles'
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal } from './profile/ProfileModal.jsx';
+import { doc, onSnapshot } from "firebase/firestore";
 
 
 export default function ProfilePage({ navigation })
@@ -49,7 +50,18 @@ export default function ProfilePage({ navigation })
             setLogout(false);
         }
     }, [logout]);
+
+   /*  useEffect(async()=> {
+     
+        const unsub = onSnapshot(doc(db, "Users", user.uid), (doc) => {
+            if(doc.data()) {
+                // her skal det mapes på nytt
+            }
+            console.log("Current data: ", doc.data());
+        }); 
     
+    },[])
+     */
   
 
     if(user != null && !loading)
