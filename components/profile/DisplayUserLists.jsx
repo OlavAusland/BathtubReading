@@ -10,7 +10,7 @@ export const DisplayUserLists = (library, navigation) =>
                 <Text style={{fontWeight:'bold', fontSize:20, marginLeft: 8, marginTop: 20}}>{key.toUpperCase()}</Text>
                 <ScrollView horizontal={true}>
                     {library && library.get(key).map((book, index) => {
-                     console.log('img:', book)
+                    
                         if(book === undefined){return;}
                         return(
                             <View key={`${key}-${index}`}>

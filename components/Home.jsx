@@ -16,6 +16,19 @@ export default function HomePage({ navigation }) {
     const [displayGenre, setDisplayGenre] = useState(false);
     const [searching, setSearching] = useState(false);
     const [books, setBooks] = useState();
+    const [rating, setRating] = useState([]);
+    
+    useEffect(async() => {
+        const getRatings = async() => {
+            const result = await firebaseApi.getAllRatings();
+            console.log(result.children)
+            
+            setRating(result)
+          
+        }
+        getRatings();
+    },[])
+
 
     const handleGenreChange = (val) => {
         setSearching(false)

@@ -4,13 +4,13 @@ import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updatePassword } from 'firebase/auth';
 import { collection, getDocs, onSnapshot, doc} from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
-import { getBooks, updateUser } from '../api/firebaseAPI'
+import * as firebaseApi from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal} from './profile/ProfileModal.jsx';
 import { getAllGenres, addGenre, AddUserList, RemoveUserList, getUserLibrary} from '../api/firebaseAPI';
-import { async } from '@firebase/util';
+
 
 
 export default function ProfilePage({ navigation })
@@ -22,6 +22,8 @@ export default function ProfilePage({ navigation })
     const [library, setLibrary] = useState(new Map());
     const [logout, setLogout] = useState(false);    
     const [loading, setLoading] = useState(false);
+  
+
 
     useEffect(() => {getAllGenres()}, [])
 
@@ -30,7 +32,7 @@ export default function ProfilePage({ navigation })
      
         const unsub = onSnapshot(doc(db, "Users", user.uid), async(doc) => {
             if(doc.data()) {
-                console.log("UPDATED")
+               // console.log("UPDATED")
                 const lib = []
                 Object.keys(doc.data()['libraries']).forEach((key) => {lib.push({[key]: Array.from(new Set(doc.data()['libraries'][key]))})})
                 await GetUserListsInformation(user, lib).then((res) => {setLibrary(res)});

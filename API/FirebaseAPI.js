@@ -1,7 +1,7 @@
 import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy,  getApp,  arrayUnion, arrayRemove, remove, deleteField} from 'firebase/firestore';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { db } from '../firebase-config.js'
-import { map } from '@firebase/util';
+import { async, map } from '@firebase/util';
 
 export const addBook = async(isbn, book) => {
    const image = book.items[0].volumeInfo.imageLinks ? book.items[0].volumeInfo.imageLinks.thumbnail : ' '
@@ -124,4 +124,10 @@ export const AddUserList = async(user, listName) => {
 export const RemoveUserList = async(user, listName) => {
     const res = await setDoc(doc(db, 'Users', user.uid), { 'libraries': { [listName]: deleteField() }}, { merge: true })
 
+}
+
+export const getAllRatings = async() => {
+    const data = await getDocs(collection(db, 'Ratings'))
+    const ratings = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
+    return ratings
 }

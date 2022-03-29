@@ -7,6 +7,7 @@ export const DefaultHome = (props) =>
 {
     const [newest, setNewest] = useState([]);
     const [topTen, setTopTen] = useState([]);
+ 
     
     useEffect(async() => {
         const result = await firebaseApi.getNewestBooks();
@@ -18,7 +19,14 @@ export const DefaultHome = (props) =>
         setTopTen(result);
     }, []);
 
+   
+    
+
+    
+   
+
     return(
+        
         <View style={[homeStyles.container, { flexDirection: 'row' }]}>
             <ScrollView horizontal={true} snapToAlignment={'center'} snapToInterval={0} decelerationRate={0} contentContainerStyle={{width:'200%'}}>
                 <View style={{ flex: 1, backgroundColor: "#F6EEE0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
