@@ -18,8 +18,9 @@ export default function HomePage({ navigation }) {
     const [displayGenre, setDisplayGenre] = useState(false);
     const [searching, setSearching] = useState(false);
     const [books, setBooks] = useState();
-    const [rating, setRating] = useState([]);
+    //const [rating, setRating] = useState([]);
     
+    /*
     useEffect(async() => {
         const getRatings = async() => {
             const result = await firebaseApi.getAllRatings();
@@ -47,6 +48,7 @@ export default function HomePage({ navigation }) {
 
         getRatings();
     },[])
+    */
 
 
     const handleGenreChange = (val) => {
@@ -55,9 +57,9 @@ export default function HomePage({ navigation }) {
         else { setDisplayGenre(true); setQueryGenre(val) }
     }
 
-    const handleSearch = (event) => {
-        setSearchKeyword(event.nativeEvent.text);
-        setSearching(searchKeyword.length > 0);
+    const handleSearch = (text) => {
+        if(text.length > 0) {setSearching(true);setSearchKeyword(text);}
+        else{setSearching(false);setSearchKeyword('');}
     }
 
     useEffect(async () => { const genres = await getAllGenres(); setAllGenres(genres) }, []);
@@ -71,8 +73,7 @@ export default function HomePage({ navigation }) {
                         <Icon name="search" size={20} color="#000000" />
                     </View>
                     <TextInput
-                        onEndEditing={(e) => handleSearch(e)}
-                        onPressIn={() => { setSearching(true) }}
+                        onChangeText={(text) => handleSearch(text)}
                         placeholder="Search"
                         style={{ width: '90%'}}
                     />
@@ -101,21 +102,3 @@ export default function HomePage({ navigation }) {
         </View>
     );
 }
-
-
-
-
-
-const MySearchBar = () => {
-    const [searchQuery, setSearchQuery] = React.useState('');
-
-    const onChangeSearch = query => setSearchQuery(query);
-
-    return (
-        <TextInput
-            placeholder="..."
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-        />
-    );
-};

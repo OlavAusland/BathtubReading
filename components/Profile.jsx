@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { View, Image, Text, ScrollView, Pressable, } from 'react-native';
 import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut } from 'firebase/auth';
-import { onSnapshot, doc} from "firebase/firestore";
+import { onSnapshot, doc, updateUser} from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
 import * as firebaseApi from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
@@ -85,10 +85,10 @@ export default function ProfilePage({ navigation })
                     </View>
                 </View>
                 <View style={{ flex:1, flexDirection:'row', width:'100%', alignItems:'center', justifyContent:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
-                    <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
-                        <Text style={{flex:1, fontSize:22, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
+                    <Pressable onPress={() => setModalVisible(true)} style={{flex:1, paddingTop:10, alignItems:'center', justifyContent:'center'}}>
+                        <Text style={{flex:1, fontSize:22, fontWeight:'bold'}}>Settings</Text>
                     </Pressable>
-                    <Pressable onPress={() => setListModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
+                    <Pressable onPress={() => setListModalVisible(true)} style={{flex:1, paddingTop:10, alignItems:'center'}}>
                         <Text style={{flex:1, fontSize:22, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
                     </Pressable>
                 </View>
@@ -97,7 +97,7 @@ export default function ProfilePage({ navigation })
                 
                     <View style={{flex:4,width:'90%'}}>
                         <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                            {DisplayUserLists(library, navigation)}
+                            {DisplayUserLists(library, navigation, user)}
                         </ScrollView>
                     </View>
                 </View>

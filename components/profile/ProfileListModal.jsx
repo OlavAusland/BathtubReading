@@ -5,7 +5,6 @@ import { AddUserList } from '../../api/firebaseAPI';
 import { getAuth } from 'firebase/auth';
 
 export const ProfileListModal = (props) => {
-    const user = getAuth().currentUser;
     const [listName, setListName] = useState('');
 
     return(
@@ -15,7 +14,6 @@ export const ProfileListModal = (props) => {
             transparent={true}
             visible={props.modalVisible}
             onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
             props.setModalVisible(!props.modalVisible);
             }}
         >
@@ -29,7 +27,7 @@ export const ProfileListModal = (props) => {
                         </View>
                     </View>
                     <View style={{flex:1, flexDirection:'row', width:'100%', height:'100%', backgroundColor:'white'}}>
-                        <Pressable style={{flex:1, justifyContent:'center', alignItems:'center'}} onPress={async() => {await AddUserList(user, listName)}}>
+                        <Pressable style={{flex:1, justifyContent:'center', alignItems:'center'}} onPress={async() => {await AddUserList(props.user, listName);props.setModalVisible(!props.modalVisible)}}>
                             <Text style={{fontSize:20, fontWeight:'bold'}}>Add</Text>
                         </Pressable>
                         <Pressable style={{flex:1, justifyContent:'center', alignItems:'center'}} onPress={() => {props.setModalVisible(!props.modalVisible)}}>

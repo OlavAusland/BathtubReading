@@ -1,6 +1,8 @@
 import { Text, View, TextInput, Pressable, Modal } from 'react-native';
 import { useState } from 'react';
 import { profileStyle } from '../../styles/ProfileStyles';
+import { updateUser } from '../../api/firebaseAPI';
+import { updatePassword} from 'firebase/auth';
 
 export const ProfileModal = (props) => {
     const [username, setUsername] = useState(props.user ? props.user.displayName : "");
@@ -85,7 +87,7 @@ export const ProfileModal = (props) => {
                                 onPress={async() => {updateUser(username, password);
                                     if(password == retypedPassword && password != "")
                                     {
-                                        await updatePassword(auth.currentUser, password).then(setPasswordError("")).catch((error) => 
+                                        await updatePassword(props.user, password).then(setPasswordError("")).catch((error) => 
                                         {console.log(error);setPasswordError(error.errorMessage)});
                                     }props.setModalVisible(false);}}
                                 >
