@@ -131,3 +131,19 @@ export const getAllRatings = async() => {
     const ratings = data.docs.map((doc) => ({...doc.data(), id: doc.id}))
     return ratings
 }
+
+export const getBookRatings = async(isbn) => {
+    const response = await getDoc(doc(db, 'Ratings', isbn))
+    const ratings = Object.keys(response.data()).map((key) => {return response.data()[key].rating})
+
+    return {rating:averageRating(ratings), id:response.id}
+}
+
+//function that sums up elements in list and divides on length of list
+export const averageRating = (ratings) => {
+    let sum = 0;
+    ratings.forEach((rating) => {
+        sum += rating;
+    })
+    return sum / ratings.length;
+}

@@ -1,8 +1,8 @@
 import React, { useEffect, useState} from 'react';
-import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, TouchableOpacity } from 'react-native';
+import { View, Image, Text, ScrollView, Pressable, } from 'react-native';
 import { db, storage } from "../firebase-config.js";
-import { getAuth, signOut, updatePassword } from 'firebase/auth';
-import { collection, getDocs, onSnapshot, doc} from "firebase/firestore";
+import { getAuth, signOut } from 'firebase/auth';
+import { onSnapshot, doc} from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
 import * as firebaseApi from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
@@ -10,7 +10,7 @@ import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal} from './profile/ProfileModal.jsx';
 import { ProfileListModal } from './profile/ProfileListModal.jsx';
-import { getAllGenres, addGenre, AddUserList, RemoveUserList, getUserLibrary} from '../api/firebaseAPI';
+import { getAllGenres, getUserLibrary} from '../api/firebaseAPI';
 
 
 
@@ -65,18 +65,6 @@ export default function ProfilePage({ navigation })
             setLogout(false);
         }
     }, [logout]);
-
-   /*  useEffect(async()=> {
-     
-        const unsub = onSnapshot(doc(db, "Users", user.uid), (doc) => {
-            if(doc.data()) {
-                // her skal det mapes på nytt
-            }
-            console.log("Current data: ", doc.data());
-        }); 
-    
-    },[])
-     */
   
 
     if(user != null && !loading)
@@ -96,7 +84,7 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontSize:18, color:'white'}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={{ flex:1, width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black',}}>
+                <View style={{ flex:1, flexDirection:'row', width:'100%', alignItems:'center', justifyContent:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
                     <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:22, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
