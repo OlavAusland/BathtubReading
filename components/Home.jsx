@@ -6,6 +6,7 @@ import { GenreView} from "./home/GenreView"
 import { DefaultHome } from './home/DefaultView';
 import { homeStyles } from '../styles/HomeStyles';
 import { getAllGenres } from '../api/firebaseAPI.js';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default function HomePage({ navigation }) {
@@ -34,7 +35,10 @@ export default function HomePage({ navigation }) {
         <View style={[homeStyles.container, { flexDirection: 'column' }]}>
             <View style={{ flex: 3, backgroundColor: "#194a50", borderBottomColor: 'black'}}>
                 <View><Text style={{ fontSize: 50, marginLeft: 10, color: 'white'}}> Discovery </Text></View>
-                <View style={{width:'55%',borderRadius:10, marginLeft:25, marginTop:10, backgroundColor:'#FFFFFF'}}>
+                <View style={{width:'55%',borderRadius:10, marginLeft:25, marginTop:10, backgroundColor:'#FFFFFF', flexDirection: 'row'}}>
+                    <View style={{height:'80%', marginRight:10, marginLeft:5, marginTop:2}}>
+                        <Icon name="search" size={20} color="#000000" />
+                    </View>
                     <TextInput
                         onEndEditing={(e) => handleSearch(e)}
                         onPressIn={() => {setSearching(true)}}
