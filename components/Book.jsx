@@ -6,6 +6,7 @@ import { AddToListModal } from './book/AddToListModal';
 import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
 import { Rating } from "react-native-ratings";
+import ProfilePage from './Profile';
 
 export default function BookPage({ route }) {
 
@@ -21,7 +22,6 @@ export default function BookPage({ route }) {
     const [userRating, setUserRating] = useState(0);
 
     useEffect(async() => {
-        console.log(isbn)
         await firebaseApi.getBook(isbn).then((getRes) => {
             if(getRes == undefined)
             {
