@@ -25,7 +25,7 @@ export const DisplayUserLists = (library, navigation, user) =>
 
     return [...Array.from(library.keys())].map((key) => {
         return(
-            <View key={ Math.random().toString(36).substr(2, 9)}> style={{marginBottom: 20}}
+            <View key={ Math.random().toString(36).substr(2, 9)}>
                 <View style={{flexDirection:'row'}}>
                     <View>
                         <Text style={{fontWeight:'bold', fontSize:20, marginLeft: 8, marginTop: 20}}>{key.toUpperCase()}</Text>

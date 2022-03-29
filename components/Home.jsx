@@ -7,6 +7,8 @@ import { DefaultHome } from './home/DefaultView';
 import { homeStyles } from '../styles/HomeStyles';
 import { getAllGenres } from '../api/firebaseAPI.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from "../firebase-config.js";
 
 export default function HomePage({ navigation }) {
 
@@ -22,29 +24,27 @@ export default function HomePage({ navigation }) {
         const getRatings = async() => {
             const result = await firebaseApi.getAllRatings();
             const ratings = new Map();
-            result.forEach((item) => {
+            result.forEach(async(item) => {
                 const propertyNames = Object.getOwnPropertyNames(item);
                 let rating = 0;
                 let count = 0;
                 let id = 0;
                 propertyNames.forEach((propertyName) => {
-                    console.log("Property name: " + propertyName);
+                    //console.log("Property name: " + propertyName);
                     if (propertyName === "id") {
                         id = item[propertyName];
-                        console.log("ID: " + id);
+                        //console.log("ID: " + id);
                     } else if(propertyName !== "id") {
                         rating += item[propertyName].rating;
                         count += 1;
-                        console.log("Rating: " + rating);
+                        //console.log("Rating: " + rating);
                     }
                 })
-
                 ratings.set(id, rating / count);
             });
-            console.log(ratings);
             setRating(ratings);
-          
         }
+
         getRatings();
     },[])
 

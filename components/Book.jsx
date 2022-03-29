@@ -7,6 +7,8 @@ import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
 import { Rating } from "react-native-ratings";
 import ProfilePage from './Profile';
+import { updateDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase-config.js';
 
 export default function BookPage({ route, navigate }) {
 
@@ -117,8 +119,13 @@ export default function BookPage({ route, navigate }) {
         });
     }
 
-    const handleRating = (val) => {
+    const handleRating = async(val) => {
         firebaseApi.addRating(user, isbn, val)
+        await firebaseApi.getBookRatings(isbn).then(async(res) => {
+            await updateDoc(doc(db, 'Books', isbn), {rating:res.rating}).catch((e) => console.log(e));
+        });
+        
+        
     }
 
     if (mybook != null && !loading) {
