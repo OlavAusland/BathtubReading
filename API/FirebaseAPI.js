@@ -71,6 +71,13 @@ export const getUserLibrary = async(uid) => {
     return library
 }
 
+export const getTopBooks = async() => {
+    const bookQuery = query(collection(db, 'Books'), orderBy('rating', 'desc'));
+    const querySnapchot = await getDocs(bookQuery);
+    const books = querySnapchot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+    return books.slice(0, 10);
+}
+
 export const getNewestBooks = async() => {
     const bookQuery = query(collection(db, 'Books'), where('date', '>', '2004'), orderBy('date', 'desc'))
     const querySnapshot = await getDocs(bookQuery);

@@ -7,11 +7,9 @@ import { getDownloadURL, ref} from 'firebase/storage';
 //import { getBook } from '../api/googleAPI'
 import { getBooks, updateUser } from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
-import BookPage from './Book.jsx';
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal } from './profile/ProfileModal.jsx';
-import { homeStyles } from '../styles/HomeStyles.jsx';
 
 
 export default function ProfilePage({ navigation })
@@ -27,7 +25,8 @@ export default function ProfilePage({ navigation })
     useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
         const userBooks = await GetUserListsInformation(user);
-        setLibrary(userBooks)
+        setLibrary(userBooks);
+        console.log(library);
     }, [user]);
 
     useEffect(async() => {
@@ -37,15 +36,7 @@ export default function ProfilePage({ navigation })
           }
           const books = await getMybooks();
 
-    }, []); 
-
-    useEffect(async() => {
-        const getLibrary = async() => {
-            const result = await getDocs(collection(db, "Books"));
-            const data = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
-        };
-        getLibrary();
-    }, [])
+    }, []);
     
     useEffect(() => {
         if(logout)
