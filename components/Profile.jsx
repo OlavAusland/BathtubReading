@@ -11,6 +11,7 @@ import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal} from './profile/ProfileModal.jsx';
 import { getAllGenres, addGenre, AddUserList, RemoveUserList} from '../api/firebaseAPI';
+import { async } from '@firebase/util';
 
 
 export default function ProfilePage({ navigation })
@@ -27,8 +28,11 @@ export default function ProfilePage({ navigation })
 
     useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
-        const userBooks = await GetUserListsInformation(user);
-        setLibrary(userBooks);
+        await getUserLibrary(user.uid).then(
+            async(res) => {
+                await GetUserListsInformation(res).then((lists) => setLibrary(lists));
+            }
+        );
     }, [user]);
 
     /*
