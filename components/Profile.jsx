@@ -98,18 +98,18 @@ export default function ProfilePage({ navigation })
                 </View>
                 <View style={{ flex:1, width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black',}}>
                     <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
-                        <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
+                        <Text style={{flex:1, fontSize:22, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
                     <Pressable onPress={() => setListModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
-                        <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
+                        <Text style={{flex:1, fontSize:22, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
                     </Pressable>
                 </View>
                 <View style={profileStyle.content}>
                 <Text style={{fontSize:40, marginTop:10, marginBottom: 30, fontWeight: 'bold'}}>My Lists:</Text>
-                    
+                
                     <View style={{flex:4,width:'90%'}}>
                         <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                            {DisplayUserLists(library, navigation, user)}
+                            {DisplayUserLists(library, navigation)}
                         </ScrollView>
                     </View>
                 </View>

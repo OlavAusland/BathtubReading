@@ -23,7 +23,8 @@ export const ProfileListModal = (props) => {
                 <View style={profileStyle.modalView}>
                     <View style={{flex:8, width:'100%', height:'100%'}}>
                         <View>
-                            <TextInput style={{marginTop:'10%', height:50, fontSize:20, borderRadius:10, backgroundColor:'white'}} onChange={(e) => setListName(e.nativeEvent.text)}>
+                            <Text style={{color:'white', fontSize:60, marginTop:'17%', marginLeft:'17%'}}>Add List</Text>
+                            <TextInput placeholder='List Name' style={{marginTop:'20%',marginLeft:50, width:'70%', height:50, fontSize:20, borderRadius:10, backgroundColor:'white'}} onChange={(e) => setListName(e.nativeEvent.text)}>
                             </TextInput>
                         </View>
                     </View>

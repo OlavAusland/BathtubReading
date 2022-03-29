@@ -21,10 +21,6 @@ export const DefaultHome = (props) =>
 
    
     
-
-    
-   
-
     return(
         
         <View style={[homeStyles.container, { flexDirection: 'row' }]}>
