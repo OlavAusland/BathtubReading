@@ -33,7 +33,7 @@ export default function BookPage({ route, navigate }) {
     }, [])
 
     useEffect(() => {
-        const getMybook = async () => {         
+        const getMybook = async () => {     
             const data = await googleApi.getBook(isbn).then(setLoading(false));
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
