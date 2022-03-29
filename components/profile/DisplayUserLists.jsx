@@ -1,4 +1,6 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { RemoveUserList } from '../../api/firebaseAPI';
 import { profileStyle } from '../../styles/ProfileStyles';
 
 export const DisplayUserLists = (library, navigation) => 

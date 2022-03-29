@@ -1,12 +1,12 @@
 import { Text, View, TextInput, Pressable, Modal } from 'react-native';
 import { useState } from 'react';
 import { profileStyle } from '../../styles/ProfileStyles';
+import { AddUserList } from '../../api/firebaseAPI';
+import { getAuth } from 'firebase/auth';
 
-export const ProfileModal = (props) => {
-    const [username, setUsername] = useState(props.user ? props.user.displayName : "");
-    const [password, setPassword] = useState("");
-    const [retypedPassword, setRetypedPassword] = useState("");
-    const [passwordError, setPasswordError] = useState("");
+export const ProfileListModal = (props) => {
+    const user = getAuth().currentUser;
+    const [listName, setListName] = useState('');
 
     return(
         <Modal
@@ -21,7 +21,20 @@ export const ProfileModal = (props) => {
         >
             <View style={profileStyle.modal}>
                 <View style={profileStyle.modalView}>
-                    <Text>HEI</Text>
+                    <View style={{flex:8, width:'100%', height:'100%'}}>
+                        <View>
+                            <TextInput style={{marginTop:'10%', height:50, fontSize:20, borderRadius:10, backgroundColor:'white'}} onChange={(e) => setListName(e.nativeEvent.text)}>
+                            </TextInput>
+                        </View>
+                    </View>
+                    <View style={{flex:1, flexDirection:'row', width:'100%', height:'100%', backgroundColor:'white'}}>
+                        <Pressable style={{flex:1, justifyContent:'center', alignItems:'center'}} onPress={async() => {await AddUserList(user, listName)}}>
+                            <Text style={{fontSize:20, fontWeight:'bold'}}>Add</Text>
+                        </Pressable>
+                        <Pressable style={{flex:1, justifyContent:'center', alignItems:'center'}} onPress={() => {props.setModalVisible(!props.modalVisible)}}>
+                            <Text style={{fontSize:20, fontWeight:'bold'}}>Close</Text>
+                        </Pressable>
+                    </View>
                 </View>
             </View>
         </Modal>
