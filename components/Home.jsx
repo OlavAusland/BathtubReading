@@ -21,9 +21,28 @@ export default function HomePage({ navigation }) {
     useEffect(async() => {
         const getRatings = async() => {
             const result = await firebaseApi.getAllRatings();
-            console.log(result.children)
-            
-            setRating(result)
+            const ratings = new Map();
+            result.forEach((item) => {
+                const propertyNames = Object.getOwnPropertyNames(item);
+                let rating = 0;
+                let count = 0;
+                let id = 0;
+                propertyNames.forEach((propertyName) => {
+                    console.log("Property name: " + propertyName);
+                    if (propertyName === "id") {
+                        id = item[propertyName];
+                        console.log("ID: " + id);
+                    } else if(propertyName !== "id") {
+                        rating += item[propertyName].rating;
+                        count += 1;
+                        console.log("Rating: " + rating);
+                    }
+                })
+
+                ratings.set(id, rating / count);
+            });
+            console.log(ratings);
+            setRating(ratings);
           
         }
         getRatings();
