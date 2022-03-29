@@ -21,18 +21,21 @@ export const DisplayUserLists = (library, navigation, user) =>
 {
     
 
+
+
     return [...Array.from(library.keys())].map((key) => {
         return(
-            <View key={ Math.random().toString(36).substr(2, 9)}>
+            <View key={ Math.random().toString(36).substr(2, 9)}> style={{marginBottom: 20}}
                 <View style={{flexDirection:'row'}}>
                     <View>
-                        <Text style={{fontWeight:'bold', fontSize:24}}>{key.toUpperCase()}</Text>
+                        <Text style={{fontWeight:'bold', fontSize:20, marginLeft: 8, marginTop: 20}}>{key.toUpperCase()}</Text>
                     </View>
                     {DeleteListView(user, key)}
                     
                 </View>
                 <ScrollView horizontal={true}>
                     {library && library.get(key).map((book, index) => {
+                    
                         if(book === undefined){return;}
                         return(
                             <View key={`${key}-${index}`}>
@@ -42,7 +45,7 @@ export const DisplayUserLists = (library, navigation, user) =>
                                         source={book.imageURI !==' '? {uri: book.imageURI} : require('../../assets/Images/NoImage.jpg')}
                                     />
                                 </TouchableOpacity>
-                                <Text style={{marginLeft: 5, marginTop: 2, width:100 }}>{book.title ? book.title : ''}</Text>
+                                <Text style={{marginLeft: 10, marginTop: 2, width:100 }}>{book.title ? book.title : ''}</Text>
                             </View>
                             
                         );

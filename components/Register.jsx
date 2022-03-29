@@ -6,6 +6,7 @@ import { storage } from '../firebase-config.js';
 import { ref, uploadBytes } from 'firebase/storage';
 import { initUser } from '../api/firebaseAPI';
 import { registersStyles } from '../styles/RegisterStyle';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 export default function RegisterPage({ navigation }) {
@@ -48,7 +49,6 @@ export default function RegisterPage({ navigation }) {
 
     useEffect(async () => {
         if (register) {
-            console.log(loading)
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
@@ -77,37 +77,71 @@ export default function RegisterPage({ navigation }) {
                     source={require('../assets/Images/Loading.gif')}
                 />
             }
-            <TextInput
-                style={registersStyles.input}
-                onChangeText={updated => setUsername(updated)}
-                placeholder="Username" />
-            <TextInput
-                style={registersStyles.input}
-                onChangeText={updated => setEmail(updated)}
-                placeholder="Email" />
-            <TextInput
-                style={registersStyles.input}
-                secureTextEntry={true}
-                onChangeText={updated => setPassword(updated)}
-                placeholder="Password" />
-            <View style={{ width: '80%' }}>
+            <View style={{ marginBottom: 80 }}>
+                <Icon name="user-plus" size={200} color="#FFFFFF" />
+            </View>
+            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                <View style={{ height: '85%', marginRight: 15 }}>
+                    <Icon name="user" size={30} color="#FFFFFF" />
+                </View>
+                <TextInput
+                    style={registersStyles.input}
+                    onChangeText={updated => setUsername(updated)}
+                    placeholder="Username" />
+
+            </View>
+            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                <View style={{ height: '85%', marginRight: 10 }}>
+                    <Icon name="envelope" size={30} color="#FFFFFF" />
+                </View>
+                <TextInput
+                    style={registersStyles.input}
+                    onChangeText={updated => setEmail(updated)}
+                    placeholder="Email" />
+            </View>
+            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                <View style={{ height: '85%', marginRight: 10 }}>
+                    <Icon name="key" size={30} color="#FFFFFF" />
+                </View>
+                <TextInput
+                    style={registersStyles.input}
+                    secureTextEntry={true}
+                    onChangeText={updated => setPassword(updated)}
+                    placeholder="Password" />
+            </View>
+            
+            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection:'row'}}>
+                <View style={{height:'60%', marginRight:10}}>
+                    <Icon name="upload" size={30} color="#FFFFFF" />
+                </View>
                 <Pressable style={registersStyles.registerButtons} onPress={pickImage}>
                     <Text style={registersStyles.buttontext}>
                         Upload Image
                     </Text>
                 </Pressable>
+            </View>
+            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection:'row'}}>
+                <View style={{height:'60%', marginRight:4}}>
+                    <Icon name="user-plus" size={30} color="#FFFFFF" />
+                </View>
                 <Pressable style={registersStyles.registerButtons} onPress={() => { setLoading(true); setRegister(true) }}>
                     <Text style={registersStyles.buttontext}>
                         Register
                     </Text>
                 </Pressable>
+                </View>
+                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection:'row'}}>
+                <View style={{height:'60%', marginRight:10}}>
+                    <Icon name="arrow-left" size={30} color="#FFFFFF" />
+                </View>
                 <Pressable style={registersStyles.registerButtons} title="Back" onPress={() => navigation.navigate("Login")} >
                     <Text style={registersStyles.buttontext}>
                         Back
                     </Text>
                 </Pressable>
+                </View>
             </View>
-        </View>
     );
 }
+
 

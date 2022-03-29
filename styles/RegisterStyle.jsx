@@ -29,7 +29,8 @@ export const registersStyles = StyleSheet.create({
         height: 40,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 10
+        borderRadius: 10,
+        width: '80%'
     },
     buttontext:{
         fontSize: 20,

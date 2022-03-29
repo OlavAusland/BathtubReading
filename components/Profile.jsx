@@ -1,18 +1,17 @@
 import React, { useEffect, useState} from 'react';
-import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, TouchableOpacity } from 'react-native';
+import { View, Image, Text, ScrollView, Pressable, } from 'react-native';
 import { db, storage } from "../firebase-config.js";
-import { getAuth, signOut, updatePassword } from 'firebase/auth';
-import { collection, getDocs, onSnapshot, doc} from "firebase/firestore";
+import { getAuth, signOut } from 'firebase/auth';
+import { onSnapshot, doc} from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
-//import { getBook } from '../api/googleAPI'
-import { getBooks, updateUser } from '../api/firebaseAPI'
+import * as firebaseApi from '../api/firebaseAPI'
 import { profileStyle } from '../styles/ProfileStyles' 
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal} from './profile/ProfileModal.jsx';
 import { ProfileListModal } from './profile/ProfileListModal.jsx';
-import { getAllGenres, addGenre, AddUserList, RemoveUserList, getUserLibrary} from '../api/firebaseAPI';
-import { async } from '@firebase/util';
+import { getAllGenres, getUserLibrary} from '../api/firebaseAPI';
+
 
 
 export default function ProfilePage({ navigation })
@@ -25,6 +24,8 @@ export default function ProfilePage({ navigation })
     const [library, setLibrary] = useState(new Map());
     const [logout, setLogout] = useState(false);    
     const [loading, setLoading] = useState(false);
+  
+
 
     useEffect(() => {getAllGenres()}, [])
 
@@ -33,7 +34,7 @@ export default function ProfilePage({ navigation })
      
         const unsub = onSnapshot(doc(db, "Users", user.uid), async(doc) => {
             if(doc.data()) {
-                console.log("UPDATED")
+               // console.log("UPDATED")
                 const lib = []
                 Object.keys(doc.data()['libraries']).forEach((key) => {lib.push({[key]: Array.from(new Set(doc.data()['libraries'][key]))})})
                 await GetUserListsInformation(user, lib).then((res) => {setLibrary(res)});
@@ -64,7 +65,8 @@ export default function ProfilePage({ navigation })
             setLogout(false);
         }
     }, [logout]);
-    
+  
+
     if(user != null && !loading)
     {
         return (
@@ -91,7 +93,7 @@ export default function ProfilePage({ navigation })
                     </Pressable>
                 </View>
                 <View style={profileStyle.content}>
-                <Text style={{fontSize:30, marginTop:10, marginBottom: 10}}>My Lists:</Text>
+                <Text style={{fontSize:40, marginTop:10, marginBottom: 30, fontWeight: 'bold'}}>My Lists:</Text>
                     <View style={{flex:4,width:'90%'}}>
                         <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
                             {DisplayUserLists(library, navigation, user)}
