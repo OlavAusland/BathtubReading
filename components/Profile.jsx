@@ -82,9 +82,9 @@ export default function ProfilePage({ navigation })
                         <Text style={{fontSize:18, color:'white'}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={{ flex:1, flexDirection:'row', width:'100%', alignItems:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
+                <View style={{ flex:1, flexDirection:'row', width:'100%', alignItems:'center', justifyContent:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
                     <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
-                        <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
+                        <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', textAlign:'center'}}>Settings</Text>
                     </Pressable>
                     <Pressable onPress={() => setListModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
