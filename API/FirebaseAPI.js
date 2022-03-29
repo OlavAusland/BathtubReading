@@ -1,11 +1,11 @@
-import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy,  getApp,  arrayUnion, arrayRemove} from 'firebase/firestore';
+import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy,  getApp,  arrayUnion, arrayRemove, remove, deleteField} from 'firebase/firestore';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { db } from '../firebase-config.js'
+import { map } from '@firebase/util';
 
 export const addBook = async(isbn, book) => {
    const image = book.items[0].volumeInfo.imageLinks ? book.items[0].volumeInfo.imageLinks.thumbnail : ' '
       
-    console.log('Firebase book' + book)
     setDoc(doc(db, 'Books', isbn), {
         title: book.items[0].volumeInfo.title,
         genres: book.items[0].volumeInfo.categories,
@@ -15,7 +15,6 @@ export const addBook = async(isbn, book) => {
 }
 
 export const addBookByObject = async(isbn, book) => {
-    console.log(isbn)
     const image = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : ' '
     setDoc(doc(db, 'Books', isbn), {
         title: book.volumeInfo.title ? book.volumeInfo.title : ' ',
@@ -24,11 +23,27 @@ export const addBookByObject = async(isbn, book) => {
         imageURI: image,
         rating:0
     });
+
+    const firebaseGenres = await getAllGenres();
+    const genres = book.volumeInfo.categories ? book.volumeInfo.categories : [];
+    genres.forEach((genre) => {if(!firebaseGenres.includes(genre)){addGenre(genre)}});
+    
 }
 
 export const addBookToUserLibrary = async(user, library, isbn) => {
     await setDoc(doc(db, 'Users', user.uid), { 'libraries': { [library]: arrayUnion(isbn) }}, {merge:true})
 };
+
+export const getAllGenres = async() => {
+    const genres = await getDoc(doc(db, 'Genres', 'Genres'));
+    return genres.data().genres;
+};
+
+export const addGenre = async(genre) => {
+    setDoc(doc(db, 'Genres', 'Genres'), {
+        genres: arrayUnion(genre)
+    }, {merge:true});
+}
 
 export const removeBookFromUserLibrary = async(user, library, isbn) => {
     setDoc(doc(db, 'Users', user.uid), { 'libraries': { [library]: arrayRemove(isbn) }}, { merge: true })
@@ -100,4 +115,13 @@ export const getUserRating = async(isbn, user) => {
     const ratingDoc = await getDoc(ratingRef);
     const field = ratingDoc.get(user.uid);
     return field.rating;
+}
+
+export const AddUserList = async(user, listName) => {
+    const userLists = setDoc(doc(db, 'Users', user.uid), { 'libraries': { [listName]:[] }}, { merge: true })
+}
+
+export const RemoveUserList = async(user, listName) => {
+    const res = await setDoc(doc(db, 'Users', user.uid), { 'libraries': { [listName]: deleteField() }}, { merge: true })
+
 }
