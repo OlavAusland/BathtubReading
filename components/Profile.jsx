@@ -10,6 +10,7 @@ import { profileStyle } from '../styles/ProfileStyles'
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal} from './profile/ProfileModal.jsx';
+import { ProfileListModal } from './profile/ProfileListModal.jsx';
 import { getAllGenres, addGenre, AddUserList, RemoveUserList, getUserLibrary} from '../api/firebaseAPI';
 import { async } from '@firebase/util';
 
@@ -18,6 +19,7 @@ export default function ProfilePage({ navigation })
 {
     const auth = getAuth();
     const [modalVisible, setModalVisible] = useState(false);
+    const [listModalVisible, setListModalVisible] = useState(false);
     const [user, setUser] = useState(auth.currentUser);
     const [avatar, setAvatar] = useState("");
     const [library, setLibrary] = useState(new Map());
@@ -68,6 +70,7 @@ export default function ProfilePage({ navigation })
         return (
             <View style={[profileStyle.container, {flexDirection:'column'}]}>
                 <ProfileModal modalVisible={modalVisible} user={user} setModalVisible={setModalVisible}/>
+                <ProfileListModal modalVisible={listModalVisible} user={user} setModalVisible={setListModalVisible}/>
                 <View style={profileStyle.header}>
                     <View style={{flex:10, justifyContent:'center', alignItems:'center'}}>
                         <Image style={profileStyle.avatar}
@@ -83,7 +86,7 @@ export default function ProfilePage({ navigation })
                     <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
-                    <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
+                    <Pressable onPress={() => setListModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
                     </Pressable>
                 </View>
