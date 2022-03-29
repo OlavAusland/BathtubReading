@@ -30,7 +30,7 @@ export default function LoginPage({ navigation })
     }, [login])
 
     return (
-        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1, backgroundColor:'#A45C40'}}>
+        <View style={{width: '100%', justifyContent: 'center', alignItems: 'center', flex:1, backgroundColor:'#194a50'}}>
             <TextInput
                 style={loginStyle.input}
                 placeholder = "Email"

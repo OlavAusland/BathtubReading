@@ -10,7 +10,8 @@ import { Rating } from "react-native-ratings";
 export default function BookPage({ route }) {
 
     const user = getAuth().currentUser;
-    const { isbn } = route.params;
+    const [existst, setExsists] = useState(false);
+    const { isbn, book } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
     const [checked, setChecked] = useState(new Map());
@@ -19,16 +20,26 @@ export default function BookPage({ route }) {
     const [library, setLibrary] = useState(new Map());
     const [userRating, setUserRating] = useState(0);
 
+    useEffect(async() => {
+        await firebaseApi.getBook(isbn).then((getRes) => {
+            if(getRes == undefined)
+            {
+                firebaseApi.addBookByObject(isbn, book).then((addRes) => {
+                    console.log(addRes)
+                }).catch((e) => console.log(e))
+            }
+        });
+    }, [])
 
     useEffect(() => {
-        const getMybook = async () => {
+        const getMybook = async () => {         
             const data = await googleApi.getBook(isbn).then(setLoading(false));
             const firebaseData = await firebaseApi.getBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
                     style={[bookStyles.bookimage]}
-                    source={'../assets/Images/NoImage.jpg'}
+                    source={require('../assets/Images/NoImage.jpg')}
                 />;
 
 
@@ -158,7 +169,6 @@ export default function BookPage({ route }) {
                             <Text>{mybook.description}</Text>
                         </Text>
                         <Text style={bookStyles.bookRating}>{'\n'}{'\n'}
-                            <Text style={{ fontWeight: "bold" }}>Rating: </Text>
                             <Rating
                                 type='star'
                                 ratingCount={5}
@@ -166,6 +176,9 @@ export default function BookPage({ route }) {
                                 showRating
                                 startingValue={userRating}
                                 onFinishRating={handleRating}
+                                tintColor ='#F6EEE0'
+                                ratingTextColor = '#000000'
+                                fractions = {1}
                             />
                         </Text>
 

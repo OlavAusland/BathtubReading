@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { storage } from '../firebase-config.js';
 import { ref, uploadBytes } from 'firebase/storage';
-import { initUser } from '../api/firebaseAPI.js';
+import { initUser } from '../api/firebaseAPI';
 import { registersStyles } from '../styles/RegisterStyle';
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
 
 export default function RegisterPage({ navigation }) {
