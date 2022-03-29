@@ -1,4 +1,6 @@
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { RemoveUserList } from '../../api/firebaseAPI';
 import { profileStyle } from '../../styles/ProfileStyles';
 
 export const DisplayUserLists = (library, navigation) => 
@@ -6,7 +8,6 @@ export const DisplayUserLists = (library, navigation) =>
     return [...Array.from(library.keys())].map((key) => {
         return(
             <View key={ Math.random().toString(36).substr(2, 9)}>
-                <Text style={{fontWeight:'bold', fontSize:20, marginTop: 20}}>{key.toUpperCase()}</Text>
                 <ScrollView horizontal={true}>
                     {library && library.get(key).map((book, index) => {
                         if(book === undefined){return;}

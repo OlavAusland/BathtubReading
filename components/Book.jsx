@@ -32,9 +32,8 @@ export default function BookPage({ route }) {
     }, [])
 
     useEffect(() => {
-        const getMybook = async () => {         
+        const getMybook = async () => {     
             const data = await googleApi.getBook(isbn).then(setLoading(false));
-            const firebaseData = await firebaseApi.getBook(isbn);
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
@@ -55,7 +54,6 @@ export default function BookPage({ route }) {
                 pages: data.items[0].volumeInfo.pageCount,
                 printtype: data.items[0].volumeInfo.printType,
                 Isbn: data.items[0].volumeInfo.industryIdentifiers[0].identifier,
-                rating: firebaseData.rating,
 
             });
 

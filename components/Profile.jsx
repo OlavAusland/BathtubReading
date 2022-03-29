@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react';
 import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, TouchableOpacity } from 'react-native';
 import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut, updatePassword } from 'firebase/auth';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, doc} from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
 //import { getBook } from '../api/googleAPI'
 import { getBooks, updateUser } from '../api/firebaseAPI'
@@ -10,13 +10,16 @@ import { profileStyle } from '../styles/ProfileStyles'
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
 import { ProfileModal} from './profile/ProfileModal.jsx';
-import { getAllGenres, addGenre, AddUserList, RemoveUserList} from '../api/firebaseAPI';
+import { ProfileListModal } from './profile/ProfileListModal.jsx';
+import { getAllGenres, addGenre, AddUserList, RemoveUserList, getUserLibrary} from '../api/firebaseAPI';
+import { async } from '@firebase/util';
 
 
 export default function ProfilePage({ navigation })
 {
     const auth = getAuth();
     const [modalVisible, setModalVisible] = useState(false);
+    const [listModalVisible, setListModalVisible] = useState(false);
     const [user, setUser] = useState(auth.currentUser);
     const [avatar, setAvatar] = useState("");
     const [library, setLibrary] = useState(new Map());
@@ -25,25 +28,29 @@ export default function ProfilePage({ navigation })
 
     useEffect(() => {getAllGenres()}, [])
 
+    
+    useEffect(async()=> {
+     
+        const unsub = onSnapshot(doc(db, "Users", user.uid), async(doc) => {
+            if(doc.data()) {
+                console.log("UPDATED")
+                const lib = []
+                Object.keys(doc.data()['libraries']).forEach((key) => {lib.push({[key]: Array.from(new Set(doc.data()['libraries'][key]))})})
+                await GetUserListsInformation(user, lib).then((res) => {setLibrary(res)});
+            }
+        }); 
+    
+    },[])
+
     useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
-        const userBooks = await GetUserListsInformation(user);
-        setLibrary(userBooks);
+        await getUserLibrary(user.uid).then(
+            async(res) => {
+                //console.log(res);
+                await GetUserListsInformation(user, res).then((lists) => {setLibrary(lists)});
+            }
+        );
     }, [user]);
-
-    /*
-    useEffect(async() => {
-        let res = await RemoveUserList(user, 'lol');
-        console.log(res);
-
-    },[])
-
-    useEffect(async() => {
-        let res = await AddUserList(user, 'lol');
-        console.log(res);
-
-    },[])
-    */
 
     useEffect(() => {
         if(logout)
@@ -63,6 +70,7 @@ export default function ProfilePage({ navigation })
         return (
             <View style={[profileStyle.container, {flexDirection:'column'}]}>
                 <ProfileModal modalVisible={modalVisible} user={user} setModalVisible={setModalVisible}/>
+                <ProfileListModal modalVisible={listModalVisible} user={user} setModalVisible={setListModalVisible}/>
                 <View style={profileStyle.header}>
                     <View style={{flex:10, justifyContent:'center', alignItems:'center'}}>
                         <Image style={profileStyle.avatar}
@@ -78,7 +86,7 @@ export default function ProfilePage({ navigation })
                     <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
                     </Pressable>
-                    <Pressable onPress={() => setModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
+                    <Pressable onPress={() => setListModalVisible(true)} style={{flex:1, alignSelf:'center'}}>
                         <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
                     </Pressable>
                 </View>
