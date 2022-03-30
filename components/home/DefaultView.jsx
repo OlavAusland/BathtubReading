@@ -3,6 +3,7 @@ import React, { useState, useEffect, Dimensions} from 'react';
 import { homeStyles } from '../../styles/HomeStyles';
 import * as firebaseApi from "../../api/firebaseAPI";
 import { Rating } from 'react-native-ratings';
+import { defaultHomeStyle } from '../../styles/HomeStyles';
 
 export const DefaultHome = (props) =>
 {
@@ -31,17 +32,17 @@ export const DefaultHome = (props) =>
                     <ScrollView style={{backgroundColor:'#F6EEE0', flex:1, width:'100%'}} contentContainerStyle={{alignItems:'center'}}>
                         {topTen.map((book, index) => {
                             return (
-                                <View key={'Book-' + index} style={[styles.BookCard, styles.shadowProp]}>
+                                <View key={'Book-' + index} style={[defaultHomeStyle.BookCard, defaultHomeStyle.shadowProp]}>
                                     <TouchableOpacity
                                     onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
                                         <View style={{alignItems:'center'}}>
                                             <Image
-                                                style={styles.Imagestyle}
+                                                style={defaultHomeStyle.Imagestyle}
                                                 source={book.imageURI !==' '? {uri: book.imageURI} : require('../../assets/Images/NoImage.jpg')}
                                             />
                                         </View>
                                         <View>
-                                            <Text  adjustsFontSizeToFit style={styles.Booktitle}>{book.title}</Text>
+                                            <Text  adjustsFontSizeToFit style={defaultHomeStyle.Booktitle}>{book.title}</Text>
                                             <View style={{marginTop:25}}>
                                                 <Rating
                                                     type='star'
@@ -67,17 +68,17 @@ export const DefaultHome = (props) =>
                     <ScrollView style={{backgroundColor:'#194a50', flex:1, width:'100%'}} contentContainerStyle={{alignItems:'center'}}>
                         {newest.map((book, index) => {
                             return (
-                                <View key={'Book-' + index} style={[styles.BookCard, styles.shadowProp, {backgroundColor:'#F6EEE0'}]}>
+                                <View key={'Book-' + index} style={[defaultHomeStyle.BookCard, defaultHomeStyle.shadowProp, {backgroundColor:'#F6EEE0'}]}>
                                     <TouchableOpacity
                                     onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
                                         <View style={{alignItems:'center'}}>
                                             <Image
-                                                style={styles.Imagestyle}
+                                                style={defaultHomeStyle.Imagestyle}
                                                 source={book.imageURI !==' '? {uri: book.imageURI} : require('../../assets/Images/NoImage.jpg')}
                                             />
                                         </View>
                                         <View>
-                                            <Text  adjustsFontSizeToFit style={[styles.Booktitle, {color:'black'}]}>{book.title}</Text>
+                                            <Text  adjustsFontSizeToFit style={[defaultHomeStyle.Booktitle, {color:'black'}]}>{book.title}</Text>
                                             <View style={{marginTop:25, alignItems:'flex-start'}}>
                                                 <Rating
                                                     type='star'
@@ -102,49 +103,3 @@ export const DefaultHome = (props) =>
     );
 }
 
-const styles = StyleSheet.create({
-    Container:{
-        padding: 24,
-        backgroundColor: "#F6EEE0"
-    },
-    Title:{
-        alignSelf:"center",
-        fontSize:45,
-    },
-    Booklisting:{
-        alignContent: "flex-start",
-    },
-    BookContainer:{
-        flex: 1,
-        padding:24,
-        backgroundColor: "#E4B7A0",
-        alignItems: "baseline"
-    },
-    BookCard:{
-        backgroundColor: "#194a50",
-        borderRadius: 8,
-        paddingVertical: 45,
-        paddingHorizontal:25,
-        width: "75%",
-        marginVertical: 10,
-        alignItems: 'center'
-    },
-    Booktitle:{
-        fontSize: 15,
-        fontWeight: 'normal',
-        color:'white',
-        alignContent: "center"
-    },
-    Imagestyle:{
-        width: 200,
-        height: 200,
-        borderRadius:10
-
-    },
-    shadowProp:{
-        shadowColor: '#100f0f',
-        shadowOffset: {width: -2, height: 4},
-        shadowOpacity: 0.5,
-        shadowRadius: 5
-    }
-})

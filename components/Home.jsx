@@ -18,38 +18,6 @@ export default function HomePage({ navigation }) {
     const [displayGenre, setDisplayGenre] = useState(false);
     const [searching, setSearching] = useState(false);
     const [books, setBooks] = useState();
-    //const [rating, setRating] = useState([]);
-    
-    /*
-    useEffect(async() => {
-        const getRatings = async() => {
-            const result = await firebaseApi.getAllRatings();
-            const ratings = new Map();
-            result.forEach(async(item) => {
-                const propertyNames = Object.getOwnPropertyNames(item);
-                let rating = 0;
-                let count = 0;
-                let id = 0;
-                propertyNames.forEach((propertyName) => {
-                    //console.log("Property name: " + propertyName);
-                    if (propertyName === "id") {
-                        id = item[propertyName];
-                        //console.log("ID: " + id);
-                    } else if(propertyName !== "id") {
-                        rating += item[propertyName].rating;
-                        count += 1;
-                        //console.log("Rating: " + rating);
-                    }
-                })
-                ratings.set(id, rating / count);
-            });
-            setRating(ratings);
-        }
-
-        getRatings();
-    },[])
-    */
-
 
     const handleGenreChange = (val) => {
         setSearching(false)
