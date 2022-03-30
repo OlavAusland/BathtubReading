@@ -1,116 +1,58 @@
 import React, { useEffect, useState} from 'react';
-import { View, Image, Text, Button, StyleSheet, ScrollView, Modal, TextInput, Pressable, TouchableOpacity } from 'react-native';
+import { View, Image, Text, ScrollView, Pressable, } from 'react-native';
 import { db, storage } from "../firebase-config.js";
-import { getAuth, signOut, updatePassword } from 'firebase/auth';
-import { collection, getDocs } from "firebase/firestore";
+import { getAuth, signOut } from 'firebase/auth';
+import { onSnapshot, doc, updateUser} from "firebase/firestore";
 import { getDownloadURL, ref} from 'firebase/storage';
-import { getBook, setBook } from '../API/GoogleAPI'
-import { getFirebaseBooks, getFirebaseBook, getUserLibrary, updateUser } from '../API/FirebaseAPI'
-import { profileStyle } from '../styles/ProfileStyles.jsx'; 
-import { map, stringify } from '@firebase/util';
-import BookPage from './Book.jsx';
-
-function DisplayUserLists(library)
-{
-    return [...Array.from(library.keys())].map((key) => {
-        if(key == 'favorites'){return;}
-        return(
-            <View key={ Math.random().toString(36).substr(2, 9)}>
-                <Text style={{fontWeight:'bold', fontSize:30}}>{key.toUpperCase()}</Text>
-                <ScrollView horizontal={true}>
-                    {library.get(key).map((book, index) => {
-                        return(
-                            <View key={`${key}-${index}`}>
-                                <TouchableOpacity onPress={() => navigation.navigate('Book')}>
-                                    <Image
-                                        style={profileStyle.image}
-                                        source={{uri:book.imageURI}}
-                                    />
-                                </TouchableOpacity>
-                                <Text style={{overflow:'hidden'}}>{book.title}</Text>
-                            </View>
-                            
-                        );
-                    })}
-                </ScrollView>
-            </View>
-        )
-    })
-}
-
-async function GetUserListsInformation(user)
-{
-    let userLibrary = [];
-    let isbnArray = new Map();
-    let keys = []
-    const lists = await getUserLibrary(user.uid);
-    lists.map((list) => {
-        return Object.keys(list).map((key) => {
-            let temp = [];
-            [...Array(list[key].length).keys()].map((i) => {
-                temp.push(getFirebaseBook(list[key][i]))
-            })
-            keys.push(key)
-            isbnArray.set(key, temp)
-        })
-    });
-    
-    const resolve = async() => {
-        const test = new Map()
-        for(let i = 0; i < keys.length;i++)
-        {
-            await Promise.all(isbnArray.get(keys[i])).then((res) => {test.set(keys[i], res);});
-        }
-        return test;
-    }
+import * as firebaseApi from '../api/firebaseAPI'
+import { profileStyle } from '../styles/ProfileStyles' 
+import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
+import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
+import { ProfileModal} from './profile/ProfileModal.jsx';
+import { ProfileListModal } from './profile/ProfileListModal.jsx';
+import { getAllGenres, getUserLibrary} from '../api/firebaseAPI';
 
 
-    return resolve();
-}   
 
 export default function ProfilePage({ navigation })
 {
     const auth = getAuth();
-    const [checked, setChecked] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [listModalVisible, setListModalVisible] = useState(false);
     const [user, setUser] = useState(auth.currentUser);
     const [avatar, setAvatar] = useState("");
     const [library, setLibrary] = useState(new Map());
-    const [logout, setLogout] = useState(false);
-    const [image, setImage] = useState("");
+    const [logout, setLogout] = useState(false);    
     const [loading, setLoading] = useState(false);
+  
 
-    const [username, setUsername] = useState(user ? user.displayName : "");
-    const [password, setPassword] = useState("");
-    const [retypedPassword, setRetypedPassword] = useState("");
-    const [passwordError, setPasswordError] = useState("");
+
+    useEffect(() => {getAllGenres()}, [])
+
     
+    useEffect(async()=> {
+     
+        const unsub = onSnapshot(doc(db, "Users", user.uid), async(doc) => {
+            if(doc.data()) {
+               // console.log("UPDATED")
+                const lib = []
+                Object.keys(doc.data()['libraries']).forEach((key) => {lib.push({[key]: Array.from(new Set(doc.data()['libraries'][key]))})})
+                await GetUserListsInformation(user, lib).then((res) => {setLibrary(res)});
+            }
+        }); 
+    
+    },[])
+
     useEffect(async() => {
         await getDownloadURL(ref(storage, user.photoURL)).then((url) => setAvatar(url)).catch((error) => console.log(error));
-        const test = await GetUserListsInformation(user);
-        setLibrary(test)
+        await getUserLibrary(user.uid).then(
+            async(res) => {
+                //console.log(res);
+                await GetUserListsInformation(user, res).then((lists) => {setLibrary(lists)});
+            }
+        );
     }, [user]);
 
-    useEffect(async() => {
-        const getMybooks = async () => {
-            const firebaseData = await getFirebaseBooks();
-            return firebaseData;
-          }
-          const books = await getMybooks();
-          //setLibrary(books);
-          //setBook('9783319195957')
-
-    }, []); 
-
-    useEffect(async() => {
-        const getLibrary = async() => {
-            const result = await getDocs(collection(db, "Books"));
-            const data = result.docs.map((doc) => ({...doc.data(), id: doc.id}));
-            //setLibrary(data)
-        };
-        getLibrary();
-    }, [])
-    
     useEffect(() => {
         if(logout)
         {
@@ -123,142 +65,39 @@ export default function ProfilePage({ navigation })
             setLogout(false);
         }
     }, [logout]);
-    
+  
+
     if(user != null && !loading)
     {
         return (
             <View style={[profileStyle.container, {flexDirection:'column'}]}>
-                <Modal
-                    animationType="slide"
-                    statusBarTranslucent={true}
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                    }}
-                >
-                    <View style={profileStyle.modal}>
-                        <View style={profileStyle.modalView}>
-                            <View style={{flex:6, paddingTop:10}}>
-                                <View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <Text style={{flex:1}}>Username</Text>
-                                        <View style={{flex:1}}/>
-                                    </View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput
-                                            onChangeText={updated => setUsername(updated)}
-                                            style={profileStyle.input}>{user.displayName}
-                                        </TextInput>
-                                        <Pressable style={[profileStyle.checkAvailabilityButton, {flex:1}]}
-                                        
-                                        ><Text>Check Availabilty</Text></Pressable>
-                                    </View>
-                                </View>
-                                <View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <Text style={{flex:1}}>Email:</Text>
-                                    </View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput
-                                            editable={false}
-                                            style={[profileStyle.input, {backgroundColor:'lightgrey'}]}>{user.email}
-                                        </TextInput>
-                                    </View>
-                                </View>
-                                <View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <Text style={{flex:1}}>Password:</Text>
-                                    </View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput onChangeText={updated => setPassword(updated)} 
-                                        secureTextEntry={true} style={profileStyle.input}/>
-                                    </View>
-                                </View>
-                                <View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <Text style={{flex:1}}>Retype Password:</Text>
-                                    </View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        <TextInput 
-                                            onChangeText={updated => setRetypedPassword(updated)} 
-                                            secureTextEntry={true} style={profileStyle.input}/>
-                                    </View>
-                                </View>
-                                <View>
-                                    <View style={{flexDirection:'row', minWidth:'100%'}}>
-                                        {password != retypedPassword &&
-                                            <Text style={{color:'red', fontWeight:'bold'}}>Password Does Not Match!</Text>
-                                        }
-                                        {passwordError != "" &&
-                                            <Text style={{color:'red', fontWeight:'bold'}}>{passwordError}</Text>
-                                        }
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={{flex:6}}/>
-                            <View style={{flex:2, flexDirection:'row', width:'100%', backgroundColor:'#F6EEE0'}}>
-                                <Pressable
-                                        style={profileStyle.modalButton}
-                                        onPress={async() => {updateUser(username, password);
-                                            if(password == retypedPassword && password != "")
-                                            {
-                                                await updatePassword(auth.currentUser, password).then(setPasswordError("")).catch((error) => 
-                                                {console.log(error);setPasswordError(error.errorMessage)});
-                                            }setModalVisible(false);}}
-                                        >
-                                    <Text style={{fontSize:18, fontWeight:'bold'}}>Update</Text>
-                                </Pressable>
-                                <Pressable
-                                        style={profileStyle.modalButton}
-                                        onPress={() => {setModalVisible(false); }}
-                                    >
-                                    <Text style={{fontSize:18, fontWeight:'bold'}}>Close</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
+                <ProfileModal modalVisible={modalVisible} user={user} setModalVisible={setModalVisible}/>
+                <ProfileListModal modalVisible={listModalVisible} user={user} setModalVisible={setListModalVisible}/>
                 <View style={profileStyle.header}>
                     <View style={{flex:10, justifyContent:'center', alignItems:'center'}}>
                         <Image style={profileStyle.avatar}
-                                source={{uri: avatar}}
+                                source={avatar ? {uri: avatar} : require('../assets/Images/NoImage.jpg')} // HANDLING FOR NO IMAGE
                         />
                     </View>
                     <View style={{flex:10, flexDirection:'column', justifyContent:'center'}}>
-                        <Text style={{fontWeight:'bold', fontSize:24}}>{user.displayName}</Text>
-                        <Text style={{fontSize:18}}>{user.email}</Text>
+                        <Text style={{fontWeight:'bold', fontSize:24, color:'white'}}>{user.displayName}</Text>
+                        <Text style={{fontSize:18, color:'white'}}>{user.email}</Text>
                     </View>
                 </View>
-                <View style={profileStyle.settings}>
-                    <Pressable onPress={() => setModalVisible(true)} style={profileStyle.settingsButton}>
-                        <Text style={{flex:1, fontSize:20, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Settings</Text>
+                <View style={{ flex:1, flexDirection:'row', width:'100%', alignItems:'center', justifyContent:'center', backgroundColor: "#FFFFFF", borderBottomColor: 'black'}}>
+                    <Pressable onPress={() => setModalVisible(true)} style={{flex:1, paddingTop:10, alignItems:'center', justifyContent:'center'}}>
+                        <Text style={{flex:1, fontSize:22, fontWeight:'bold'}}>Settings</Text>
+                    </Pressable>
+                    <Pressable onPress={() => setListModalVisible(true)} style={{flex:1, paddingTop:10, alignItems:'center'}}>
+                        <Text style={{flex:1, fontSize:22, fontWeight:'bold', justifyContent:'center', alignItems:'center'}}>Add List</Text>
                     </Pressable>
                 </View>
                 <View style={profileStyle.content}>
-                    <View style={{flex:3, width:'90%'}}>
-                        <Text style={{fontWeight:'bold', fontSize:30}}>FAVORITES</Text>
-                        <ScrollView style={profileStyle.list} horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {library.size > 0 && 
-                                library.get('favorites').map((obj, index) => {
-                                    return(
-                                        <View key={'book-' + index}>
-                                            <Image
-                                                style={profileStyle.image}
-                                                source={{uri:obj.imageURI}}
-                                            />
-                                            <Text>{obj.title}</Text>
-                                        </View>
-                                    )
-                                })
-                            }
-                        </ScrollView>
-                    </View>
-                    <View style={{flex:1}}></View>
-                    <View style={{flex:3,width:'90%'}}>
-                        <ScrollView style={{borderWidth:2}}horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-                            {DisplayUserLists(library)}
+                <Text style={{fontSize:40, marginTop:10, marginBottom: 30, fontWeight: 'bold'}}>My Lists:</Text>
+                
+                    <View style={{flex:4,width:'90%'}}>
+                        <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+                            {DisplayUserLists(library, navigation, user)}
                         </ScrollView>
                     </View>
                 </View>

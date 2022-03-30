@@ -1,5 +1,6 @@
 import React, { Modal, View, Text, ScrollView, Pressable } from "react-native";
 import Checkbox from "expo-checkbox";
+import { bookStyles } from '../../styles/BookStyles.jsx';   
 
 export const AddToListModal = (props) => {
     if (props.lists === undefined || props.checked === undefined) {
@@ -13,22 +14,18 @@ export const AddToListModal = (props) => {
             visible={props.modalVisible}
             onRequestClose={() => { props.setModalVisible(!props.modalVisible); }}
             StatusBarTranslucent={true}
+            
         >
-            <View>
-                <View style={props.newStyles.modalView}>
-                    <Text style={props.newStyles.modalText} numberOfLines={1} adjustsFontSizeToFit>Choose List</Text>
-                    <ScrollView contentContainerStyle={props.styles.namelist}>
+            <View style={{ top:'15%'}}>
+                <View style={bookStyles.modalView}>
+                    <Text style={bookStyles.modalTitel} numberOfLines={1} adjustsFontSizeToFit>Choose List</Text>
+                    <ScrollView >
                         {props.checked.size > 0 &&
                             Array.from(props.checked).map(([key, value], index) => {
                                 return (
-                                    <View key={'Samma det' + index}style={props.styles.section} >
-                                        <Checkbox style={props.checkBoxStyle} key={"checkbox-" + key} value={value} onValueChange={(isChecked) => props.handleCheckbox(key, isChecked)} />
-                                        <Text>{key}</Text>
-                                        {/*
-                                        <View style={props.styles.namelist}>
-                                        </View>
-                                        */
-                                        }
+                                    <View key={'Samma det' + index}style={bookStyles.checkboxView} >
+                                        <Checkbox style={bookStyles.checkBoxStyle} key={"checkbox-" + key} value={value} onValueChange={(isChecked) => props.handleCheckbox(key, isChecked)} />
+                                        <Text style={bookStyles.checkboxtext}>{key}</Text>
                                     </View>
                                 );
                             })
@@ -38,16 +35,16 @@ export const AddToListModal = (props) => {
                     <View style={{ flexDirection: 'row' }}>
                         <Pressable
 
-                            style={[props.newStyles.button, props.newStyles.buttonClose, { flex: 1 }]}
-                            onPress={() => props.handleAddButton()}
+                            style={[ bookStyles.modalButton, { flex: 1 }]}
+                            onPress={() => {props.handleAddButton();props.setModalVisible(!props.setModalVisible)}}
                         >
-                            <Text style={props.newStyles.textStyle}>Add</Text>
+                            <Text style={bookStyles.textStyle}>Add</Text>
                         </Pressable>
                         <Pressable
-                            style={[props.newStyles.button, props.newStyles.buttonClose, { flex: 1 }]}
+                            style={[ bookStyles.modalButton, { flex: 1 }]}
                             onPress={() => props.setModalVisible(!props.modalVisible)}
                         >
-                            <Text style={props.newStyles.textStyle}>Cancel</Text>
+                            <Text style={bookStyles.textStyle}>Cancel</Text>
                         </Pressable>
                     </View>
                 </View>

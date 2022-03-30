@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, ScrollView } from 'react-native';
-import { getBook } from '../API/GoogleAPI.js';
-import { getFirebaseBook, getUserLibrary } from '../API/FirebaseAPI.js';
-import { AddToListModal } from './AddToListModal.jsx';
-import { setDoc, updateDoc, doc, deleteField, arrayRemove } from 'firebase/firestore';
-import { db } from '../firebase-config'
-import { bookStyles } from '../styles/BookStyles.jsx';
+import * as firebaseApi from "../api/firebaseAPI";
+import * as googleApi from "../api/googleAPI";
+import { AddToListModal } from './book/AddToListModal';
+import { bookStyles } from '../styles/BookStyles';
 import { getAuth } from 'firebase/auth';
+import { Rating } from "react-native-ratings";
+import ProfilePage from './Profile';
+import { updateDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase-config.js';
 
-function BookPage({ route, navigation }) {
+export default function BookPage({ route, navigate }) {
 
     const user = getAuth().currentUser;
-    const { isbn } = route.params;
+    const [existst, setExsists] = useState(false);
+    const { isbn, book } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
-    const [addList, setAddList] = useState([]);
     const [checked, setChecked] = useState(new Map());
     const [modalVisible, setModalVisible] = useState(false);
     const [loading, setLoading] = useState(true);
     const [library, setLibrary] = useState(new Map());
+    const [userRating, setUserRating] = useState(0);
 
+    useEffect(async() => {
+        await firebaseApi.getBook(isbn).then((getRes) => {
+            if(getRes == undefined)
+            {
+                firebaseApi.addBookByObject(isbn, book).then((addRes) => {
+                    console.log(addRes)
+                }).catch((e) => console.log(e))
+            }
+        });
+    }, [])
 
     useEffect(() => {
-        const getMybook = async () => {
-            const data = await getBook(isbn).then(setLoading(false));
-            const firebaseData = await getFirebaseBook(isbn);
+        const getMybook = async () => {     
+            const data = await googleApi.getBook(isbn).then(setLoading(false));
             const image = data.items[0].volumeInfo.imageLinks ?
                 <Image source={{ uri: data.items[0].volumeInfo.imageLinks.thumbnail }} style={[bookStyles.bookimage]} />
                 : <Image
@@ -45,14 +57,13 @@ function BookPage({ route, navigation }) {
                 pages: data.items[0].volumeInfo.pageCount,
                 printtype: data.items[0].volumeInfo.printType,
                 Isbn: data.items[0].volumeInfo.industryIdentifiers[0].identifier,
-                rating: firebaseData.rating,
 
             });
 
         }
 
         const getLists = async (uid = user.uid) => {
-            const fetchedLibrary = await getUserLibrary(user.uid);
+            const fetchedLibrary = await firebaseApi.getUserLibrary(user.uid);
             setLibrary(fetchedLibrary)
 
             const categories = fetchedLibrary.map((item) => {
@@ -62,40 +73,33 @@ function BookPage({ route, navigation }) {
             setLists(categories);
 
         }
+
+        const getUserRating = async () => {
+            const rating = await firebaseApi.getUserRating(isbn, user);
+            setUserRating(rating);
+        }
+
         getMybook();
         getLists();
+        getUserRating();
     }, []);
 
-
-    /*
-        useEffect(() => {
-            lists.forEach((elem) =>{
-                setChecked(prevState => prevState.set(elem, false))});
-        }, 
-      
-        [lists]);
-    */
-
-
     useEffect(() => {
-        if (library !== undefined && library.size !== 0) {
-            const updateChecked = () => {
-                library.forEach((elem) => {
-                    const name = Object.getOwnPropertyNames(elem)[0];
-                    const values = elem[name]
-                    let existsInCategory = false;
-                    console.log(values)
+        const updateChecked = () => {
+            library.forEach((elem) => {
+                const name = Object.getOwnPropertyNames(elem)[0];
+                const values = elem[name]
+                let existsInCategory = false;
 
-                    if (values.includes(isbn)) {
-                        existsInCategory = true;
-                    }
+                if (values.includes(isbn)) {
+                    existsInCategory = true;
+                }
+                setChecked(prevState => prevState.set(name, existsInCategory))
+            });
+        }
 
-                    setChecked(prevState => prevState.set(name, existsInCategory))
-                });
-            }
-            if (library !== undefined && library.length !== 0) {
-                updateChecked();
-            }
+        if (library !== undefined && library.length !== 0) {
+            updateChecked();
         }
     }, [library, lists]);
 
@@ -106,14 +110,22 @@ function BookPage({ route, navigation }) {
 
 
     const handleAddButton = () => {
-        setAddList([])
-        checked.forEach((val, key) => { if (Boolean(val)) { setAddList(prev => Array.from(new Set([...prev, key]))) } })
-        addList.forEach((val) => {
-            setDoc(doc(db, 'Users', user.uid), { 'libraries': { [val]: [isbn] } }, { merge: true })
-        })
-        lists.filter(val => !addList.includes(val)).forEach((key) => {
-            setDoc(doc(db, 'Users', user.uid), { 'libraries': { [key]: arrayRemove(isbn) } }, { merge: true })
-        })
+        checked.forEach((val, key) => {
+            if (val === true) {
+                firebaseApi.addBookToUserLibrary(user, key, isbn);
+            } else {
+                firebaseApi.removeBookFromUserLibrary(user, key, isbn);
+            }
+        });
+    }
+
+    const handleRating = async(val) => {
+        firebaseApi.addRating(user, isbn, val)
+        await firebaseApi.getBookRatings(isbn).then(async(res) => {
+            await updateDoc(doc(db, 'Books', isbn), {rating:res.rating}).catch((e) => console.log(e));
+        });
+        
+        
     }
 
     if (mybook != null && !loading) {
@@ -163,22 +175,30 @@ function BookPage({ route, navigation }) {
                             <Text>{mybook.description}</Text>
                         </Text>
                         <Text style={bookStyles.bookRating}>{'\n'}{'\n'}
-                            <Text style={{ fontWeight: "bold" }}>Rating: </Text>
-                            <Text>{mybook.rating}</Text>
+                            <Rating
+                                type='star'
+                                ratingCount={5}
+                                imageSize={60}
+                                showRating
+                                startingValue={userRating}
+                                onFinishRating={handleRating}
+                                tintColor ='#F6EEE0'
+                                ratingTextColor = '#000000'
+                                fractions = {1}
+                            />
                         </Text>
 
                     </View>
                     {!modalVisible &&
 
                         <Pressable
-                            style={[bookStyles.button, bookStyles.buttonOpen]}
+                            style={[bookStyles.button, bookStyles.openModalButton]}
                             onPress={() => setModalVisible(true)}>
                             <Text style={bookStyles.textStyle}>Add to list</Text>
                         </Pressable>
                     }
                     <ScrollView>
                         <AddToListModal
-                            newStyles={bookStyles}
                             modalVisible={modalVisible}
                             setModalVisible={setModalVisible}
                             styles={bookStyles}
@@ -205,6 +225,3 @@ function BookPage({ route, navigation }) {
         );
     }
 }
-
-
-export default BookPage

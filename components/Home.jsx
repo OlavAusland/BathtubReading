@@ -1,24 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native'
-
+import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import * as firebaseApi from "../api/firebaseAPI.js";
+import { SearchResultsView } from "./home/SearchResultsView";
+import { GenreView } from "./home/GenreView"
+import { DefaultHome } from './home/DefaultView';
+import { homeStyles } from '../styles/HomeStyles';
+import { getAllGenres } from '../api/firebaseAPI.js';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from "../firebase-config.js";
 
 export default function HomePage({ navigation }) {
+
+    const [allGenres, setAllGenres] = useState([]);
+    const [searchKeyword, setSearchKeyword] = useState('');
+    const [queryGenre, setQueryGenre] = useState('');
+    const [displayGenre, setDisplayGenre] = useState(false);
+    const [searching, setSearching] = useState(false);
+    const [books, setBooks] = useState();
+
+    const handleGenreChange = (val) => {
+        setSearching(false)
+        if (queryGenre === val) { setDisplayGenre(false); setQueryGenre('') }
+        else { setDisplayGenre(true); setQueryGenre(val) }
+    }
+
+    const handleSearch = (text) => {
+        if(text.length > 0) {setSearching(true);setSearchKeyword(text);}
+        else{setSearching(false);setSearchKeyword('');}
+    }
+
+    useEffect(async () => { const genres = await getAllGenres(); setAllGenres(genres) }, []);
+
     return (
-        <View style={[styles.container, { flexDirection: 'column' }]}>
-            <View style={{ flex: 3, backgroundColor: "#A45C40", borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <View><Text style={{ fontSize: 50, marginLeft: 10, marginTop: 90 }}> Discovery </Text></View>
+        <View style={[homeStyles.container, { flexDirection: 'column' }]}>
+            <View style={{ flex: 3, backgroundColor: "#194a50", borderBottomColor: 'black' }}>
+                <View><Text style={{ fontSize: 50, marginLeft: 10, color: 'white' }}> Discovery </Text></View>
+                <View style={{ width: '55%', borderRadius: 10, marginLeft: 25, marginTop: 10, backgroundColor: '#FFFFFF', flexDirection: 'row' }}>
+                    <View style={{ height: '80%', marginRight: 10, marginLeft: 5 }}>
+                        <Icon name="search" size={20} color="#000000" />
+                    </View>
+                    <TextInput
+                        onChangeText={(text) => handleSearch(text)}
+                        placeholder="Search"
+                        style={{ width: '90%'}}
+                    />
+                </View>
             </View>
-            <View style={{flex:1}}>
-                <TextInput style={{height:'100%', width:'100%'}}/>
-            </View>
-            <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderBottomColor: 'black', borderBottomWidth: 1 }}>
-                <ScrollView style={styles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {
-                        ['Action','Classic','Horror','Fantasy', 'Romance', 'Non-Fiction'].map((elem, index) => {
+            <View style={{ flex: 1, backgroundColor: "#FFFFFF", borderBottomColor: 'black' }}>
+                <ScrollView style={homeStyles.scroller} horizontal={true} showsHorizontalScrollIndicator={false}>
+                    {allGenres.length > 0 &&
+                        allGenres.map((elem, index) => {
                             return (
                                 <View key={elem} style={{ alignItems: 'center', justifyContent: 'center' }}>
-                                    <View style={styles.scrollButtons}>
-                                        <Button title={elem.toUpperCase()} color="#A45C40" onPress={() => navigation.navigate('Book', {isbn:'9783319195957'})} />
+                                    <View style={homeStyles.scrollButtons}>
+                                        <Button title={elem.toUpperCase()} color="#194a50" onPress={() => { handleGenreChange(elem); }} />
                                     </View>
                                 </View>
                             )
@@ -26,63 +62,11 @@ export default function HomePage({ navigation }) {
                     }
                 </ScrollView>
             </View>
-            <View style={{ flex: 7, backgroundColor: "#F6EEE0" }}>
-                <View style={[styles.container, { flexDirection: 'row' }]}>
-                    <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 20, marginTop: 10 }}> TOP 10 </Text>
-                    </View>
-                    <View style={{ flex: 1, backgroundColor: "#E4B7A0", borderRightColor: 'black', borderRightWidth: 1, alignItems: 'center' }}>
-                        <Text style={{ fontSize: 20, marginTop: 10 }}> NEWEST </Text>
-                    </View>
-                </View>
+            <View style={{ flex: 9, backgroundColor: "#194a50" }}>
+                {(!displayGenre && !searching) && <DefaultHome navigation={navigation} />}
+                {(displayGenre && !searching) && <GenreView genre={queryGenre} navigation={navigation} />}
+                {(searching) && <SearchResultsView books={books} navigation={navigation} keyword={searchKeyword} />}
             </View>
-
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        flex: 2
-    },
-
-    scroller: {
-        shadowColor: 'rgba(0, 0, 0, 0.3)',
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 6 }
-    },
-
-    scrollButtons: {
-        borderRadius: 10,
-        padding: 5,
-        margin: 10
-    },
-
-    listButtons: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 2,
-        margin: 2
-    },
-    image: {
-        width: 150,
-        height: 150,
-        borderRadius: 5,
-        backgroundColor: 'black'
-    }
-})
-
-const MySearchBar = () => {
-    const [searchQuery, setSearchQuery] = React.useState('');
-
-    const onChangeSearch = query => setSearchQuery(query);
-
-    return (
-        <TextInput
-            placeholder="..."
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-        />
-    );
-};

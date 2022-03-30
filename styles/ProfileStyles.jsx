@@ -2,11 +2,10 @@ import { StyleSheet } from "react-native"
 
 export const profileStyle = StyleSheet.create({
     header:{
-        flex: 1, 
+        flex: 3, 
         flexDirection:'row', 
         justifyContent:'center', 
-        paddingTop:25,
-        backgroundColor:"#A45C40",
+        backgroundColor:"#194a50",
         width:'100%',
     },
     container:{
@@ -22,7 +21,8 @@ export const profileStyle = StyleSheet.create({
     },
     settings:{
         flexDirection:'row',
-        overflow:'hidden'
+        overflow:'hidden',
+        padding:5
     },
     settingsButton:{
         flex:1,
@@ -40,29 +40,28 @@ export const profileStyle = StyleSheet.create({
     content:{
         overflow:'hidden',
         width:'100%',
-        flex: 3,
-        alignItems:'center',
-        backgroundColor:"#E4B7A0",
+        flex: 9,
+        backgroundColor:"#F6EEE0",
+        marginLeft: 20
     },
     list:{
         overflow:'hidden',
         backgroundColor:'#F6EEE0',
         shadowColor:'black',
-        height:10,
+        height:20,
         shadowOffset:{height:3, width:1},
         shadowOpacity:1,
-        elevation:2,
-        borderBottomWidth:1,
-        borderWidth:2   
+    
     },
     image:{
-        width:150,
-        height:150,
+        width:120,
+        height:120,
         borderRadius:5,
-        backgroundColor:'black'
+        backgroundColor:'black',
+        margin: 7
     },
     card:{
-        backgroundColor:"#E4B7A0",
+        backgroundColor:"#F6EEE0",
         borderRadius:5,
         borderWidth:1
     },
@@ -73,7 +72,7 @@ export const profileStyle = StyleSheet.create({
         marginTop:50,
         width:'97.5%',
         height:'65%',
-        backgroundColor: "#E4B7A0",
+        backgroundColor: "#194a50",
         borderRadius: 20,
         alignItems: "center",
         shadowColor: "#000",
@@ -105,7 +104,10 @@ export const profileStyle = StyleSheet.create({
         shadowColor: '#171717',
         shadowOffset: {width:0, height:4},
         shadowOpacity: 0.2,
-        elevation:2
+        elevation:2,
+        marginLeft: 15,
+        marginRight: 10,
+    
     },
     checkAvailabilityButton:{
         justifyContent:'center', 
@@ -116,23 +118,11 @@ export const profileStyle = StyleSheet.create({
         shadowColor: '#171717',
         shadowOffset: {width:0, height:4},
         shadowOpacity: 0.2,
-        elevation:2
+        elevation:2,
+        marginRight: 10,
     } 
+
 })
 
-export const loginStyle = StyleSheet.create({
-    input: {
-        width: '80%',
-        color: "#FFFFFF",
-        fontSize: 18,
-        backgroundColor: "#AFAAFA",
-        borderRadius:8,
-        padding:5,
-        marginBottom:20,
-        height:40,
-        shadowColor: '#171717',
-        shadowOffset: {width:0, height:4},
-        shadowOpacity: 0.2,
-        shadowRadius: 3
-    }
-});
+
+

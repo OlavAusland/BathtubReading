@@ -1,14 +1,10 @@
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import { db } from "./firebase-config";
-import { useEffect, useState } from "react";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { StyleSheet } from 'react-native';
 
 import LoginPage from './components/Login'
 import ProfilePage from './components/Profile'
 import RegisterPage from './components/Register';
 import HomePage from './components/Home';
 import BookPage from './components/Book';
-import { TestPage } from './components/Test';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -18,7 +14,7 @@ console.ignoredYellowBox = ['Setting a timer'];
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-function Home()
+function BathubReading()
 {
   return(
     <Tab.Navigator initialRouteName='Profile'>
@@ -32,7 +28,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName='Login'>
-        <Stack.Screen name='BathubReading' component={Home}/>
+        <Stack.Screen name='BathubReading' component={BathubReading}/>
         <Stack.Screen name='Book' component={BookPage}/>
         <Stack.Screen name='Login' component={LoginPage} />
         <Stack.Screen name='Register' component={RegisterPage}/>
