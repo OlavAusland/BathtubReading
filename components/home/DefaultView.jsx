@@ -2,6 +2,7 @@ import { Text, View,  Image,  StyleSheet, ScrollView, TouchableOpacity } from 'r
 import React, { useState, useEffect, Dimensions} from 'react';
 import { homeStyles } from '../../styles/HomeStyles';
 import * as firebaseApi from "../../api/firebaseAPI";
+import { Rating } from 'react-native-ratings';
 
 export const DefaultHome = (props) =>
 {
@@ -29,22 +30,6 @@ export const DefaultHome = (props) =>
                     <Text style={{ fontSize: 34, marginTop: 10, fontWeight:'bold'}}> TOP 10 </Text>
                     <ScrollView style={{backgroundColor:'#F6EEE0', flex:1, width:'100%'}} contentContainerStyle={{alignItems:'center'}}>
                         {topTen.map((book, index) => {
-                            /*
-                            return(
-                                <View key={book + index} style={{flexDirection:'row'}}>
-                                    <TouchableOpacity onPress={() => {props.navigation.navigate('Book', {isbn:`${book.id}`})}}>
-                                        <Image
-                                            style={{flex:1, height:100, width:100}}
-                                            source={book.imageURI !== ' '? {uri: book.imageURI} : require('../../assets/Images/NoImage.jpg')}
-                                        />
-                                    </TouchableOpacity>
-                                    <View>
-                                        <Text style={{flex:1, fontWeight:'bold'}} adjustsFontSizeToFit>{book.title}</Text>
-                                        <Text style={{flex:1}} adjustsFontSizeToFit>{book.authors}</Text>
-                                    </View>
-                                </View>
-                            );
-                            */
                             return (
                                 <View key={'Book-' + index} style={[styles.BookCard, styles.shadowProp]}>
                                     <TouchableOpacity
@@ -57,6 +42,19 @@ export const DefaultHome = (props) =>
                                         </View>
                                         <View>
                                             <Text  adjustsFontSizeToFit style={styles.Booktitle}>{book.title}</Text>
+                                            <View style={{marginTop:25}}>
+                                                <Rating
+                                                    type='star'
+                                                    ratingCount={5}
+                                                    imageSize={30}
+                                                    reviewSize={20}
+                                                    readonly={true}
+                                                    ratingTextColor={'rgba(0, 0, 0, 0)'}
+                                                    startingValue={book.rating}
+                                                    tintColor='#194a50'
+                                                    fractions = {1}
+                                                />
+                                            </View>
                                         </View>
                                     </TouchableOpacity> 
                                 </View>
@@ -80,6 +78,18 @@ export const DefaultHome = (props) =>
                                         </View>
                                         <View>
                                             <Text  adjustsFontSizeToFit style={[styles.Booktitle, {color:'black'}]}>{book.title}</Text>
+                                            <View style={{marginTop:25, alignItems:'flex-start'}}>
+                                                <Rating
+                                                    type='star'
+                                                    ratingCount={5}
+                                                    imageSize={30}
+                                                    readonly={true}
+                                                    ratingTextColor={'rgba(0, 0, 0, 0)'}
+                                                    startingValue={book.rating}
+                                                    tintColor='#F6EEE0'
+                                                    fractions = {1}
+                                                />
+                                            </View>
                                         </View>
                                     </TouchableOpacity> 
                                 </View>

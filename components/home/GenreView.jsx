@@ -1,6 +1,7 @@
 import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import * as firebaseApi from "../../api/firebaseAPI";
+import { Rating } from 'react-native-ratings';
 
 export const GenreView = (props) =>
 {
@@ -30,8 +31,19 @@ export const GenreView = (props) =>
                         </TouchableOpacity>
                         <View>
                             <Text>Title: {book.title}</Text>
-                            <Text>ISBN: {book.id}</Text>
                             <Text>Genre: {book.genres.join(',')}</Text>
+                            <View style={{marginTop:25, alignItems:'flex-start'}}>
+                                <Rating
+                                    type='star'
+                                    ratingCount={5}
+                                    imageSize={30}
+                                    readonly={true}
+                                    ratingTextColor={'rgba(0, 0, 0, 0)'}
+                                    startingValue={book.rating}
+                                    tintColor='#F6EEE0'
+                                    fractions = {1}
+                                />
+                            </View>
                         </View>
                     </View>
                 )
