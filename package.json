@@ -25,6 +25,7 @@
     "jest": "^27.5.1",
     "linq": "^4.0.0",
     "react": "17.0.1",
+    "react-csv": "^2.2.2",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-gesture-handler": "~2.1.0",

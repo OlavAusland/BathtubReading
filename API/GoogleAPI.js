@@ -11,5 +11,3 @@ export async function getBooks(title){
     const json = await result.json()
     return json
 }
-
-

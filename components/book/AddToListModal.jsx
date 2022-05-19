@@ -4,7 +4,7 @@ import { bookStyles } from '../../styles/BookStyles.jsx';
 
 export const AddToListModal = (props) => {
     if (props.lists === undefined || props.checked === undefined) {
-        return <div>Fakk off</div>
+        return <Text>List nor found</Text>
     }
 
     return (
@@ -23,7 +23,7 @@ export const AddToListModal = (props) => {
                         {props.checked.size > 0 &&
                             Array.from(props.checked).map(([key, value], index) => {
                                 return (
-                                    <View key={'Samma det' + index}style={bookStyles.checkboxView} >
+                                    <View key={'key' + index}style={bookStyles.checkboxView} >
                                         <Checkbox style={bookStyles.checkBoxStyle} key={"checkbox-" + key} value={value} onValueChange={(isChecked) => props.handleCheckbox(key, isChecked)} />
                                         <Text style={bookStyles.checkboxtext}>{key}</Text>
                                     </View>
