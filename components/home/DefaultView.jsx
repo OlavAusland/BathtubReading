@@ -1,9 +1,8 @@
-import { Text, View,  Image,  StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import React, { useState, useEffect, Dimensions} from 'react';
-import { homeStyles } from '../../styles/HomeStyles';
-import * as firebaseApi from "../../api/firebaseAPI";
+import React, { useEffect, useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Rating } from 'react-native-ratings';
-import {defaultViewStyle} from '../../styles/HomeStyles';
+import * as firebaseApi from "../../api/firebaseAPI";
+import { defaultViewStyle, homeStyles } from '../../styles/HomeStyles';
 
 export const DefaultHome = (props) =>
 {

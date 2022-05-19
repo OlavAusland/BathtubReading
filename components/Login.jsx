@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Button, Text, TextInput, Image, Pressable } from 'react-native';
-import { db } from '../firebase-config.js'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { loginStyle } from '../styles/LoginStyle';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import React, { useEffect, useState } from 'react';
+import { Pressable, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { loginStyle } from '../styles/LoginStyle';
 
 
 export default function LoginPage({ navigation }) {

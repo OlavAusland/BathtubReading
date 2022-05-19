@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, Button, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
-import * as firebaseApi from "../api/firebaseAPI.js";
-import { SearchResultsView } from "./home/SearchResultsView";
-import { GenreView } from "./home/GenreView"
-import { DefaultHome } from './home/DefaultView';
-import { homeStyles } from '../styles/HomeStyles';
-import { getAllGenres } from '../api/firebaseAPI.js';
+import React, { useEffect, useState } from 'react';
+import { Button, ScrollView, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { getAllGenres } from '../api/firebaseAPI.js';
+import { homeStyles } from '../styles/HomeStyles';
+import { DefaultHome } from './home/DefaultView';
+import { GenreView } from "./home/GenreView";
+import { SearchResultsView } from "./home/SearchResultsView";
 
 
 export default function HomePage({ navigation }) {

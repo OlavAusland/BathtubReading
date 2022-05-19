@@ -1,8 +1,7 @@
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { RemoveUserList } from '../../api/firebaseAPI';
 import { profileStyle } from '../../styles/ProfileStyles';
-import { getAuth } from '../../firebase-config.js';
 
 export const DeleteListView = (user, key) => {
     const staticLists = ['favorites', 'reading', 'finished'];

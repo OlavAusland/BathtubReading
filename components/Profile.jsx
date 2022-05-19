@@ -1,16 +1,15 @@
-import React, { useEffect, useState} from 'react';
-import { View, Image, Text, ScrollView, Pressable, } from 'react-native';
-import { db, storage } from "../firebase-config.js";
 import { getAuth, signOut } from 'firebase/auth';
-import { onSnapshot, doc, updateUser} from "firebase/firestore";
-import { getDownloadURL, ref} from 'firebase/storage';
-import * as firebaseApi from '../api/firebaseAPI'
-import { profileStyle } from '../styles/ProfileStyles' 
+import { doc, onSnapshot } from "firebase/firestore";
+import { getDownloadURL, ref } from 'firebase/storage';
+import React, { useEffect, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { getAllGenres, getUserLibrary } from '../api/firebaseAPI';
+import { db, storage } from "../firebase-config.js";
+import { profileStyle } from '../styles/ProfileStyles';
 import { DisplayUserLists } from './profile/DisplayUserLists.jsx';
 import { GetUserListsInformation } from './profile/GetUserListsInformation.js';
-import { ProfileModal} from './profile/ProfileModal.jsx';
 import { ProfileListModal } from './profile/ProfileListModal.jsx';
-import { getAllGenres, getUserLibrary} from '../api/firebaseAPI';
+import { ProfileModal } from './profile/ProfileModal.jsx';
 
 
 

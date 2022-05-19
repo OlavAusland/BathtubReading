@@ -1,7 +1,6 @@
-import { Text, View, Image, ScrollView, TouchableOpacity, TextInput, Pressable } from 'react-native'
-import { DisplayUserLists } from '../profile/DisplayUserLists';
+import { useEffect, useState } from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { getBooks } from '../../api/googleAPI';
-import { useState, useEffect } from 'react'
 
 export const SearchResultsView = (props) => {
     const [books, setBooks] = useState([]);

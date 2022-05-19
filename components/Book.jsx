@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable, ScrollView } from 'react-native';
+import { getAuth } from 'firebase/auth';
+import { doc, updateDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { Rating } from "react-native-ratings";
 import * as firebaseApi from "../api/firebaseAPI";
 import * as googleApi from "../api/googleAPI";
-import { AddToListModal } from './book/AddToListModal';
-import { bookStyles } from '../styles/BookStyles';
-import { getAuth } from 'firebase/auth';
-import { Rating } from "react-native-ratings";
-import ProfilePage from './Profile';
-import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase-config.js';
+import { bookStyles } from '../styles/BookStyles';
+import { AddToListModal } from './book/AddToListModal';
 
 export default function BookPage({ route, navigate }) {
 
     const user = getAuth().currentUser;
-    const [existst, setExsists] = useState(false);
     const { isbn, book } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);

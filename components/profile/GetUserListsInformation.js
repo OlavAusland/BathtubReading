@@ -1,10 +1,8 @@
-import { useEffect } from "react";
-import { getUserLibrary } from "../../api/firebaseAPI";
 import { getBook } from "../../api/firebaseAPI";
 
 export const GetUserListsInformation = async(user, lists) =>
 {
-    let userLibrary = [];
+  
     let isbnArray = new Map();
     let keys = []
     lists.map((list) => {

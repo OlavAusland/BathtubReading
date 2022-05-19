@@ -1,8 +1,7 @@
-import { Text, View, TextInput, Pressable, Modal } from 'react-native';
 import { useState } from 'react';
-import { profileStyle } from '../../styles/ProfileStyles';
+import { Modal, Pressable, Text, TextInput, View } from 'react-native';
 import { AddUserList } from '../../api/firebaseAPI';
-import { getAuth } from 'firebase/auth';
+import { profileStyle } from '../../styles/ProfileStyles';
 
 export const ProfileListModal = (props) => {
     const [listName, setListName] = useState('');

@@ -1,8 +1,8 @@
-import { Text, View, TextInput, Pressable, Modal } from 'react-native';
+import { updatePassword } from 'firebase/auth';
 import { useState } from 'react';
-import { profileStyle } from '../../styles/ProfileStyles';
+import { Modal, Pressable, Text, TextInput, View } from 'react-native';
 import { updateUser } from '../../api/firebaseAPI';
-import { updatePassword} from 'firebase/auth';
+import { profileStyle } from '../../styles/ProfileStyles';
 
 export const ProfileModal = (props) => {
     const [username, setUsername] = useState(props.user ? props.user.displayName : "");

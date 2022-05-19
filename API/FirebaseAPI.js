@@ -1,7 +1,6 @@
-import { doc,  getDoc, getDocs, collection, setDoc, query, where, orderBy,  getApp,  arrayUnion, arrayRemove, remove, deleteField} from 'firebase/firestore';
 import { getAuth, updateProfile } from 'firebase/auth';
-import { db } from '../firebase-config.js'
-import { async, map } from '@firebase/util';
+import { arrayRemove, arrayUnion, collection, deleteField, doc, getDoc, getDocs, orderBy, query, setDoc, where } from 'firebase/firestore';
+import { db } from '../firebase-config.js';
 
 export const addBook = async(isbn, book) => {
    const image = book.items[0].volumeInfo.imageLinks ? book.items[0].volumeInfo.imageLinks.thumbnail : ' '

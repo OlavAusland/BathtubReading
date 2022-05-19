@@ -1,10 +1,10 @@
-import React, { Modal, View, Text, ScrollView, Pressable } from "react-native";
 import Checkbox from "expo-checkbox";
-import { bookStyles } from '../../styles/BookStyles.jsx';   
+import React, { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { bookStyles } from '../../styles/BookStyles.jsx';
 
 export const AddToListModal = (props) => {
     if (props.lists === undefined || props.checked === undefined) {
-        return <Text>List nor found</Text>
+        return <Text>List not found</Text>
     }
 
     return (

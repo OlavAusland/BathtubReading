@@ -1,12 +1,12 @@
-import React, { View, Text, TextInput, StyleSheet, Button, Image, Pressable } from 'react-native'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { storage } from '../firebase-config.js';
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
 import { ref, uploadBytes } from 'firebase/storage';
-import { initUser } from '../api/firebaseAPI';
-import { registersStyles } from '../styles/RegisterStyle';
+import { useEffect, useState } from 'react';
+import React, { Image, Pressable, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { initUser } from '../api/firebaseAPI';
+import { storage } from '../firebase-config.js';
+import { registersStyles } from '../styles/RegisterStyle';
 
 
 export default function RegisterPage({ navigation }) {
