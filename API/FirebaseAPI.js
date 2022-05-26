@@ -9,7 +9,8 @@ export const addBook = async(isbn, book) => {
         title: book.items[0].volumeInfo.title,
         genres: book.items[0].volumeInfo.categories,
         date: book.items[0].volumeInfo.publishedDate,
-        imageURI: image
+        imageURI: image,
+        rating:0,
     });
 }
 
@@ -20,8 +21,9 @@ export const addBookByObject = async(isbn, book) => {
         genres: book.volumeInfo.categories ? book.volumeInfo.categories : [],
         date: book.volumeInfo.publishedDate ? book.volumeInfo.publishedDate : ' ',
         imageURI: image,
-        rating:0
+        rating: 0,
     });
+
 
     const firebaseGenres = await getAllGenres();
     const genres = book.volumeInfo.categories ? book.volumeInfo.categories : [];
@@ -56,6 +58,9 @@ export const getBooks = async() => {
 
 export const getBook = async(isbn) =>{
     const book = await getDoc(doc(db, 'Books', isbn));
+    if(book.data() == undefined){
+        return undefined;
+    }
     return {...book.data(), id:book.id};
     };
 
@@ -111,8 +116,12 @@ export const addRating = async(user, isbn, rating) => {
 
 export const getUserRating = async(isbn, user) => {
     const ratingRef = doc(db, 'Ratings', isbn);
-    const ratingDoc = await getDoc(ratingRef);
+    const ratingDoc = await getDoc(ratingRef)
     const field = ratingDoc.get(user.uid);
+    if(field == undefined){
+        return 0;
+    }
+ 
     return field.rating;
 }
 

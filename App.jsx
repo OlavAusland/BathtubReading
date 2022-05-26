@@ -1,5 +1,4 @@
-import { StyleSheet } from 'react-native';
-
+import { StyleSheet, LogBox } from 'react-native';
 import LoginPage from './components/Login'
 import ProfilePage from './components/Profile'
 import RegisterPage from './components/Register';
@@ -9,6 +8,7 @@ import BookPage from './components/Book';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+LogBox.ignoreLogs(['Setting a timer']);
 
 console.ignoredYellowBox = ['Setting a timer'];
 const Stack = createNativeStackNavigator();

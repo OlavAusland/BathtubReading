@@ -12,7 +12,7 @@ import { AddToListModal } from './book/AddToListModal';
 export default function BookPage({ route, navigate }) {
 
     const user = getAuth().currentUser;
-    const { isbn, book } = route.params;
+    const {isbn, book } = route.params;
     const [mybook, setMybook] = useState(null);
     const [lists, setLists] = useState([]);
     const [checked, setChecked] = useState(new Map());
@@ -21,13 +21,14 @@ export default function BookPage({ route, navigate }) {
     const [library, setLibrary] = useState(new Map());
     const [userRating, setUserRating] = useState(0);
 
-    useEffect(async() => {
-        await firebaseApi.getBook(isbn).then((getRes) => {
+    useEffect(() => {
+        console.log("book page");
+         firebaseApi.getBook(isbn).then((getRes) => {
             if(getRes == undefined)
             {
+                console.log("Book not found");
                 firebaseApi.addBookByObject(isbn, book).then((addRes) => {
-                    console.log(addRes)
-                }).catch((e) => console.log(e))
+                }).catch((e) => console.log('error',e))
             }
         });
     }, [])
@@ -61,7 +62,7 @@ export default function BookPage({ route, navigate }) {
         }
 
         const getLists = async (uid = user.uid) => {
-            const fetchedLibrary = await firebaseApi.getUserLibrary(user.uid);
+            const fetchedLibrary = await firebaseApi.getUserLibrary(uid);
             setLibrary(fetchedLibrary)
 
             const categories = fetchedLibrary.map((item) => {
